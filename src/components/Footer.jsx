@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { FaLinkedinIn, FaInstagram, FaGithub, FaFacebookF } from 'react-icons/fa'
+import { FaLinkedinIn, FaInstagram, FaFacebookF } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 import { FiArrowUp } from 'react-icons/fi'
 import { COMPANY, NAV_LINKS } from '../data'
@@ -17,6 +17,13 @@ const SOCIAL_LINKS = {
   facebook: 'https://www.facebook.com/profile.php?id=61595078384135',
 }
 
+// Contact details
+const CONTACT = {
+  email: 'contact@rdailabs.com',
+  phone: '+91 77088 91568',
+  phoneHref: 'tel:+917708891568',
+}
+
 export default function Footer() {
   const goTo = useGoTo()
 
@@ -25,7 +32,6 @@ export default function Footer() {
     { icon: FaInstagram, href: SOCIAL_LINKS.instagram, label: 'Instagram' },
     { icon: FaFacebookF, href: SOCIAL_LINKS.facebook, label: 'Facebook' },
     { icon: FaXTwitter, href: COMPANY.social.x, label: 'X' },
-    { icon: FaGithub, href: COMPANY.social.github, label: 'GitHub' },
   ]
 
   return (
@@ -105,9 +111,9 @@ export default function Footer() {
             </div>
 
             <p className="mt-5 text-sm font-medium leading-relaxed text-white">
-              <a href={`mailto:${COMPANY.email}`} className={LINK}>{COMPANY.email}</a>
+              <a href={`mailto:${CONTACT.email}`} className={LINK}>{CONTACT.email}</a>
               <br />
-              {COMPANY.phone}
+              <a href={CONTACT.phoneHref} className={LINK}>{CONTACT.phone}</a>
             </p>
           </div>
         </div>
