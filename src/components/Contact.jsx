@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import emailjs from '@emailjs/browser'
@@ -30,11 +31,9 @@ const LABEL = 'block text-sm font-semibold text-slate-900'
 const INPUT_CLASS =
   'mt-2 block w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-950 outline-none transition duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-950 focus:bg-white focus:ring-4 focus:ring-slate-950/10'
 
-// Soft translucent panel (used for contact details)
 const GLASS =
   'rounded-2xl border border-white/70 bg-white/60 shadow-[0_10px_30px_-18px_rgba(60,40,80,.35)] backdrop-blur-md'
 
-// Solid white card (used for the main form)
 const WHITE_CARD =
   'rounded-3xl border border-white/80 bg-white shadow-[0_24px_60px_-28px_rgba(40,30,70,.45)]'
 
@@ -42,7 +41,6 @@ const SUBMIT_BTN =
   'group inline-flex min-h-12 shrink-0 items-center justify-center gap-2.5 rounded-full bg-slate-950 px-7 py-3 text-sm font-semibold text-white transition duration-300 hover:bg-slate-800 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 ' +
   FOCUS
 
-// Warm orange -> peach -> blue/purple gradient, fading to cream at the bottom
 const SECTION_BG = {
   background:
     'linear-gradient(to bottom, rgba(251,244,239,0) 70%, #fbf4ef 100%),' +
@@ -63,12 +61,20 @@ const ROW =
   'group flex w-full items-center gap-4 px-5 py-4 text-left transition-colors duration-200 hover:bg-white/70 ' +
   FOCUS
 
-function IconBox({ icon: Icon, className = 'bg-slate-950' }) {
+// Real icons with consistent sizing and colored backgrounds
+function IconBox({
+  icon: Icon,
+  className = 'bg-slate-950',
+}) {
   return (
     <span
-      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-white ${className}`}
+      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white shadow-sm transition-transform duration-200 group-hover:scale-105 ${className}`}
     >
-      <Icon size={18} aria-hidden="true" />
+      <Icon
+        size={23}
+        strokeWidth={2}
+        aria-hidden="true"
+      />
     </span>
   )
 }
@@ -76,28 +82,39 @@ function IconBox({ icon: Icon, className = 'bg-slate-950' }) {
 function Arrow() {
   return (
     <FiArrowUpRight
-      size={17}
+      size={19}
       className="shrink-0 text-slate-500 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-slate-950"
       aria-hidden="true"
     />
   )
 }
 
-// One row inside the contact-details panel
-function InfoRow({ icon, iconClass, label, href, external, children }) {
+// Contact information row
+function InfoRow({
+  icon,
+  iconClass,
+  label,
+  href,
+  external,
+  children,
+}) {
   return (
     <a
       href={href}
       target={external ? '_blank' : undefined}
-      rel={external ? 'noreferrer' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
       className={ROW}
     >
-      <IconBox icon={icon} className={iconClass} />
+      <IconBox
+        icon={icon}
+        className={iconClass}
+      />
 
       <span className="min-w-0 flex-1">
         <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
           {label}
         </span>
+
         <span className="mt-0.5 block break-words text-[15px] font-semibold leading-6 text-slate-950">
           {children}
         </span>
@@ -120,10 +137,19 @@ function StatusMessage({ status }) {
       }`}
     >
       {status.type === 'success' ? (
-        <FiCheckCircle size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
+        <FiCheckCircle
+          size={18}
+          className="mt-0.5 shrink-0"
+          aria-hidden="true"
+        />
       ) : (
-        <FiAlertCircle size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
+        <FiAlertCircle
+          size={18}
+          className="mt-0.5 shrink-0"
+          aria-hidden="true"
+        />
       )}
+
       <span>{status.message}</span>
     </div>
   )
@@ -134,13 +160,19 @@ export default function Contact() {
 
   const [form, setForm] = useState(EMPTY_FORM)
   const [sending, setSending] = useState(false)
-  const [status, setStatus] = useState({ type: '', message: '' })
+  const [status, setStatus] = useState({
+    type: '',
+    message: '',
+  })
   const [mapOpen, setMapOpen] = useState(false)
 
   const email = 'contact@rdailabs.com'
   const phone = '+91 77088 91568'
-  const address = '366/145/S, 3rd Gandhi Rd, Attur, TN 636102, India'
-  const officeCoordinates = '11.598776516480894,78.59249654807462'
+  const address =
+    '366/145/S, 3rd Gandhi Rd, Attur, TN 636102, India'
+
+  const officeCoordinates =
+    '11.598776516480894,78.59249654807462'
 
   const whatsappNumber = phone.replace(/\D/g, '')
 
@@ -158,7 +190,9 @@ export default function Contact() {
     if (!mapOpen) return undefined
 
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') setMapOpen(false)
+      if (event.key === 'Escape') {
+        setMapOpen(false)
+      }
     }
 
     document.body.style.overflow = 'hidden'
@@ -179,20 +213,32 @@ export default function Contact() {
     }))
 
     if (status.message) {
-      setStatus({ type: '', message: '' })
+      setStatus({
+        type: '',
+        message: '',
+      })
     }
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+
     if (sending) return
 
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+    const serviceId =
+      import.meta.env.VITE_EMAILJS_SERVICE_ID
+
+    const templateId =
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+
+    const publicKey =
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
     setSending(true)
-    setStatus({ type: '', message: '' })
+    setStatus({
+      type: '',
+      message: '',
+    })
 
     try {
       if (serviceId && templateId && publicKey) {
@@ -211,7 +257,8 @@ export default function Contact() {
 
         setStatus({
           type: 'success',
-          message: 'Your message has been sent successfully. Thank you!',
+          message:
+            'Your message has been sent successfully. Thank you!',
         })
 
         setForm(EMPTY_FORM)
@@ -237,7 +284,10 @@ export default function Contact() {
         })
       }
     } catch (error) {
-      console.error('Contact form submission failed:', error)
+      console.error(
+        'Contact form submission failed:',
+        error
+      )
 
       setStatus({
         type: 'error',
@@ -250,10 +300,22 @@ export default function Contact() {
   }
 
   const fadeUp = (delay = 0) => ({
-    initial: reduceMotion ? false : { opacity: 0, y: 18 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, amount: 0.08 },
-    transition: { duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : delay, ease: EASE },
+    initial: reduceMotion
+      ? false
+      : { opacity: 0, y: 18 },
+    whileInView: {
+      opacity: 1,
+      y: 0,
+    },
+    viewport: {
+      once: true,
+      amount: 0.08,
+    },
+    transition: {
+      duration: reduceMotion ? 0 : 0.6,
+      delay: reduceMotion ? 0 : delay,
+      ease: EASE,
+    },
   })
 
   return (
@@ -265,8 +327,12 @@ export default function Contact() {
       >
         <div className="container-x relative mx-auto max-w-6xl">
           <div className="grid items-stretch gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
-            {/* Left: intro + contact details */}
-            <motion.div {...fadeUp()} className="flex min-w-0 flex-col">
+
+            {/* Left: introduction and contact details */}
+            <motion.div
+              {...fadeUp()}
+              className="flex min-w-0 flex-col"
+            >
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-700">
                 Contact us
               </p>
@@ -276,41 +342,57 @@ export default function Contact() {
               </h1>
 
               <p className="mt-5 max-w-md text-base leading-7 text-slate-800">
-                Have an idea but not sure how to take it forward? We’re here to help.
-                Get in touch with us today—together, we can bring your vision to life
-                and turn your ideas into reality.
+                Have an idea but not sure how to take it forward?
+                We’re here to help. Get in touch with us today—
+                together, we can bring your vision to life and turn
+                your ideas into reality.
               </p>
 
-              {/* Contact details — one clean panel with dividers */}
-              <div className={`${GLASS} mt-9 divide-y divide-slate-900/10 overflow-hidden`}>
-                <InfoRow icon={FiMail} label="Email" href={`mailto:${email}`}>
+              {/* Contact information panel */}
+              <div
+                className={`${GLASS} mt-9 divide-y divide-slate-900/10 overflow-hidden`}
+              >
+                {/* Email */}
+                <InfoRow
+                  icon={FiMail}
+                  iconClass="bg-blue-600"
+                  label="Email"
+                  href={`mailto:${email}`}
+                >
                   {email}
                 </InfoRow>
 
+                {/* Phone */}
                 <InfoRow
                   icon={FiPhone}
+                  iconClass="bg-orange-500"
                   label="Phone"
                   href={`tel:${phone.replace(/[^\d+]/g, '')}`}
                 >
                   {phone}
                 </InfoRow>
 
-                {/* Office — opens the map popup */}
+                {/* Office: opens the map popup */}
                 <button
                   type="button"
                   onClick={() => setMapOpen(true)}
                   className={ROW}
                 >
-                  <IconBox icon={FiMapPin} />
+                  <IconBox
+                    icon={FiMapPin}
+                    className="bg-emerald-600"
+                  />
 
                   <span className="min-w-0 flex-1">
                     <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
                       Office
                     </span>
+
                     <span className="mt-0.5 block break-words text-[15px] font-semibold leading-6 text-slate-950">
                       {address}
                     </span>
-                    <span className="mt-0.5 block text-xs font-semibold text-slate-600 underline underline-offset-4">
+
+                    <span className="mt-1 block text-xs font-semibold text-slate-600 underline underline-offset-4">
                       View on map
                     </span>
                   </span>
@@ -318,10 +400,11 @@ export default function Contact() {
                   <Arrow />
                 </button>
 
+                {/* WhatsApp */}
                 {whatsappUrl && (
                   <InfoRow
                     icon={FaWhatsapp}
-                    iconClass="bg-emerald-500"
+                    iconClass="bg-[#25D366]"
                     label="WhatsApp"
                     href={whatsappUrl}
                     external
@@ -332,7 +415,7 @@ export default function Contact() {
               </div>
             </motion.div>
 
-            {/* Right: form card (stretches to match the left column) */}
+            {/* Right: contact form */}
             <motion.form
               {...fadeUp(0.08)}
               onSubmit={handleSubmit}
@@ -342,16 +425,22 @@ export default function Contact() {
                 <h2 className="font-display text-xl font-semibold tracking-tight text-slate-950 sm:text-2xl">
                   Send us a message
                 </h2>
+
                 <p className="mt-1.5 text-sm text-slate-600">
-                  Fields marked with <span className="text-red-600">*</span> are required.
+                  Fields marked with{' '}
+                  <span className="text-red-600">*</span> are required.
                 </p>
               </div>
 
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="contact-name" className={LABEL}>
+                  <label
+                    htmlFor="contact-name"
+                    className={LABEL}
+                  >
                     Name <span className="text-red-600">*</span>
                   </label>
+
                   <input
                     id="contact-name"
                     name="name"
@@ -367,9 +456,13 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="contact-phone" className={LABEL}>
+                  <label
+                    htmlFor="contact-phone"
+                    className={LABEL}
+                  >
                     Phone <span className="text-red-600">*</span>
                   </label>
+
                   <input
                     id="contact-phone"
                     name="phone"
@@ -386,9 +479,13 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="contact-email" className={LABEL}>
+                <label
+                  htmlFor="contact-email"
+                  className={LABEL}
+                >
                   Email <span className="text-red-600">*</span>
                 </label>
+
                 <input
                   id="contact-email"
                   name="email"
@@ -404,9 +501,13 @@ export default function Contact() {
               </div>
 
               <div className="flex flex-1 flex-col">
-                <label htmlFor="contact-message" className={LABEL}>
+                <label
+                  htmlFor="contact-message"
+                  className={LABEL}
+                >
                   Message <span className="text-red-600">*</span>
                 </label>
+
                 <textarea
                   id="contact-message"
                   name="message"
@@ -417,6 +518,7 @@ export default function Contact() {
                   maxLength={5000}
                   className={`${INPUT_CLASS} min-h-[140px] flex-1 resize-y leading-6`}
                 />
+
                 <p className="mt-1.5 text-right text-xs text-slate-500">
                   {form.message.length}/5000
                 </p>
@@ -429,8 +531,13 @@ export default function Contact() {
                   Your details are only used to respond to your enquiry.
                 </p>
 
-                <button type="submit" disabled={sending} className={SUBMIT_BTN}>
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className={SUBMIT_BTN}
+                >
                   {sending ? 'Sending...' : 'Send message'}
+
                   <FiArrowRight
                     size={17}
                     aria-hidden="true"
@@ -443,7 +550,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Map popup */}
+      {/* Google Maps popup */}
       {mapOpen && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm sm:p-6"
@@ -454,9 +561,20 @@ export default function Contact() {
           }}
         >
           <motion.div
-            initial={reduceMotion ? false : { opacity: 0, y: 12, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: reduceMotion ? 0 : 0.22, ease: EASE }}
+            initial={
+              reduceMotion
+                ? false
+                : { opacity: 0, y: 12, scale: 0.98 }
+            }
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            transition={{
+              duration: reduceMotion ? 0 : 0.22,
+              ease: EASE,
+            }}
             role="dialog"
             aria-modal="true"
             aria-labelledby="contact-map-title"
@@ -464,8 +582,11 @@ export default function Contact() {
           >
             <div className="flex items-start justify-between gap-4 border-b border-slate-200 p-4 sm:p-5">
               <div className="flex min-w-0 items-start gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-950 text-white">
-                  <FiMapPin size={18} aria-hidden="true" />
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white">
+                  <FiMapPin
+                    size={23}
+                    aria-hidden="true"
+                  />
                 </span>
 
                 <div className="min-w-0">
@@ -475,6 +596,7 @@ export default function Contact() {
                   >
                     Find our office
                   </h2>
+
                   <p className="mt-1 break-words text-sm leading-5 text-slate-600">
                     {address}
                   </p>
@@ -487,7 +609,10 @@ export default function Contact() {
                 aria-label="Close map"
                 className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-950 ${FOCUS}`}
               >
-                <FiX size={19} aria-hidden="true" />
+                <FiX
+                  size={19}
+                  aria-hidden="true"
+                />
               </button>
             </div>
 
@@ -510,11 +635,15 @@ export default function Contact() {
               <a
                 href={mapsUrl}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className={`inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800 ${FOCUS}`}
               >
                 Open Google Maps
-                <FiArrowUpRight size={16} aria-hidden="true" />
+
+                <FiArrowUpRight
+                  size={16}
+                  aria-hidden="true"
+                />
               </a>
             </div>
           </motion.div>

@@ -12,6 +12,31 @@ import Visual from './Visual'
 const FOCUS =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2'
 
+const TECH_COLORS = {
+  React: 'border-sky-200 bg-sky-100 text-sky-800',
+  'Node.js': 'border-green-200 bg-green-100 text-green-800',
+  PostgreSQL: 'border-orange-200 bg-orange-100 text-orange-800',
+  AWS: 'border-purple-200 bg-purple-100 text-purple-800',
+  Python: 'border-yellow-200 bg-yellow-100 text-yellow-800',
+  Docker: 'border-blue-200 bg-blue-100 text-blue-800',
+  Kubernetes: 'border-indigo-200 bg-indigo-100 text-indigo-800',
+  TypeScript: 'border-cyan-200 bg-cyan-100 text-cyan-800',
+  JavaScript: 'border-amber-200 bg-amber-100 text-amber-800',
+  MongoDB: 'border-emerald-200 bg-emerald-100 text-emerald-800',
+  MySQL: 'border-rose-200 bg-rose-100 text-rose-800',
+  Firebase: 'border-yellow-200 bg-yellow-100 text-yellow-800',
+  Azure: 'border-blue-200 bg-blue-100 text-blue-800',
+  'Next.js': 'border-slate-300 bg-slate-100 text-slate-800',
+  TailwindCSS: 'border-teal-200 bg-teal-100 text-teal-800',
+  'Tailwind CSS': 'border-teal-200 bg-teal-100 text-teal-800',
+  Express: 'border-lime-200 bg-lime-100 text-lime-800',
+  Redis: 'border-red-200 bg-red-100 text-red-800',
+  GraphQL: 'border-fuchsia-200 bg-fuchsia-100 text-fuchsia-800',
+  Supabase: 'border-emerald-200 bg-emerald-100 text-emerald-800',
+  Vite: 'border-violet-200 bg-violet-100 text-violet-800',
+  'React Native': 'border-cyan-200 bg-cyan-100 text-cyan-800',
+}
+
 export default function Portfolio() {
   const goTo = useGoTo()
 
@@ -82,9 +107,8 @@ export default function Portfolio() {
                     className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-100"
                   />
 
-                  {/* Sample label */}
-                  <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-white/70 bg-white/90 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 shadow-sm backdrop-blur-md">
-                    <span className="h-1.5 w-1.5 rounded-full bg-sky-600" />
+                  {/* Sample label - dot removed */}
+                  <span className="absolute left-4 top-4 inline-flex items-center rounded-full border border-white/70 bg-white/90 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 shadow-sm backdrop-blur-md">
                     Sample project
                   </span>
 
@@ -95,7 +119,10 @@ export default function Portfolio() {
                     aria-label={`Discuss a project like ${p.title}`}
                     className={`absolute bottom-4 right-4 flex h-10 w-10 translate-y-2 items-center justify-center rounded-full bg-white text-slate-900 opacity-0 shadow-md transition-all duration-300 hover:bg-slate-900 hover:text-white group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100 ${FOCUS}`}
                   >
-                    <FiArrowUpRight size={18} aria-hidden="true" />
+                    <FiArrowUpRight
+                      size={18}
+                      aria-hidden="true"
+                    />
                   </button>
                 </div>
 
@@ -109,22 +136,31 @@ export default function Portfolio() {
                     {p.title}
                   </h3>
 
-                  {/* Technology tags */}
+                  {/* Technology tags - different background colors */}
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {p.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-medium text-slate-600 transition-colors duration-200 group-hover:border-slate-300"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                    {p.tech.map((tech) => {
+                      const colorClass =
+                        TECH_COLORS[tech] ||
+                        'border-slate-200 bg-slate-100 text-slate-700'
+
+                      return (
+                        <span
+                          key={tech}
+                          className={`rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors duration-200 ${colorClass}`}
+                        >
+                          {tech}
+                        </span>
+                      )
+                    })}
                   </div>
 
                   {/* Project result */}
                   <div className="mt-5 flex flex-1 items-start gap-3 border-t border-slate-100 pt-4">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-700">
-                      <FiTrendingUp size={16} aria-hidden="true" />
+                      <FiTrendingUp
+                        size={16}
+                        aria-hidden="true"
+                      />
                     </span>
 
                     <div className="min-w-0">
@@ -171,9 +207,11 @@ export default function Portfolio() {
               className="mx-auto text-slate-400"
               aria-hidden="true"
             />
+
             <h3 className="mt-4 text-lg font-semibold text-slate-900">
               Projects coming soon
             </h3>
+
             <p className="mt-2 text-sm text-slate-500">
               Check back soon to explore our work.
             </p>

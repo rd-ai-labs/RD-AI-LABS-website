@@ -36,7 +36,7 @@ export default function Footer() {
 
   return (
     <footer className="relative overflow-hidden border-t border-white/10 bg-black px-5 pb-8 pt-16 text-white sm:px-8">
-      <div className="container-x">
+      <div className="container-x">    
         <div className="grid gap-12 md:grid-cols-3">
           {/* Brand */}
           <div>
