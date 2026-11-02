@@ -15,6 +15,9 @@ const CARD =
   'group relative overflow-hidden border border-white/60 bg-white/40 backdrop-blur-xl shadow-[0_10px_40px_-20px_rgba(120,70,60,.35)] ' +
   'transition duration-300 hover:bg-white/60 hover:shadow-[0_24px_50px_-18px_rgba(120,70,60,.45)] motion-reduce:transition-none'
 
+const FOCUS =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2'
+
 export default function Careers() {
   const reduce = useReducedMotion()
 
@@ -26,30 +29,33 @@ export default function Careers() {
     >
       <div className="container-x relative">
         {/* Heading */}
-        <div className="mb-12 lg:mb-16">
-          <h2 className="font-display text-3xl font-extrabold uppercase leading-[1.05] tracking-tight text-slate-900 sm:text-4xl lg:whitespace-nowrap lg:text-5xl">
-            Build the future with us
-          </h2>
+        <Reveal>
+          <div className="mb-12 lg:mb-16">
+            <h2 className="font-display text-3xl font-extrabold uppercase leading-[1.05] tracking-tight text-slate-900 sm:text-4xl lg:whitespace-nowrap lg:text-5xl">
+              Build the future with us
+            </h2>
 
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-700 sm:text-lg">
-            We&apos;re a curious, friendly team that loves solving hard
-            problems. If you want to learn fast and do meaningful work,
-            you&apos;ll fit right in.
-          </p>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-700 sm:text-lg">
+              We&apos;re a curious, friendly team that loves solving
+              hard problems. If you want to learn fast and do
+              meaningful work, you&apos;ll fit right in.
+            </p>
 
-          {/* Funny sticky note that wiggles */}
-          <motion.p
-            animate={reduce ? undefined : { rotate: [-2, 2, -2] }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-            className="mt-6 inline-block -rotate-2 rounded-lg bg-amber-200 px-4 py-2 text-sm font-semibold text-slate-900 shadow-md"
-          >
-            Warning: may cause sudden enthusiasm for clean code.
-          </motion.p>
-        </div>
+            <motion.p
+              animate={
+                reduce ? undefined : { rotate: [-2, 2, -2] }
+              }
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+              className="mt-6 inline-block -rotate-2 rounded-lg bg-amber-200 px-4 py-2 text-sm font-semibold text-slate-900 shadow-md"
+            >
+              Warning: may cause sudden enthusiasm for clean code.
+            </motion.p>
+          </div>
+        </Reveal>
 
         {/* Perks */}
         <div className="mb-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -58,14 +64,13 @@ export default function Careers() {
               <div
                 className={`${CARD} h-full rounded-2xl p-6 hover:-translate-y-1.5 motion-reduce:hover:translate-y-0`}
               >
-                {/* Gradient line draws in on hover */}
                 <span
                   aria-hidden="true"
                   className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-orange-500 via-rose-500 to-indigo-600 transition duration-500 group-hover:scale-x-100 motion-reduce:transition-none"
                 />
 
                 <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white transition duration-300 group-hover:-translate-y-1 group-hover:rotate-6 group-hover:scale-110 motion-reduce:transition-none">
-                  <p.icon size={24} />
+                  <p.icon size={24} aria-hidden="true" />
                 </span>
 
                 <h3 className="font-display text-lg font-extrabold uppercase tracking-tight text-slate-950">
@@ -79,13 +84,6 @@ export default function Careers() {
             </Reveal>
           ))}
         </div>
-
-        {/*
-          Open positions section temporarily disabled.
-          Uncomment this block when you want to display job listings again.
-          
-          Keep the job listing code here for future use.
-        */}
 
         {/* Current hiring status */}
         <Reveal>
@@ -101,10 +99,16 @@ export default function Careers() {
             />
 
             <div className="relative">
-              <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-950 text-3xl shadow-lg">
-                <span role="img" aria-label="Sparkles">
-                  ✨
-                </span>
+              {/* RD AI Labs company logo */}
+              <div className="mx-auto mb-5 flex h-24 w-24 items-center justify-center overflow-hidden rounded-2xl border border-white/80 bg-white p-2 shadow-lg sm:h-28 sm:w-28">
+                <img
+                  src="/rd-ai-labs-logo.png"
+                  alt="RD AI Labs company logo"
+                  className="h-full w-full object-contain"
+                  width="112"
+                  height="112"
+                  loading="lazy"
+                />
               </div>
 
               <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-indigo-700">
@@ -116,25 +120,30 @@ export default function Careers() {
               </h3>
 
               <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-slate-700 sm:text-base">
-                All our positions are currently filled. Thank you for your
-                interest in joining RD AI Labs! We&apos;re always happy to
-                connect with talented people. Please check back later for
-                future career opportunities.
+                All our positions are currently filled. Thank you
+                for your interest in joining RD AI Labs! We&apos;re
+                always happy to connect with talented people.
+                Please check back later for future career
+                opportunities.
               </p>
 
               <a
                 href={`mailto:${COMPANY.email}?subject=${encodeURIComponent(
                   'Future Career Opportunities'
                 )}`}
-                className="mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-7 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-950 motion-reduce:transition-none"
+                className={`mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-slate-950 px-7 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-slate-800 ${FOCUS} motion-reduce:transition-none`}
               >
                 Contact us
-                <FiArrowRight aria-hidden="true" />
+                <FiArrowRight
+                  size={18}
+                  aria-hidden="true"
+                  className="transition-transform duration-200 group-hover:translate-x-1"
+                />
               </a>
 
-              <p className="mt-5 text-xs text-slate-600">
-                No openings right now. New opportunities may be just around
-                the corner! 👋
+              <p className="mt-5 text-sm leading-relaxed text-slate-600">
+                No openings right now. New opportunities may be
+                just around the corner! 👋
               </p>
             </div>
           </div>
@@ -156,4 +165,3 @@ export default function Careers() {
     </section>
   )
 }
-                              

@@ -28,7 +28,7 @@ export default function Blog() {
 
               <h2 className="font-display text-[clamp(2rem,4vw,3.25rem)] font-semibold leading-[1.12] tracking-[-0.045em] text-slate-900">
                 Latest insights{' '}
-                <span className="text-slate-400">
+                <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
                   for what's next.
                 </span>
               </h2>
@@ -136,9 +136,11 @@ export default function Blog() {
               className="mx-auto text-slate-400"
               aria-hidden="true"
             />
+
             <h3 className="mt-4 text-lg font-semibold text-slate-900">
               New insights coming soon
             </h3>
+
             <p className="mt-2 text-sm leading-6 text-slate-500">
               Check back soon for articles, ideas, and technology
               updates from our team.
