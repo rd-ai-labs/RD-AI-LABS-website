@@ -1,7 +1,11 @@
 
 import { motion, useReducedMotion } from 'framer-motion'
-import { FiArrowRight, FiEye, FiTarget } from 'react-icons/fi'
-import { ABOUT } from '../data'
+import {
+  FiArrowRight,
+  FiTarget,
+  FiUsers,
+  FiTrendingUp,
+} from 'react-icons/fi'
 
 const EASE = [0.22, 1, 0.36, 1]
 
@@ -24,21 +28,27 @@ const stagger = {
   },
 }
 
-const MISSION_VISION = [
+const PILLARS = [
   {
     title: 'Our Mission',
     description:
-      ABOUT?.mission ||
-      'To build practical, user-focused digital solutions that help people and businesses move forward.',
+      "We engineer software solutions only when they add real, measurable value to your business. We don't just write code; we build stable platforms designed to solve real-world problems from day one.",
     icon: FiTarget,
     accent: 'bg-sky-100 text-sky-700',
   },
   {
-    title: 'Our Vision',
+    title: 'Our Leadership',
     description:
-      'We exist to Tap the Untapped. We empower brilliant local talent with cutting-edge AI tools to solve real-world business challenges and deliver exceptional customer experiences.',
-    icon: FiEye,
+      "We believe in direct communication, transparent delivery, and value-based trust. Backed by over two decades of enterprise core systems architecture experience, we focus on making every solution stable, secure, and production-ready.",
+    icon: FiUsers,
     accent: 'bg-orange-100 text-orange-700',
+  },
+  {
+    title: 'Our Journey',
+    description:
+      "We believe technology talent has no geographical boundaries. By bringing 20+ years of enterprise engineering discipline together with talented minds from smaller towns, we are building a borderless engineering hub committed to exceptional standards.",
+    icon: FiTrendingUp,
+    accent: 'bg-violet-100 text-violet-700',
   },
 ]
 
@@ -50,7 +60,7 @@ export default function About() {
       id="about"
       className="relative isolate overflow-hidden bg-[#F7F3EF] px-5 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24"
     >
-      {/* Warm, premium background */}
+      {/* Background */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
@@ -71,15 +81,18 @@ export default function About() {
       </div>
 
       <div className="container-x relative mx-auto max-w-7xl">
+
+        {/* Heading */}
         <motion.div
           variants={stagger}
           initial={reduceMotion ? false : 'hidden'}
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}
-          className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
+          className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16"
         >
-          {/* LEFT: About content */}
+          {/* LEFT CONTENT */}
           <div className="min-w-0">
+
             <motion.div variants={fadeUp}>
               <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#D96D48]">
                 <span className="h-px w-8 bg-[#D96D48]" />
@@ -91,9 +104,9 @@ export default function About() {
               variants={fadeUp}
               className="mt-5 max-w-xl font-display text-[clamp(2.25rem,4.5vw,3.75rem)] font-semibold leading-[1.08] tracking-[-0.05em] text-[#202A35] [text-wrap:balance]"
             >
-              Turning ideas into{' '}
+              The Engineering Creed behind{' '}
               <span className="bg-gradient-to-r from-[#4A82B7] via-[#7777C9] to-[#D98263] bg-clip-text text-transparent">
-                meaningful technology.
+                RD AI Labs.
               </span>
             </motion.h2>
 
@@ -101,33 +114,31 @@ export default function About() {
               variants={fadeUp}
               className="mt-5 max-w-xl text-sm leading-7 text-[#626975] sm:text-base sm:leading-8"
             >
-              {ABOUT?.intro ||
-                'We combine thoughtful design and modern technology to create meaningful digital experiences and practical solutions.'}
+              We operate at the intersection of deep architectural maturity
+              and the relentless drive of a fresh software startup.
+              Combining enterprise-grade engineering discipline with
+              innovative thinking, we build technology that delivers
+              meaningful business value.
             </motion.p>
 
-            {/* Our story */}
+            {/* Engineering philosophy */}
             <motion.div
               variants={fadeUp}
               className="mt-8 border-l-2 border-[#8BB8D8] pl-5"
             >
               <h3 className="font-display text-lg font-semibold tracking-tight text-[#202A35]">
-                Our Story
+                Built on Engineering Excellence
               </h3>
 
-              <div className="mt-3 space-y-3 text-sm leading-7 text-[#626975] sm:text-[15px]">
-                {Array.isArray(ABOUT?.story) ? (
-                  ABOUT.story.map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
-                  ))
-                ) : (
-                  <p>
-                    {ABOUT?.story ||
-                      'RD AI Labs brings creativity and engineering together to build digital products that solve real problems. Our focus is on useful, reliable, and accessible technology.'}
-                  </p>
-                )}
-              </div>
+              <p className="mt-3 text-sm leading-7 text-[#626975] sm:text-[15px]">
+                We don't believe in technology for the sake of technology.
+                Every architecture, every line of code, and every solution
+                should have a clear purpose: solving real problems and
+                creating measurable value.
+              </p>
             </motion.div>
 
+            {/* CTA */}
             <motion.div variants={fadeUp} className="mt-8">
               <a
                 href="#contact"
@@ -142,7 +153,7 @@ export default function About() {
             </motion.div>
           </div>
 
-          {/* RIGHT: Image and mission / vision */}
+          {/* RIGHT CONTENT */}
           <motion.div
             variants={fadeUp}
             className="relative mx-auto w-full max-w-[540px] lg:ml-auto"
@@ -150,75 +161,91 @@ export default function About() {
             {/* Technology image */}
             <div className="group relative overflow-hidden rounded-[26px] border border-white/80 bg-white/60 p-2 shadow-[0_24px_65px_-32px_rgba(36,48,62,0.35)]">
               <div className="relative aspect-[5/4] overflow-hidden rounded-[20px] bg-[#E6EAF0]">
+
                 <img
                   src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85"
-                  alt="Modern technology workspace with a collaborative team environment"
+                  alt="Modern collaborative technology workspace"
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.035]"
                 />
 
-                {/* Soft image overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#182635]/75 via-transparent to-white/5" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#182635]/80 via-transparent to-white/5" />
 
                 <div className="absolute inset-x-5 bottom-5 sm:inset-x-7 sm:bottom-7">
+
                   <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sky-200">
-                    Our approach
+                    Our philosophy
                   </span>
 
                   <h3 className="mt-2 max-w-sm font-display text-2xl font-semibold leading-tight tracking-[-0.035em] text-white sm:text-3xl">
-                    Innovation with purpose.
+                    Enterprise discipline.
+                    <span className="block text-orange-300">
+                      Startup innovation.
+                    </span>
                   </h3>
 
                   <p className="mt-2 max-w-sm text-sm leading-6 text-white/80">
-                    Thoughtful ideas. Practical solutions. Technology that
-                    moves business forward.
+                    Experience that builds confidence. Innovation that
+                    moves businesses forward.
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Mission and vision cards */}
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {MISSION_VISION.map((item, index) => {
-                const Icon = item.icon
+            {/* Experience highlight */}
+            <div className="mt-4 flex items-center gap-4 rounded-[20px] border border-white/90 bg-white/75 p-5 shadow-[0_8px_28px_-18px_rgba(36,48,62,0.24)] backdrop-blur-xl">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-100">
+                <FiTrendingUp className="text-orange-700" size={25} />
+              </div>
 
-                return (
-                  <motion.article
-                    key={item.title}
-                    initial={
-                      reduceMotion ? false : { opacity: 0, y: 14 }
-                    }
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.2 }}
-                    transition={{
-                      duration: reduceMotion ? 0 : 0.45,
-                      delay: reduceMotion ? 0 : index * 0.1,
-                      ease: EASE,
-                    }}
-                    whileHover={
-                      reduceMotion ? undefined : { y: -3 }
-                    }
-                    className="rounded-[20px] border border-white/90 bg-white/75 p-4 shadow-[0_8px_28px_-18px_rgba(36,48,62,0.24)] backdrop-blur-xl sm:p-5"
-                  >
-                    <div
-                      className={`flex h-10 w-10 items-center justify-center rounded-xl ${item.accent}`}
-                    >
-                      <Icon size={19} aria-hidden="true" />
-                    </div>
-
-                    <h3 className="mt-4 font-display text-base font-semibold tracking-tight text-[#202A35]">
-                      {item.title}
-                    </h3>
-
-                    <p className="mt-2 text-[13px] leading-6 text-[#626975]">
-                      {item.description}
-                    </p>
-                  </motion.article>
-                )
-              })}
+              <div>
+                <p className="font-display text-2xl font-extrabold tracking-tight text-[#202A35]">
+                  20+ Years
+                </p>
+                <p className="mt-1 text-xs leading-5 text-[#626975]">
+                  Enterprise core systems architecture experience
+                </p>
+              </div>
             </div>
           </motion.div>
         </motion.div>
+
+        {/* OUR THREE PILLARS */}
+        <motion.div
+          variants={stagger}
+          initial={reduceMotion ? false : 'hidden'}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          className="mt-16 grid gap-5 md:grid-cols-3 lg:mt-20"
+        >
+          {PILLARS.map((item) => {
+            const Icon = item.icon
+
+            return (
+              <motion.article
+                key={item.title}
+                variants={fadeUp}
+                whileHover={reduceMotion ? undefined : { y: -5 }}
+                className="rounded-[22px] border border-white/90 bg-white/75 p-6 shadow-[0_8px_28px_-18px_rgba(36,48,62,0.24)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_18px_40px_-20px_rgba(36,48,62,0.25)] sm:p-7"
+              >
+                <div
+                  className={`flex h-12 w-12 items-center justify-center rounded-xl ${item.accent}`}
+                >
+                  <Icon size={22} aria-hidden="true" />
+                </div>
+
+                <h3 className="mt-5 font-display text-xl font-bold tracking-tight text-[#202A35]">
+                  {item.title}
+                </h3>
+
+                <p className="mt-3 text-sm leading-7 text-[#626975]">
+                  {item.description}
+                </p>
+              </motion.article>
+            )
+          })}
+        </motion.div>
+
       </div>
     </section>
   )
