@@ -47,10 +47,11 @@ export const COMPANY = {
 export const NAV_LINKS = [
   { id: 'home', label: 'Home', short: 'Home' },
   { id: 'services', label: 'Services', short: 'Services' },
+  { id: 'skills', label: 'Skills', short: 'Skills' }, // <- new: Skills section
   { id: 'about', label: 'About Us', short: 'About Us' },
-  { id: 'portfolio', label: 'Portfolio / Case Studies', short: 'Portfolio' },
+  { id: 'portfolio', label: 'Our Philosophy', short: 'Our Philosophy' },
   { id: 'careers', label: 'Careers', short: 'Careers' },
-  { id: 'blog', label: 'Blog', short: 'Blog' },
+  // { id: 'blog', label: 'Blog', short: 'Blog' },
   { id: 'contact', label: 'Contact', short: 'Contact' },
 ]
 
@@ -91,6 +92,53 @@ export const SERVICES = [
     title: 'AI and Automation Solutions',
     desc: 'Chatbots, intelligent assistants, predictive analytics and process automation that save time and cut costs, putting AI to work on real business problems.',
     featured: true,
+  },
+]
+
+/* ----- 3b. Skills: 3 delivery scenes (Build, Test, Ship) ------------------ */
+// Keep the "id" values as: react, playwright, devops (Skills.jsx uses them).
+export const SKILL_SCENES = [
+  {
+    id: 'react',
+    step: 'Build',
+    skill: 'React',
+    title: 'Fast, component-driven interfaces',
+    description:
+      'We build responsive web apps with React, reusable component libraries, and clean state management, with AI tools speeding up the repetitive work.',
+    points: [
+      'Reusable design systems and component libraries',
+      'Accessible, responsive UIs for web and mobile',
+      'AI-assisted scaffolding with human code review',
+    ],
+    tags: ['React', 'Vite', 'Tailwind CSS', 'TypeScript'],
+  },
+  {
+    id: 'playwright',
+    step: 'Test',
+    skill: 'Playwright',
+    title: 'End-to-end tests you can trust',
+    description:
+      'Automated browser tests run across Chromium, Firefox, and WebKit, so regressions are caught before your users see them.',
+    points: [
+      'Critical user journeys covered end to end',
+      'Cross-browser and mobile viewport checks',
+      'AI-suggested tests for new features and edge cases',
+    ],
+    tags: ['Playwright', 'Cross-browser', 'Visual checks', 'CI reports'],
+  },
+  {
+    id: 'devops',
+    step: 'Ship',
+    skill: 'DevOps pipeline',
+    title: 'Automated delivery from commit to production',
+    description:
+      'Every change moves through a CI/CD pipeline with build, test, security scan, and deployment, so releases are fast, repeatable, and safe.',
+    points: [
+      'CI/CD pipelines on AWS and Azure',
+      'Security scanning and quality gates on every release',
+      'Monitoring and one-click rollback',
+    ],
+    tags: ['CI/CD', 'Docker', 'AWS', 'Azure'],
   },
 ]
 

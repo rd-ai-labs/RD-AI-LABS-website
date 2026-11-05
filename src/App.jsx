@@ -1,19 +1,20 @@
-
 import rdLogo from './assets/rd-ai-labs-logo.png'
 import { useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import Loader from './components/Loader'
-import CursorGlow from './components/CursorGlow'
+// import CursorGlow from './components/CursorGlow'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Services from './components/Services'
+import Skills from './components/Skills'
 import About from './components/About'
 import Portfolio from './components/Portfolio'
 import Careers from './components/Careers'
-import Blog from './components/Blog'
+// import Blog from './components/Blog'
 import Contact from './components/Contact'
+
 import Footer from './components/Footer'
 import WhatsAppButton from './components/WhatsAppButton'
 import LegalPage from './components/LegalPage'
@@ -36,10 +37,11 @@ function Home({ ready }) {
     <main>
       <Hero ready={ready} />
       <Services />
+      <Skills />
       <About />
       <Portfolio />
       <Careers />
-      <Blog />
+      {/* <Blog /> */}
       <Contact />
     </main>
   )
@@ -65,7 +67,7 @@ export default function App() {
   return (
     <>
       <AnimatePresence>{loading && <Loader key="loader" />}</AnimatePresence>
-      <CursorGlow />
+      {/* <CursorGlow /> */}
       <ScrollToTop />
       <Navbar />
       <Routes>

@@ -308,21 +308,24 @@ export default function Contact() {
       >
         <div className="container-x relative mx-auto max-w-6xl">
           <div className="grid items-stretch gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+
+            {/* Contact introduction and details */}
             <motion.div {...fadeUp()} className="flex min-w-0 flex-col">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-700">
                 Contact us
               </p>
 
               <h1 className="mt-4 font-display text-[clamp(2rem,3.6vw,3rem)] font-bold leading-[1.1] tracking-tight text-slate-950">
-                Let’s build the future together.
+                Let’s architect the solution together.
               </h1>
 
               <p className="mt-5 max-w-md text-base leading-7 text-slate-800">
-                Have an idea but not sure how to take it forward? We’re here to
-                help. Get in touch with us today—together, we can bring your
-                vision to life and turn your ideas into reality.
+                We don’t rely on empty technical pitches. Connect with us
+                directly to map out your challenges, evaluate project
+                feasibility, and establish value-based trust by default.
               </p>
 
+              {/* Contact information */}
               <div
                 className={`${GLASS} mt-9 divide-y divide-slate-900/10 overflow-hidden`}
               >
@@ -382,6 +385,7 @@ export default function Contact() {
               </div>
             </motion.div>
 
+            {/* Contact form */}
             <motion.form
               {...fadeUp(0.08)}
               onSubmit={handleSubmit}
@@ -519,6 +523,7 @@ export default function Contact() {
         </div>
       </section>
 
+      {/* Office map modal */}
       {mapOpen && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm sm:p-6"

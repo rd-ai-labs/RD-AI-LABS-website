@@ -1,7 +1,6 @@
-
 import { motion, useReducedMotion } from 'framer-motion'
-import { PERKS, COMPANY } from '../data'
-import { FiArrowRight } from 'react-icons/fi'
+import { FiArrowRight, FiCode, FiUsers, FiGlobe, FiTrendingUp } from 'react-icons/fi'
+import { COMPANY } from '../data'
 import Reveal from './Reveal'
 
 const SECTION_BG = {
@@ -11,15 +10,44 @@ const SECTION_BG = {
     '#fbf1ea',
 }
 
-const CARD =
-  'group relative overflow-hidden border border-white/60 bg-white/40 backdrop-blur-xl shadow-[0_10px_40px_-20px_rgba(120,70,60,.35)] ' +
-  'transition duration-300 hover:bg-white/60 hover:shadow-[0_24px_50px_-18px_rgba(120,70,60,.45)] motion-reduce:transition-none'
-
 const FOCUS =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2'
 
+const HIGHLIGHTS = [
+  {
+    icon: FiCode,
+    title: 'Real-World Engineering',
+    description:
+      'Work on meaningful software challenges and build solutions that create measurable value.',
+  },
+  {
+    icon: FiUsers,
+    title: 'Direct Mentorship',
+    description:
+      'Learn from experienced technology leaders through practical guidance and engineering standards.',
+  },
+  {
+    icon: FiGlobe,
+    title: 'Global Opportunities',
+    description:
+      'Develop your skills and contribute to technology solutions designed for businesses everywhere.',
+  },
+  {
+    icon: FiTrendingUp,
+    title: 'Continuous Growth',
+    description:
+      'Turn your curiosity, problem-solving ability, and passion into professional engineering capability.',
+  },
+]
+
 export default function Careers() {
   const reduce = useReducedMotion()
+
+  const profileEmail = `mailto:${COMPANY.email}?subject=${encodeURIComponent(
+    'Career Profile - RD AI Labs'
+  )}&body=${encodeURIComponent(
+    'Hello RD AI Labs Team,\n\nI would like to connect with you regarding future opportunities.\n\nName:\nSkills:\nExperience / Education:\nPortfolio or LinkedIn:\n\nPlease find my profile attached.\n\nThank you.'
+  )}`
 
   return (
     <section
@@ -28,130 +56,123 @@ export default function Careers() {
       style={SECTION_BG}
     >
       <div className="container-x relative">
-        {/* Heading */}
-        <Reveal>
-          <div className="mb-12 lg:mb-16">
-            <h2 className="font-display text-3xl font-extrabold uppercase leading-[1.05] tracking-tight text-slate-900 sm:text-4xl lg:whitespace-nowrap lg:text-5xl">
-              Build the future with us
-            </h2>
 
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-700 sm:text-lg">
-              We&apos;re a curious, friendly team that loves solving
-              hard problems. If you want to learn fast and do
-              meaningful work, you&apos;ll fit right in.
+        {/* Main heading */}
+        <Reveal>
+          <div className="mb-12 max-w-4xl lg:mb-16">
+
+            <p className="mb-5 flex items-center gap-2.5 text-[10px] font-bold uppercase tracking-[0.24em] text-indigo-700 sm:text-xs">
+              <span className="h-px w-8 bg-indigo-600" />
+              Careers at RD AI Labs
             </p>
 
-            <motion.p
-              animate={
-                reduce ? undefined : { rotate: [-2, 2, -2] }
-              }
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="mt-6 inline-block -rotate-2 rounded-lg bg-amber-200 px-4 py-2 text-sm font-semibold text-slate-900 shadow-md"
-            >
-              Warning: may cause sudden enthusiasm for clean code.
-            </motion.p>
+            <h2 className="font-display text-[clamp(2.2rem,5vw,4.5rem)] font-extrabold leading-[1.08] tracking-[-0.05em] text-slate-950">
+              Skill is Universal.
+              <span className="block bg-gradient-to-r from-indigo-700 via-violet-600 to-purple-500 bg-clip-text text-transparent">
+                We Provide the Horizon.
+              </span>
+            </h2>
+
+            <p className="mt-7 max-w-3xl text-sm leading-7 text-slate-700 sm:text-base sm:leading-8">
+              We hire for problem-solving ability, curiosity, and drive,
+              not just years of experience. We may not have an open role
+              today, but we are always building our talent pipeline.
+            </p>
           </div>
         </Reveal>
 
-        {/* Perks */}
-        <div className="mb-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {PERKS.map((p, i) => (
-            <Reveal key={p.title} delay={i * 0.08}>
+        {/* Talent philosophy + highlights */}
+        <div className="grid gap-6 lg:grid-cols-12 lg:gap-10">
+
+          {/* Left content */}
+          <Reveal className="lg:col-span-7">
+            <div className="relative h-full overflow-hidden rounded-3xl border border-white/70 bg-white/55 p-7 shadow-[0_10px_40px_-20px_rgba(120,70,60,.35)] backdrop-blur-xl sm:p-10">
+
               <div
-                className={`${CARD} h-full rounded-2xl p-6 hover:-translate-y-1.5 motion-reduce:hover:translate-y-0`}
-              >
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-orange-500 via-rose-500 to-indigo-600 transition duration-500 group-hover:scale-x-100 motion-reduce:transition-none"
-                />
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-indigo-200/40 blur-3xl"
+              />
 
-                <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white transition duration-300 group-hover:-translate-y-1 group-hover:rotate-6 group-hover:scale-110 motion-reduce:transition-none">
-                  <p.icon size={24} aria-hidden="true" />
-                </span>
-
-                <h3 className="font-display text-lg font-extrabold uppercase tracking-tight text-slate-950">
-                  {p.title}
+              <div className="relative">
+                <h3 className="font-display text-2xl font-bold leading-tight tracking-tight text-slate-950 sm:text-3xl">
+                  We don’t just hire talent.
+                  <span className="block text-indigo-700">
+                    We help build it.
+                  </span>
                 </h3>
 
-                <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                  {p.desc}
+                <p className="mt-5 text-sm leading-7 text-slate-700 sm:text-base sm:leading-8">
+                  Under the direct mentorship of our senior engineers and
+                  a strong set of quality standards, we help motivated
+                  people grow into world-class engineers.
+                </p>
+
+                <p className="mt-4 text-sm font-semibold leading-7 text-slate-900 sm:text-base">
+                  Don’t wait for a job posting. If you have the drive,
+                  send us your profile and start the conversation.
+                </p>
+
+                <a
+                  href={profileEmail}
+                  className={`group mt-8 inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-slate-950 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-slate-950/15 transition duration-300 hover:-translate-y-1 hover:bg-indigo-800 hover:shadow-xl ${FOCUS} motion-reduce:transition-none`}
+                >
+                  Share your profile
+
+                  <FiArrowRight
+                    size={18}
+                    aria-hidden="true"
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </a>
+
+                <p className="mt-4 text-xs leading-relaxed text-slate-500">
+                  Include your resume, portfolio, or LinkedIn link.
                 </p>
               </div>
-            </Reveal>
-          ))}
-        </div>
-
-        {/* Current hiring status */}
-        <Reveal>
-          <div className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/60 p-8 text-center shadow-[0_10px_40px_-20px_rgba(120,70,60,.35)] backdrop-blur-xl sm:p-12">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-indigo-200/40 blur-3xl"
-            />
-
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-orange-200/50 blur-3xl"
-            />
-
-            <div className="relative">
-              {/* RD AI Labs company logo */}
-              <div className="mx-auto mb-5 flex h-24 w-24 items-center justify-center overflow-hidden rounded-2xl border border-white/80 bg-white p-2 shadow-lg sm:h-28 sm:w-28">
-                <img
-                  src="/rd-ai-labs-logo.png"
-                  alt="RD AI Labs company logo"
-                  className="h-full w-full object-contain"
-                  width="112"
-                  height="112"
-                  loading="lazy"
-                />
-              </div>
-
-              <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-indigo-700">
-                Careers at RD AI Labs
-              </p>
-
-              <h3 className="font-display text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl">
-                Currently, there are no open positions.
-              </h3>
-
-              <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-slate-700 sm:text-base">
-                All our positions are currently filled. Thank you
-                for your interest in joining RD AI Labs! We&apos;re
-                always happy to connect with talented people.
-                Please check back later for future career
-                opportunities.
-              </p>
-
-              <a
-                href={`mailto:${COMPANY.email}?subject=${encodeURIComponent(
-                  'Future Career Opportunities'
-                )}`}
-                className={`mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-slate-950 px-7 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-slate-800 ${FOCUS} motion-reduce:transition-none`}
-              >
-                Contact us
-                <FiArrowRight
-                  size={18}
-                  aria-hidden="true"
-                  className="transition-transform duration-200 group-hover:translate-x-1"
-                />
-              </a>
-
-              <p className="mt-5 text-sm leading-relaxed text-slate-600">
-                No openings right now. New opportunities may be
-                just around the corner! 👋
-              </p>
             </div>
+          </Reveal>
+
+          {/* Right highlights */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1">
+            {HIGHLIGHTS.map((item, index) => {
+              const Icon = item.icon
+
+              return (
+                <Reveal key={item.title} delay={index * 0.08}>
+                  <motion.div
+                    whileHover={
+                      reduce
+                        ? undefined
+                        : { y: -3 }
+                    }
+                    transition={{ duration: 0.25 }}
+                    className="group relative h-full overflow-hidden rounded-2xl border border-white/70 bg-white/50 p-5 shadow-[0_8px_30px_-20px_rgba(80,70,100,.35)] backdrop-blur-xl transition duration-300 hover:bg-white/75 hover:shadow-lg sm:p-6 motion-reduce:transition-none"
+                  >
+                    <div className="flex items-start gap-4">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-950 text-white transition duration-300 group-hover:-translate-y-1 group-hover:bg-indigo-700 motion-reduce:transition-none">
+                        <Icon size={21} aria-hidden="true" />
+                      </span>
+
+                      <div>
+                        <h3 className="font-display text-base font-bold tracking-tight text-slate-950 sm:text-lg">
+                          {item.title}
+                        </h3>
+
+                        <p className="mt-2 text-sm leading-6 text-slate-600">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </Reveal>
+              )
+            })}
           </div>
-        </Reveal>
+        </div>
 
         {/* Contact email */}
         <Reveal>
-          <p className="mt-8 text-center text-sm text-slate-700">
+          <p className="mt-12 text-center text-sm text-slate-700 sm:mt-16">
             Have a question? Reach us at{' '}
             <a
               href={`mailto:${COMPANY.email}`}
@@ -161,6 +182,7 @@ export default function Careers() {
             </a>
           </p>
         </Reveal>
+
       </div>
     </section>
   )
