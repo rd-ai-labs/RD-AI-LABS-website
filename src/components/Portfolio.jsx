@@ -1,41 +1,53 @@
 
-import { PROJECTS } from '../data'
 import {
   FiArrowUpRight,
-  FiTrendingUp,
-  FiLayers,
+  FiMapPin,
+  FiUsers,
+  FiShield,
+  FiGlobe,
 } from 'react-icons/fi'
 import { useGoTo } from '../hooks'
 import Reveal from './Reveal'
-import Visual from './Visual'
 
 const FOCUS =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2'
 
-const TECH_COLORS = {
-  React: 'border-sky-200 bg-sky-100 text-sky-800',
-  'Node.js': 'border-green-200 bg-green-100 text-green-800',
-  PostgreSQL: 'border-orange-200 bg-orange-100 text-orange-800',
-  AWS: 'border-purple-200 bg-purple-100 text-purple-800',
-  Python: 'border-yellow-200 bg-yellow-100 text-yellow-800',
-  Docker: 'border-blue-200 bg-blue-100 text-blue-800',
-  Kubernetes: 'border-indigo-200 bg-indigo-100 text-indigo-800',
-  TypeScript: 'border-cyan-200 bg-cyan-100 text-cyan-800',
-  JavaScript: 'border-amber-200 bg-amber-100 text-amber-800',
-  MongoDB: 'border-emerald-200 bg-emerald-100 text-emerald-800',
-  MySQL: 'border-rose-200 bg-rose-100 text-rose-800',
-  Firebase: 'border-yellow-200 bg-yellow-100 text-yellow-800',
-  Azure: 'border-blue-200 bg-blue-100 text-blue-800',
-  'Next.js': 'border-slate-300 bg-slate-100 text-slate-800',
-  TailwindCSS: 'border-teal-200 bg-teal-100 text-teal-800',
-  'Tailwind CSS': 'border-teal-200 bg-teal-100 text-teal-800',
-  Express: 'border-lime-200 bg-lime-100 text-lime-800',
-  Redis: 'border-red-200 bg-red-100 text-red-800',
-  GraphQL: 'border-fuchsia-200 bg-fuchsia-100 text-fuchsia-800',
-  Supabase: 'border-emerald-200 bg-emerald-100 text-emerald-800',
-  Vite: 'border-violet-200 bg-violet-100 text-violet-800',
-  'React Native': 'border-cyan-200 bg-cyan-100 text-cyan-800',
-}
+const PHILOSOPHIES = [
+  {
+    number: '01',
+    icon: FiMapPin,
+    title: 'Elite Software Quality, Main Street Heart',
+    description:
+      'We intentionally establish our engineering hubs in small towns because we know that tech genius isn’t limited to mega-cities or major tech corridors. By tapping into brilliant minds outside the typical crowded tech spaces, we aim to bring unmatched focus, dedication, and passion to your projects.',
+    image: '/images/main-street-tech-team.jpg',
+    imageAlt: 'Small-town innovation hub connected to global technology networks',
+    accent: 'from-orange-500 to-rose-500',
+    iconBg: 'bg-orange-100 text-orange-700',
+  },
+  {
+    number: '02',
+    icon: FiUsers,
+    title: 'The Talent Incubator Engine',
+    description:
+      'We act as a unique talent incubator that aims to deliver global-quality engineering by leveraging fresh, ambitious minds. Through mentorship, hands-on experience, and continuous learning, we shape local capability into world-class development teams.',
+    image:
+      'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=85',
+    imageAlt: 'People learning and collaborating as a team',
+    accent: 'from-sky-500 to-indigo-500',
+    iconBg: 'bg-sky-100 text-sky-700',
+  },
+  {
+    number: '03',
+    icon: FiShield,
+    title: 'Two Decades of Quality Guardrails',
+    description:
+      'Our engineering approach is guided by over 20 years of enterprise technology leadership. Every solution benefits from experienced technical oversight, thoughtful architecture, and quality-focused mentorship. You get the agility of emerging talent backed by mature engineering practices.',
+    image: '/images/quality-guardrails-3d.jpg',
+    imageAlt: 'Enterprise cybersecurity and engineering quality protection',
+    accent: 'from-violet-500 to-purple-500',
+    iconBg: 'bg-violet-100 text-violet-700',
+  },
+]
 
 export default function Portfolio() {
   const goTo = useGoTo()
@@ -43,180 +55,148 @@ export default function Portfolio() {
   return (
     <section
       id="portfolio"
-      className="relative overflow-hidden bg-white px-5 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24"
+      className="relative overflow-hidden bg-white px-5 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-28"
     >
       <div className="container-x relative mx-auto max-w-7xl">
+
         {/* Section heading */}
         <Reveal>
-          <div className="mb-10 flex flex-col gap-6 sm:mb-12 lg:mb-14 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl">
-              <p className="mb-4 flex items-center gap-2.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-sky-700 sm:text-[11px]">
-                <span
-                  aria-hidden="true"
-                  className="h-px w-8 bg-sky-600"
-                />
-                Our portfolio
-              </p>
-
-              <h2 className="font-display text-[clamp(2rem,4vw,3.25rem)] font-semibold leading-[1.12] tracking-[-0.045em] text-slate-900">
-                Case studies that{' '}
-                <span className="text-slate-400">
-                  deliver results.
-                </span>
-              </h2>
-
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
-                Explore sample projects showcasing how thoughtful
-                design and modern technology can solve business
-                challenges.
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => goTo('contact')}
-              className={`group inline-flex min-h-11 w-fit shrink-0 items-center justify-center gap-2.5 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-[13px] font-semibold text-slate-800 transition duration-300 hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50 ${FOCUS}`}
-            >
-              Start a project
-              <FiArrowUpRight
-                size={16}
+          <div className="mb-12 max-w-4xl sm:mb-16">
+            <p className="mb-4 flex items-center gap-2.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-sky-700 sm:text-[11px]">
+              <span
                 aria-hidden="true"
-                className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                className="h-px w-8 bg-sky-600"
               />
-            </button>
+              Our Growth Philosophy
+            </p>
+
+            <h2 className="font-display text-[clamp(2.2rem,4.5vw,3.8rem)] font-semibold leading-[1.1] tracking-[-0.045em] text-slate-950">
+              Growing Across the{' '}
+              <span className="bg-gradient-to-r from-orange-500 via-rose-500 to-indigo-600 bg-clip-text text-transparent">
+                Horizon.
+              </span>
+            </h2>
+
+            <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
+              We don’t believe in staying restricted within geographic
+              boundaries. Our goal is to connect untapped opportunities
+              with incredible talent, scaling our impact horizontally
+              across industries and borders.
+            </p>
           </div>
         </Reveal>
 
-        {/* Project grid */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-          {PROJECTS.map((p, i) => (
-            <Reveal key={p.title} delay={i * 0.08}>
-              <article className="group relative flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl hover:shadow-slate-900/[0.07] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
-                {/* Project visual */}
-                <div className="relative overflow-hidden bg-slate-100">
-                  <Visual
-                    icon={p.icon || FiLayers}
-                    from={p.from}
-                    to={p.to}
-                    className="h-48 w-full transition-transform duration-500 ease-out group-hover:scale-[1.035] motion-reduce:transition-none sm:h-52"
-                  />
+        {/* Philosophy cards */}
+        <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          {PHILOSOPHIES.map((item, index) => {
+            const Icon = item.icon
 
-                  {/* Soft image overlay */}
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-100"
-                  />
+            return (
+              <Reveal key={item.number} delay={index * 0.1}>
+                <article className="group relative flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-slate-300 hover:shadow-xl hover:shadow-slate-900/[0.08] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
 
-                  {/* Sample label - dot removed */}
-                  <span className="absolute left-4 top-4 inline-flex items-center rounded-full border border-white/70 bg-white/90 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 shadow-sm backdrop-blur-md">
-                    Sample project
-                  </span>
-
-                  {/* Project action */}
-                  <button
-                    type="button"
-                    onClick={() => goTo('contact')}
-                    aria-label={`Discuss a project like ${p.title}`}
-                    className={`absolute bottom-4 right-4 flex h-10 w-10 translate-y-2 items-center justify-center rounded-full bg-white text-slate-900 opacity-0 shadow-md transition-all duration-300 hover:bg-slate-900 hover:text-white group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100 ${FOCUS}`}
-                  >
-                    <FiArrowUpRight
-                      size={18}
-                      aria-hidden="true"
+                  {/* Image */}
+                  <div className="relative h-56 overflow-hidden bg-slate-100 sm:h-60">
+                    <img
+                      src={item.image}
+                      alt={item.imageAlt}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 motion-reduce:transition-none"
                     />
-                  </button>
-                </div>
 
-                {/* Project information */}
-                <div className="flex flex-1 flex-col p-5 sm:p-6">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-700">
-                    {p.industry}
-                  </p>
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"
+                    />
 
-                  <h3 className="mt-2 font-display text-lg font-semibold leading-snug tracking-tight text-slate-900 sm:text-xl">
-                    {p.title}
-                  </h3>
-
-                  {/* Technology tags - different background colors */}
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {p.tech.map((tech) => {
-                      const colorClass =
-                        TECH_COLORS[tech] ||
-                        'border-slate-200 bg-slate-100 text-slate-700'
-
-                      return (
-                        <span
-                          key={tech}
-                          className={`rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors duration-200 ${colorClass}`}
-                        >
-                          {tech}
-                        </span>
-                      )
-                    })}
-                  </div>
-
-                  {/* Project result */}
-                  <div className="mt-5 flex flex-1 items-start gap-3 border-t border-slate-100 pt-4">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-700">
-                      <FiTrendingUp
-                        size={16}
-                        aria-hidden="true"
-                      />
+                    <span className="absolute left-5 top-5 rounded-full border border-white/30 bg-slate-950/40 px-3 py-1.5 text-[11px] font-semibold tracking-widest text-white backdrop-blur-md">
+                      {item.number} / 03
                     </span>
 
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-400">
-                        Project outcome
-                      </p>
+                    <span className="absolute bottom-5 left-5 flex h-12 w-12 items-center justify-center rounded-xl border border-white/30 bg-white/95 text-slate-950 shadow-lg backdrop-blur-md">
+                      <Icon size={23} aria-hidden="true" />
+                    </span>
+                  </div>
 
-                      <p className="mt-1 text-sm leading-6 text-slate-600">
-                        {p.result}
-                      </p>
+                  {/* Card content */}
+                  <div className="flex flex-1 flex-col p-6 sm:p-7">
+                    <div className={`mb-4 h-1 w-12 rounded-full bg-gradient-to-r ${item.accent}`} />
+
+                    <h3 className="font-display text-xl font-bold leading-snug tracking-tight text-slate-950">
+                      {item.title}
+                    </h3>
+
+                    <p className="mt-4 flex-1 text-sm leading-7 text-slate-600">
+                      {item.description}
+                    </p>
+
+                    <div className="mt-6 flex items-center gap-2 border-t border-slate-100 pt-5 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                      <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${item.iconBg}`}>
+                        <FiGlobe size={14} aria-hidden="true" />
+                      </span>
+                      Our approach
                     </div>
                   </div>
 
-                  {/* Contact link */}
-                  <button
-                    type="button"
-                    onClick={() => goTo('contact')}
-                    className={`group/link mt-5 inline-flex min-h-10 w-fit items-center gap-2 text-[13px] font-semibold text-slate-800 transition-colors hover:text-sky-700 ${FOCUS}`}
-                  >
-                    Discuss a similar project
-                    <FiArrowUpRight
-                      size={16}
-                      aria-hidden="true"
-                      className="transition-transform duration-200 group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5"
-                    />
-                  </button>
-                </div>
-
-                {/* Bottom accent */}
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 bg-gradient-to-r from-sky-500 to-indigo-500 transition-transform duration-300 group-hover:scale-x-100 motion-reduce:transition-none"
-                />
-              </article>
-            </Reveal>
-          ))}
+                  {/* Bottom accent */}
+                  <div
+                    aria-hidden="true"
+                    className={`absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-gradient-to-r ${item.accent} transition-transform duration-500 group-hover:scale-x-100 motion-reduce:transition-none`}
+                  />
+                </article>
+              </Reveal>
+            )
+          })}
         </div>
 
-        {/* Empty state */}
-        {PROJECTS.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-slate-200 px-6 py-14 text-center">
-            <FiLayers
-              size={28}
-              className="mx-auto text-slate-400"
+        {/* Closing CTA - Futuristic Background */}
+        <Reveal delay={0.2}>
+          <div
+            className="relative mt-12 overflow-hidden rounded-2xl border border-white/10 bg-slate-950 bg-cover bg-center px-6 py-9 text-white shadow-xl sm:mt-16 sm:px-10 sm:py-12"
+            style={{
+              backgroundImage: "url('/images/portfolio-vision-bg.png')",
+            }}
+          >
+            {/* Dark overlay for text readability */}
+            <div
               aria-hidden="true"
+              className="pointer-events-none absolute inset-0 bg-slate-950/35"
             />
 
-            <h3 className="mt-4 text-lg font-semibold text-slate-900">
-              Projects coming soon
-            </h3>
+            {/* CTA content */}
+            <div className="relative z-10 flex flex-col gap-7 md:flex-row md:items-center md:justify-between">
+              <div className="max-w-2xl">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-400">
+                  Our vision. Your opportunity.
+                </p>
 
-            <p className="mt-2 text-sm text-slate-500">
-              Check back soon to explore our work.
-            </p>
+                <h3 className="mt-3 font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                  Great talent. Thoughtful engineering. Global possibilities.
+                </h3>
+
+                <p className="mt-3 text-sm leading-7 text-slate-200">
+                  Have a challenge worth solving? Let’s explore how we can
+                  turn your ideas into meaningful technology solutions.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => goTo('contact')}
+                className={`group inline-flex min-h-12 shrink-0 items-center justify-center gap-3 rounded-full bg-white px-6 py-3 text-sm font-bold text-slate-950 transition duration-300 hover:-translate-y-1 hover:bg-slate-100 hover:shadow-lg ${FOCUS}`}
+              >
+                Let’s connect
+
+                <FiArrowUpRight
+                  size={18}
+                  aria-hidden="true"
+                  className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                />
+              </button>
+            </div>
           </div>
-        )}
+        </Reveal>
+
       </div>
     </section>
   )
