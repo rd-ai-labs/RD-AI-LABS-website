@@ -13,10 +13,10 @@ const HeroScene = lazy(() => import('./HeroScene'))
 
 const HERO_BG = {
   background:
-    'radial-gradient(60% 70% at 0% 100%, #ffb347 0%, rgba(255,179,71,0) 70%),' +
-    'radial-gradient(55% 60% at 45% 85%, #f4846a 0%, rgba(244,132,106,0) 70%),' +
-    'radial-gradient(60% 70% at 100% 0%, #6f9cf0 0%, rgba(111,156,240,0) 70%),' +
-    'radial-gradient(50% 60% at 85% 80%, #c9c3ec 0%, rgba(201,195,236,0) 70%),' +
+    'radial-gradient(65% 75% at 0% 100%, rgba(255,181,75,0.95) 0%, rgba(255,181,75,0) 75%),' +
+    'radial-gradient(65% 70% at 48% 100%, rgba(247,132,111,0.82) 0%, rgba(247,132,111,0) 75%),' +
+    'radial-gradient(60% 75% at 100% 0%, rgba(104,151,242,0.95) 0%, rgba(104,151,242,0) 75%),' +
+    'radial-gradient(55% 65% at 100% 100%, rgba(197,190,239,0.85) 0%, rgba(197,190,239,0) 75%),' +
     '#fbf1ea',
 }
 
@@ -59,14 +59,14 @@ function SceneFrame({ ready, active }) {
 
   return (
     <motion.div
-      className="mx-auto w-full max-w-[600px] px-1 sm:px-0 lg:col-span-6 lg:max-w-[720px]"
+      className="mx-auto w-full max-w-[620px] px-1 sm:px-0 lg:max-w-none"
       initial={false}
       animate={
         ready
           ? { opacity: 1, y: 0 }
           : { opacity: 0, y: 18 }
       }
-      transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
+      transition={{ duration: 0.8, delay: 0.25, ease: EASE }}
     >
       <div
         ref={frameRef}
@@ -97,24 +97,27 @@ const stagger = {
   show: {
     transition: {
       staggerChildren: 0.1,
-      delayChildren: 0.08,
+      delayChildren: 0.1,
     },
   },
 }
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 22 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.65, ease: EASE },
+    transition: { duration: 0.7, ease: EASE },
   },
 }
 
 const headline = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.07 },
+    transition: {
+      staggerChildren: 0.065,
+      delayChildren: 0.12,
+    },
   },
 }
 
@@ -123,17 +126,25 @@ const word = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: EASE },
+    transition: { duration: 0.65, ease: EASE },
   },
 }
 
-const WORDS = [
-  { t: 'Transforming' },
-  { t: 'Ideas' },
-  { t: 'into' },
-  { t: 'Intelligent', g: true },
-  { t: 'Digital', g: true },
-  { t: 'Solutions', g: true },
+const HEADLINE_LINES = [
+  [
+    { text: 'Any', accent: false },
+    { text: 'Software', accent: false },
+    { text: 'Challenge.', accent: true },
+  ],
+  [
+    { text: 'Any', accent: false },
+    { text: 'Scale.', accent: true },
+  ],
+  [
+    { text: 'Solved', accent: false },
+    { text: 'from the', accent: false },
+    { text: 'Ground Up.', accent: true },
+  ],
 ]
 
 export default function Hero({ ready = true }) {
@@ -146,8 +157,8 @@ export default function Hero({ ready = true }) {
   const reduceMotion = useReducedMotion()
   const { scrollY } = useScroll()
 
-  const textX = useTransform(scrollY, [0, 400], [0, -35])
-  const textOpacity = useTransform(scrollY, [0, 360], [1, 0])
+  const textY = useTransform(scrollY, [0, 450], [0, -25])
+  const textOpacity = useTransform(scrollY, [0, 450], [1, 0.9])
 
   useEffect(() => {
     setLowEnd(isLowEndDevice())
@@ -177,16 +188,19 @@ export default function Hero({ ready = true }) {
       style={HERO_BG}
       className="relative isolate flex min-h-[100svh] items-center overflow-hidden px-5 pb-16 pt-28 sm:px-8 sm:pt-32 lg:px-8 lg:pb-20 lg:pt-28"
     >
-      {/* Soft decorative glow */}
+      {/* Background atmosphere */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
       >
-        <div className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/20 blur-3xl sm:h-96 sm:w-96" />
+        <div className="absolute left-[35%] top-[35%] h-72 w-72 rounded-full bg-white/20 blur-[100px] sm:h-96 sm:w-96" />
+        <div className="absolute right-[15%] top-[15%] h-48 w-48 rounded-full bg-white/20 blur-[90px]" />
+        <div className="absolute bottom-0 left-0 h-px w-full bg-white/30" />
       </div>
 
-      <div className="container-x relative z-10 mx-auto grid w-full max-w-7xl items-center gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
-        {/* Hero content */}
+      <div className="container-x relative z-10 mx-auto grid w-full max-w-7xl items-center gap-5 sm:gap-8 lg:grid-cols-12 lg:gap-x-5 xl:gap-x-8">
+
+        {/* Left: Hero content */}
         <motion.div
           variants={stagger}
           initial="hidden"
@@ -195,49 +209,73 @@ export default function Hero({ ready = true }) {
           style={
             reduceMotion
               ? undefined
-              : { x: textX, opacity: textOpacity }
+              : { y: textY, opacity: textOpacity }
           }
         >
-          
+          {/* Positioning label */}
+          <motion.div variants={fadeUp}>
+            <span className="inline-flex items-center gap-2.5 rounded-full border border-white/60 bg-white/40 px-4 py-2.5 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-800 shadow-sm shadow-slate-900/[0.03] backdrop-blur-md sm:text-[11px]">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-600 opacity-30" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-700" />
+              </span>
+              Enterprise Engineering. Startup Agility.
+            </span>
+          </motion.div>
 
+          {/* Smaller headline */}
           <motion.h1
             variants={headline}
-            className="max-w-2xl font-display text-[clamp(2rem,4.2vw,3.75rem)] font-bold leading-[1.07] tracking-[-0.045em] text-slate-950 [text-wrap:balance]"
+            className="mt-6 max-w-[680px] font-display text-[clamp(1.8rem,3vw,2.8rem)] font-bold leading-[1.15] tracking-[-0.045em] text-slate-950 [text-wrap:balance] sm:mt-7"
           >
-            {WORDS.map((item) => (
-              <motion.span
-                key={item.t}
-                variants={word}
-                className={`mr-[0.22em] inline-block ${
-                  item.g
-                    ? 'bg-gradient-to-r from-indigo-700 via-violet-600 to-violet-500 bg-clip-text text-transparent'
-                    : ''
-                }`}
+            {HEADLINE_LINES.map((line, lineIndex) => (
+              <span
+                key={lineIndex}
+                className="block"
               >
-                {item.t}
-              </motion.span>
+                {line.map((item, itemIndex) => (
+                  <motion.span
+                    key={`${item.text}-${itemIndex}`}
+                    variants={word}
+                    className={`mr-[0.2em] inline-block ${
+                      item.accent
+                        ? 'bg-gradient-to-r from-indigo-700 via-violet-600 to-purple-500 bg-clip-text text-transparent'
+                        : ''
+                    }`}
+                  >
+                    {item.text}
+                  </motion.span>
+                ))}
+              </span>
             ))}
           </motion.h1>
 
+          {/* Shorter description with smaller text */}
           <motion.p
             variants={fadeUp}
-            className="mt-5 max-w-xl text-[13px] leading-7 text-slate-700 sm:mt-6 sm:text-[15px] sm:leading-8"
+            className="mt-4 max-w-[540px] text-[12px] leading-[1.75] text-slate-700 sm:mt-5 sm:text-[13px] sm:leading-[1.8]"
           >
-             Backed by over two decades of solid industry experience, we empower businesses to scale through modern software engineering, web applications, and AI-driven solutions built for real-world impact.
+            We combine over two decades of enterprise engineering
+            leadership with emerging talent from small towns to build
+            dependable software and AI solutions. From local businesses
+            to global enterprises, we deliver thoughtful technology
+            with quality, agility and cost efficiency.
           </motion.p>
 
+          {/* Action buttons */}
           <motion.div
             variants={fadeUp}
-            className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
+            className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
           >
             <button
               type="button"
               onClick={() => goTo('services')}
-              className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-3 text-[13px] font-semibold text-white shadow-lg shadow-slate-950/10 transition duration-200 hover:-translate-y-0.5 hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-100 sm:px-7 sm:text-sm"
+              className="group inline-flex min-h-[48px] items-center justify-center gap-3 rounded-full bg-slate-950 px-7 py-3 text-[13px] font-semibold text-white shadow-lg shadow-slate-950/15 transition duration-300 hover:-translate-y-1 hover:bg-slate-800 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-100 sm:text-sm"
             >
               Explore Our Services
+
               <FiArrowRight
-                className="transition-transform duration-200 group-hover:translate-x-1"
+                className="transition-transform duration-300 group-hover:translate-x-1"
                 aria-hidden="true"
               />
             </button>
@@ -245,14 +283,25 @@ export default function Hero({ ready = true }) {
             <button
               type="button"
               onClick={() => goTo('contact')}
-              className="inline-flex min-h-12 items-center justify-center rounded-full border border-slate-900/70 bg-white/10 px-6 py-3 text-[13px] font-semibold text-slate-950 transition duration-200 hover:-translate-y-0.5 hover:bg-white/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-100 sm:px-7 sm:text-sm"
+              className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-slate-900/50 bg-white/20 px-7 py-3 text-[13px] font-semibold text-slate-950 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-slate-950 hover:bg-white/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-100 sm:text-sm"
             >
               Contact Us
             </button>
           </motion.div>
+
+          {/* Supporting statement */}
+          <motion.div
+            variants={fadeUp}
+            className="mt-6 flex flex-wrap items-center gap-3 sm:mt-7"
+          >
+            <span className="h-px w-8 bg-violet-700/70" />
+            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-700 sm:text-xs">
+              Local Roots. Global Standards. Limitless Possibilities.
+            </p>
+          </motion.div>
         </motion.div>
 
-        {/* Existing animated robot scene */}
+        {/* Right: Existing animated robot scene */}
         <div className="min-w-0 lg:col-span-6">
           <SceneFrame
             ready={ready}
@@ -266,7 +315,7 @@ export default function Hero({ ready = true }) {
         type="button"
         onClick={() => goTo('services')}
         aria-label="Scroll to services"
-        className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 rounded-full p-2 text-slate-700 transition hover:bg-white/30 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 lg:block"
+        className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 rounded-full p-2 text-slate-700 transition hover:bg-white/30 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 lg:block"
       >
         <motion.span
           animate={reduceMotion ? undefined : { y: [0, 5, 0] }}
