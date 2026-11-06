@@ -1,3 +1,4 @@
+
 name: RD AI Labs - Production Deployment
 
 on:
@@ -8,7 +9,6 @@ on:
 
 permissions:
   contents: read
-  issues: write
 
 concurrency:
   group: rd-ai-labs-production
@@ -16,71 +16,105 @@ concurrency:
 
 jobs:
   deploy:
-    name: Build, Approve and Deploy
+    name: Build and Production Deployment
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Get the latest main branch code
       - name: Checkout website code
         uses: actions/checkout@v4
         with:
           ref: main
 
-      # 2. Install Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      # 3. Install project dependencies
       - name: Install dependencies
         run: npm ci
 
-      # 4. Build the React/Vite website
       - name: Build website
         run: npm run build
 
-      # 5. Wait for project owner approval
-      - name: Request production approval
-        uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ github.token }}
-          approvers: rd-ai-labs
-          minimum-approvals: 1
-          issue-title: "RD AI Labs - Production Deployment Approval"
-          issue-body: |
-            A new version of RD AI Labs is ready for production.
+      - name: Verify project owner
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          ACTOR: ${{ github.actor }}
+          BRANCH: ${{ github.ref }}
+        run: |
+          if [ "$ACTOR" != "rd-ai-labs" ]; then
+            echo "ERROR: Only rd-ai-labs can deploy to production."
+            exit 1
+          fi
 
-            Repository: ${{ github.repository }}
-            Branch: main
-            Commit: ${{ github.sha }}
+          if [ "$BRANCH" != "refs/heads/main" ]; then
+            echo "ERROR: Deployment must be started from main."
+            exit 1
+          fi
 
-            Review this deployment.
+          echo "Project owner verified."
 
-            Comment "approve" to allow deployment.
-            Comment "deny" to reject deployment.
-          fail-on-denial: true
-
-      # 6. Deploy only after approval
       - name: Deploy to Cloudflare Pages
+        if: github.event_name == 'workflow_dispatch' && github.actor == 'rd-ai-labs' && github.ref == 'refs/heads/main'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=rd-ai-labs-website --branch=main
 
-  # 7. Send deployment result email
   notification:
     name: Send Deployment Result Email
     runs-on: ubuntu-latest
     needs: deploy
-    if: always() && (needs.deploy.result == 'success' || needs.deploy.result == 'failure')
+    if: always()
 
     steps:
-      # Success email
-      - name: Send success email
-        if: needs.deploy.result == 'success'
+      - name: Send build-ready email
+        if: github.event_name == 'push' && needs.deploy.result == 'success'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.NOTIFY_EMAIL }}
+          password: ${{ secrets.NOTIFY_EMAIL_PASSWORD }}
+          subject: "READY: RD AI Labs build successful - Approval required"
+          to: ${{ secrets.NOTIFY_EMAIL }}
+          from: RD AI Labs Deployment
+          body: |
+            RD AI Labs build completed successfully.
+            Production has NOT been deployed yet.
+
+            To deploy:
+            Open GitHub Actions, select this workflow,
+            click Run workflow, select main, and run it.
+
+            Workflow:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Send build failure email
+        if: github.event_name == 'push' && needs.deploy.result == 'failure'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.NOTIFY_EMAIL }}
+          password: ${{ secrets.NOTIFY_EMAIL_PASSWORD }}
+          subject: "FAILED: RD AI Labs build"
+          to: ${{ secrets.NOTIFY_EMAIL }}
+          from: RD AI Labs Deployment
+          body: |
+            RD AI Labs build failed.
+            Production was NOT deployed.
+            Please check GitHub Actions logs.
+
+            Workflow:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Send deployment success email
+        if: github.event_name == 'workflow_dispatch' && needs.deploy.result == 'success'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -92,22 +126,15 @@ jobs:
           to: ${{ secrets.NOTIFY_EMAIL }}
           from: RD AI Labs Deployment
           body: |
-            Hello,
-
-            RD AI Labs website has been successfully deployed to Cloudflare Pages.
-
-            Branch: main
-            Commit: ${{ github.sha }}
-            Repository: ${{ github.repository }}
+            RD AI Labs website was successfully deployed to Cloudflare Pages.
 
             Website: https://rd-ai-labs-website.pages.dev
 
-            Workflow details:
+            Workflow:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      # Failure email
-      - name: Send failure email
-        if: needs.deploy.result == 'failure'
+      - name: Send deployment failure email
+        if: github.event_name == 'workflow_dispatch' && needs.deploy.result == 'failure'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -119,15 +146,8 @@ jobs:
           to: ${{ secrets.NOTIFY_EMAIL }}
           from: RD AI Labs Deployment
           body: |
-            Hello,
+            RD AI Labs production deployment failed or was not authorized.
+            Please check GitHub Actions logs.
 
-            RD AI Labs production deployment has FAILED or was rejected.
-
-            Branch: main
-            Commit: ${{ github.sha }}
-            Repository: ${{ github.repository }}
-
-            Please check the GitHub Actions logs to identify the problem.
-
-            Workflow details:
+            Workflow:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
