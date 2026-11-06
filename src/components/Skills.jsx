@@ -16,7 +16,7 @@ import { SKILL_SCENES } from '../data'
 import Reveal from './Reveal'
 
 const EASE = [0.22, 1, 0.36, 1]
-const AUTO_MS = 6500
+const AUTO_MS = 1000
 
 const FOCUS =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fbf1ea]'
