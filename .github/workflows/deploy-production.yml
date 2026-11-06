@@ -1,11 +1,15 @@
 
-name: RD AI Labs - Manual Production Deployment
+name: RD AI Labs - Production Deployment
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
   group: rd-ai-labs-production
@@ -13,7 +17,7 @@ concurrency:
 
 jobs:
   deploy:
-    name: Deploy to Cloudflare Production
+    name: Build, Approve and Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -33,6 +37,16 @@ jobs:
 
       - name: Build website
         run: npm run build
+
+      - name: Request production approval
+        uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.token }}
+          approvers: rd-ai-labs
+          minimum-approvals: 1
+          issue-title: "Approve RD AI Labs production deployment"
+          issue-body: "Please review the production deployment for the main branch. Comment approve to deploy or deny to cancel."
+          fail-on-denial: true
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
