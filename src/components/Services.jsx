@@ -45,8 +45,7 @@ const CAPABILITIES = [
       'We build tailored software ecosystems to streamline manual operations, eliminate bottlenecks, and modernize outdated technology. Our solutions help your business operate smoothly with greater efficiency, reliability, and control.',
     icon: FiCode,
     bg: 'from-sky-700 via-sky-800 to-slate-900',
-    image:
-      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=80',
+    image: '/images/01-custom-software-engineering.jpg',
   },
   {
     title: 'Applied AI & Automation',
@@ -54,8 +53,7 @@ const CAPABILITIES = [
       'We integrate cutting-edge intelligence into everyday business operations. From AI-powered assistants and intelligent workflows to process automation, we make your systems smarter, faster, and more efficient.',
     icon: FiCpu,
     bg: 'from-indigo-600 via-indigo-800 to-slate-900',
-    image:
-      'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=80',
+    image: '/images/02-applied-ai-automation.jpg',
   },
   {
     title: 'Web & Mobile Platforms',
@@ -63,8 +61,7 @@ const CAPABILITIES = [
       'We engineer high-performance digital experiences, including scalable portals, responsive corporate web applications, and seamless mobile apps designed for usability, performance, and real-world adoption.',
     icon: FiMonitor,
     bg: 'from-teal-600 via-teal-800 to-slate-900',
-    image:
-      'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=900&q=80',
+    image: '/images/03-web-mobile-platforms.jpg',
   },
   {
     title: 'Cloud Architecture & Systems Design',
@@ -72,8 +69,7 @@ const CAPABILITIES = [
       'Backed by over two decades of enterprise engineering leadership, we design robust AWS and Azure environments, manage secure data migrations, optimize infrastructure, and build platforms that scale reliably. We also audit and optimize cloud spending to improve business efficiency.',
     icon: FiCloud,
     bg: 'from-blue-600 via-blue-800 to-slate-900',
-    image:
-      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80',
+    image: '/images/04-cloud-architecture.jpg',
   },
 ]
 
@@ -163,11 +159,12 @@ export default function Services() {
                 }
                 className="group relative isolate min-w-0 overflow-hidden rounded-2xl bg-slate-100 shadow-sm ring-1 ring-slate-200/80 transition-shadow duration-300 hover:shadow-xl hover:shadow-slate-900/10"
               >
-                {/* Card backdrop: gradient fallback + Unsplash photo */}
+                {/* Card backdrop: gradient fallback + service image */}
                 <div
                   aria-hidden="true"
                   className={`absolute inset-0 -z-20 bg-gradient-to-br ${capability.bg}`}
                 />
+
                 <img
                   src={capability.image}
                   alt=""
