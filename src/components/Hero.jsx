@@ -326,7 +326,7 @@ export default function Hero({ ready = true }) {
           }}
           className="block"
         >
-          <FiChevronDown size={25} aria-hidden="true" />
+          <FiChevronDown size={25} aria-hidden="true" / >
         </motion.span>
       </button>
     </section>
