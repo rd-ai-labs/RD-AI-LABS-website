@@ -1,4 +1,3 @@
-
 name: RD AI Labs - Production Deployment
 
 on:
@@ -21,36 +20,114 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get website code
+      # 1. Get the latest main branch code
+      - name: Checkout website code
         uses: actions/checkout@v4
         with:
           ref: main
 
-      - name: Install Node.js
+      # 2. Install Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
+      # 3. Install project dependencies
       - name: Install dependencies
         run: npm ci
 
+      # 4. Build the React/Vite website
       - name: Build website
         run: npm run build
 
+      # 5. Wait for project owner approval
       - name: Request production approval
         uses: trstringer/manual-approval@v1
         with:
           secret: ${{ github.token }}
           approvers: rd-ai-labs
           minimum-approvals: 1
-          issue-title: "Approve RD AI Labs production deployment"
-          issue-body: "Please review the production deployment for the main branch. Comment approve to deploy or deny to cancel."
+          issue-title: "RD AI Labs - Production Deployment Approval"
+          issue-body: |
+            A new version of RD AI Labs is ready for production.
+
+            Repository: ${{ github.repository }}
+            Branch: main
+            Commit: ${{ github.sha }}
+
+            Review this deployment.
+
+            Comment "approve" to allow deployment.
+            Comment "deny" to reject deployment.
           fail-on-denial: true
 
+      # 6. Deploy only after approval
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=rd-ai-labs-website --branch=main
+
+  # 7. Send deployment result email
+  notification:
+    name: Send Deployment Result Email
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: always() && (needs.deploy.result == 'success' || needs.deploy.result == 'failure')
+
+    steps:
+      # Success email
+      - name: Send success email
+        if: needs.deploy.result == 'success'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.NOTIFY_EMAIL }}
+          password: ${{ secrets.NOTIFY_EMAIL_PASSWORD }}
+          subject: "SUCCESS: RD AI Labs deployed to Cloudflare"
+          to: ${{ secrets.NOTIFY_EMAIL }}
+          from: RD AI Labs Deployment
+          body: |
+            Hello,
+
+            RD AI Labs website has been successfully deployed to Cloudflare Pages.
+
+            Branch: main
+            Commit: ${{ github.sha }}
+            Repository: ${{ github.repository }}
+
+            Website: https://rd-ai-labs-website.pages.dev
+
+            Workflow details:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      # Failure email
+      - name: Send failure email
+        if: needs.deploy.result == 'failure'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.NOTIFY_EMAIL }}
+          password: ${{ secrets.NOTIFY_EMAIL_PASSWORD }}
+          subject: "FAILED: RD AI Labs production deployment"
+          to: ${{ secrets.NOTIFY_EMAIL }}
+          from: RD AI Labs Deployment
+          body: |
+            Hello,
+
+            RD AI Labs production deployment has FAILED or was rejected.
+
+            Branch: main
+            Commit: ${{ github.sha }}
+            Repository: ${{ github.repository }}
+
+            Please check the GitHub Actions logs to identify the problem.
+
+            Workflow details:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
