@@ -219,7 +219,7 @@ export default function Hero({ ready = true }) {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-600 opacity-30" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-700" />
               </span>
-              Enterprise Engineering. Startup Agility.
+              Enterprise Engineering. Startup Agility karthick.
             </span>
           </motion.div>
 
