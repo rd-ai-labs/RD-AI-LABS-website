@@ -1,4 +1,3 @@
-
 name: RD AI Labs - Production Deployment
 
 on:
@@ -15,28 +14,16 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    name: Build and Production Deployment
+  # ---------------------------------------------------------------
+  # 1. BUILD: runs on every push to main AND on manual runs
+  # ---------------------------------------------------------------
+  build:
+    name: Build website
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-      - name: Checkout website code
-        uses: actions/checkout@v4
-        with:
-          ref: main
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build website
-        run: npm run build
-
+      # Owner check is FIRST so unauthorized manual runs stop immediately
       - name: Verify project owner
         if: github.event_name == 'workflow_dispatch'
         env:
@@ -55,23 +42,73 @@ jobs:
 
           echo "Project owner verified."
 
+      # No hardcoded "ref": checks out the exact commit that triggered this run
+      - name: Checkout website code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build website
+        run: npm run build
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-dist
+          path: dist
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+
+  # ---------------------------------------------------------------
+  # 2. DEPLOY: ONLY on manual run, ONLY by owner, ONLY from main
+  #    On push this job is "skipped" (never "success")
+  # ---------------------------------------------------------------
+  deploy:
+    name: Production deployment
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 15
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.actor == 'rd-ai-labs' &&
+      github.ref == 'refs/heads/main'
+
+    steps:
+      # Deploys the exact build produced in this same run
+      - name: Download build output
+        uses: actions/download-artifact@v4
+        with:
+          name: website-dist
+          path: dist
+
       - name: Deploy to Cloudflare Pages
-        if: github.event_name == 'workflow_dispatch' && github.actor == 'rd-ai-labs' && github.ref == 'refs/heads/main'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=rd-ai-labs-website --branch=main
 
+  # ---------------------------------------------------------------
+  # 3. NOTIFICATION: exactly one email per run
+  # ---------------------------------------------------------------
   notification:
-    name: Send Deployment Result Email
+    name: Send result email
     runs-on: ubuntu-latest
-    needs: deploy
+    needs: [build, deploy]
     if: always()
 
     steps:
+      # PUSH: build ok -> approval needed
       - name: Send build-ready email
-        if: github.event_name == 'push' && needs.deploy.result == 'success'
+        if: github.event_name == 'push' && needs.build.result == 'success'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtpout.secureserver.net
@@ -93,8 +130,9 @@ jobs:
             Workflow:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
+      # PUSH: build failed
       - name: Send build failure email
-        if: github.event_name == 'push' && needs.deploy.result == 'failure'
+        if: github.event_name == 'push' && needs.build.result == 'failure'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtpout.secureserver.net
@@ -113,8 +151,9 @@ jobs:
             Workflow:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
+      # MANUAL: deploy really ran and succeeded
       - name: Send deployment success email
-        if: github.event_name == 'workflow_dispatch' && needs.deploy.result == 'success'
+        if: github.event_name == 'workflow_dispatch' && needs.build.result == 'success' && needs.deploy.result == 'success'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtpout.secureserver.net
@@ -133,8 +172,13 @@ jobs:
             Workflow:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
+      # MANUAL: build failed, owner check failed, or deploy failed/skipped
       - name: Send deployment failure email
-        if: github.event_name == 'workflow_dispatch' && needs.deploy.result == 'failure'
+        if: >-
+          github.event_name == 'workflow_dispatch' &&
+          (needs.build.result == 'failure' ||
+           needs.deploy.result == 'failure' ||
+           (needs.build.result == 'success' && needs.deploy.result == 'skipped'))
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtpout.secureserver.net
@@ -147,7 +191,28 @@ jobs:
           from: ${{ secrets.NOTIFY_EMAIL }}
           body: |
             RD AI Labs production deployment failed or was not authorized.
-            Please check GitHub Actions logs.
+            Production was NOT deployed.
+            Triggered by: ${{ github.actor }}
+
+            Workflow:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      # ANY: run was cancelled
+      - name: Send cancelled email
+        if: needs.build.result == 'cancelled' || needs.deploy.result == 'cancelled'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtpout.secureserver.net
+          server_port: 465
+          secure: true
+          username: ${{ secrets.NOTIFY_EMAIL }}
+          password: ${{ secrets.NOTIFY_EMAIL_PASSWORD }}
+          subject: "CANCELLED: RD AI Labs workflow"
+          to: ${{ secrets.NOTIFY_EMAIL }}
+          from: ${{ secrets.NOTIFY_EMAIL }}
+          body: |
+            The RD AI Labs workflow was cancelled.
+            Production state is unchanged unless the deploy had already finished.
 
             Workflow:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
