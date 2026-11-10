@@ -74,7 +74,7 @@ jobs:
         if: github.event_name == 'push' && needs.deploy.result == 'success'
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp.titan.email
+          server_address: smtpout.secureserver.net
           server_port: 465
           secure: true
           username: ${{ secrets.NOTIFY_EMAIL }}
@@ -97,7 +97,7 @@ jobs:
         if: github.event_name == 'push' && needs.deploy.result == 'failure'
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp.titan.email
+          server_address: smtpout.secureserver.net
           server_port: 465
           secure: true
           username: ${{ secrets.NOTIFY_EMAIL }}
@@ -117,7 +117,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && needs.deploy.result == 'success'
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp.titan.email
+          server_address: smtpout.secureserver.net
           server_port: 465
           secure: true
           username: ${{ secrets.NOTIFY_EMAIL }}
@@ -137,7 +137,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && needs.deploy.result == 'failure'
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp.titan.email
+          server_address: smtpout.secureserver.net
           server_port: 465
           secure: true
           username: ${{ secrets.NOTIFY_EMAIL }}
