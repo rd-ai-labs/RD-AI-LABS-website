@@ -1,4 +1,3 @@
-
 import {
   FiArrowUpRight,
   FiMapPin,
@@ -19,8 +18,10 @@ const PHILOSOPHIES = [
     title: 'Elite Software Quality, Main Street Heart',
     description:
       'We intentionally establish our engineering hubs in small towns because we know that tech genius isn’t limited to mega-cities or major tech corridors. By tapping into brilliant minds outside the typical crowded tech spaces, we aim to bring unmatched focus, dedication, and passion to your projects.',
-    image: '/images/main-street-tech-team.jpg',
-    imageAlt: 'Small-town innovation hub connected to global technology networks',
+    // Unsplash: small engineering team collaborating at laptops
+    image:
+      'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1000&q=85',
+    imageAlt: 'Software engineers collaborating at laptops in a small-town innovation hub',
     accent: 'from-orange-500 to-rose-500',
     iconBg: 'bg-orange-100 text-orange-700',
   },
@@ -30,9 +31,10 @@ const PHILOSOPHIES = [
     title: 'The Talent Incubator Engine',
     description:
       'We act as a unique talent incubator that aims to deliver global-quality engineering by leveraging fresh, ambitious minds. Through mentorship, hands-on experience, and continuous learning, we shape local capability into world-class development teams.',
+    // Unsplash: mentoring / hands-on learning around a laptop
     image:
-      'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=85',
-    imageAlt: 'People learning and collaborating as a team',
+      'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=85',
+    imageAlt: 'Mentor guiding young developers during hands-on learning',
     accent: 'from-sky-500 to-indigo-500',
     iconBg: 'bg-sky-100 text-sky-700',
   },
