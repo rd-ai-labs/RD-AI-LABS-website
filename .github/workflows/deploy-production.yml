@@ -9,13 +9,9 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: rd-ai-labs-production
-  cancel-in-progress: false
-
 jobs:
   # ---------------------------------------------------------------
-  # 1. BUILD: runs on every push to main AND on manual runs
+  # 1. BUILD: every push to main
   # ---------------------------------------------------------------
   build:
     name: Build website
@@ -23,26 +19,6 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      # Owner check is FIRST so unauthorized manual runs stop immediately
-      - name: Verify project owner
-        if: github.event_name == 'workflow_dispatch'
-        env:
-          ACTOR: ${{ github.actor }}
-          BRANCH: ${{ github.ref }}
-        run: |
-          if [ "$ACTOR" != "rd-ai-labs" ]; then
-            echo "ERROR: Only rd-ai-labs can deploy to production."
-            exit 1
-          fi
-
-          if [ "$BRANCH" != "refs/heads/main" ]; then
-            echo "ERROR: Deployment must be started from main."
-            exit 1
-          fi
-
-          echo "Project owner verified."
-
-      # No hardcoded "ref": checks out the exact commit that triggered this run
       - name: Checkout website code
         uses: actions/checkout@v4
 
@@ -68,47 +44,20 @@ jobs:
           retention-days: 7
 
   # ---------------------------------------------------------------
-  # 2. DEPLOY: ONLY on manual run, ONLY by owner, ONLY from main
-  #    On push this job is "skipped" (never "success")
+  # 2. BUILD RESULT NOTIFICATION (email + GitHub commit comment)
+  #    Runs right after build, while deploy waits for approval
   # ---------------------------------------------------------------
-  deploy:
-    name: Production deployment
+  notify_build:
+    name: Notify build result
     runs-on: ubuntu-latest
     needs: build
-    timeout-minutes: 15
-    if: >-
-      github.event_name == 'workflow_dispatch' &&
-      github.actor == 'rd-ai-labs' &&
-      github.ref == 'refs/heads/main'
+    if: always() && needs.build.result != 'skipped'
+    permissions:
+      contents: write   # needed only to post a commit comment
 
     steps:
-      # Deploys the exact build produced in this same run
-      - name: Download build output
-        uses: actions/download-artifact@v4
-        with:
-          name: website-dist
-          path: dist
-
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=rd-ai-labs-website --branch=main
-
-  # ---------------------------------------------------------------
-  # 3. NOTIFICATION: exactly one email per run
-  # ---------------------------------------------------------------
-  notification:
-    name: Send result email
-    runs-on: ubuntu-latest
-    needs: [build, deploy]
-    if: always()
-
-    steps:
-      # PUSH: build ok -> approval needed
-      - name: Send build-ready email
-        if: github.event_name == 'push' && needs.build.result == 'success'
+      - name: Email - build ready, approval required
+        if: needs.build.result == 'success'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtpout.secureserver.net
@@ -123,16 +72,14 @@ jobs:
             RD AI Labs build completed successfully.
             Production has NOT been deployed yet.
 
-            To deploy:
-            Open GitHub Actions, select this workflow,
-            click Run workflow, select main, and run it.
+            To deploy: open the workflow link below, click
+            "Review deployments", select production, and Approve.
 
             Workflow:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      # PUSH: build failed
-      - name: Send build failure email
-        if: github.event_name == 'push' && needs.build.result == 'failure'
+      - name: Email - build failed
+        if: needs.build.result == 'failure'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtpout.secureserver.net
@@ -146,14 +93,72 @@ jobs:
           body: |
             RD AI Labs build failed.
             Production was NOT deployed.
-            Please check GitHub Actions logs.
 
             Workflow:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      # MANUAL: deploy really ran and succeeded
-      - name: Send deployment success email
-        if: github.event_name == 'workflow_dispatch' && needs.build.result == 'success' && needs.deploy.result == 'success'
+      - name: GitHub notification (commit comment)
+        uses: actions/github-script@v7
+        env:
+          RESULT: ${{ needs.build.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        with:
+          script: |
+            const ok = process.env.RESULT === 'success';
+            const body = ok
+              ? `✅ Build successful. **Waiting for your approval** to deploy to production.\n\n[Review deployment](${process.env.RUN_URL})`
+              : `❌ Build failed. Production was NOT deployed.\n\n[View logs](${process.env.RUN_URL})`;
+            await github.rest.repos.createCommitComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha,
+              body
+            });
+
+  # ---------------------------------------------------------------
+  # 3. DEPLOY: pauses for approval (GitHub Environment "production")
+  # ---------------------------------------------------------------
+  deploy:
+    name: Production deployment
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 15
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: https://rd-ai-labs-website.pages.dev
+    concurrency:
+      group: rd-ai-labs-production
+      cancel-in-progress: false
+
+    steps:
+      - name: Download build output
+        uses: actions/download-artifact@v4
+        with:
+          name: website-dist
+          path: dist
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=rd-ai-labs-website --branch=main
+
+  # ---------------------------------------------------------------
+  # 4. DEPLOY RESULT NOTIFICATION (email + GitHub commit comment)
+  # ---------------------------------------------------------------
+  notify_deploy:
+    name: Notify deployment result
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: always() && needs.deploy.result != 'skipped'
+    permissions:
+      contents: write
+
+    steps:
+      - name: Email - deployment success
+        if: needs.deploy.result == 'success'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtpout.secureserver.net
@@ -172,13 +177,8 @@ jobs:
             Workflow:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      # MANUAL: build failed, owner check failed, or deploy failed/skipped
-      - name: Send deployment failure email
-        if: >-
-          github.event_name == 'workflow_dispatch' &&
-          (needs.build.result == 'failure' ||
-           needs.deploy.result == 'failure' ||
-           (needs.build.result == 'success' && needs.deploy.result == 'skipped'))
+      - name: Email - deployment failed / rejected / cancelled
+        if: needs.deploy.result != 'success'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtpout.secureserver.net
@@ -186,33 +186,31 @@ jobs:
           secure: true
           username: ${{ secrets.NOTIFY_EMAIL }}
           password: ${{ secrets.NOTIFY_EMAIL_PASSWORD }}
-          subject: "FAILED: RD AI Labs production deployment"
+          subject: "FAILED: RD AI Labs production deployment (${{ needs.deploy.result }})"
           to: ${{ secrets.NOTIFY_EMAIL }}
           from: ${{ secrets.NOTIFY_EMAIL }}
           body: |
-            RD AI Labs production deployment failed or was not authorized.
-            Production was NOT deployed.
-            Triggered by: ${{ github.actor }}
+            RD AI Labs production deployment did not complete.
+            Result: ${{ needs.deploy.result }}
+            (failure = error or approval rejected, cancelled = run cancelled)
 
             Workflow:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      # ANY: run was cancelled
-      - name: Send cancelled email
-        if: needs.build.result == 'cancelled' || needs.deploy.result == 'cancelled'
-        uses: dawidd6/action-send-mail@v3
+      - name: GitHub notification (commit comment)
+        uses: actions/github-script@v7
+        env:
+          RESULT: ${{ needs.deploy.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         with:
-          server_address: smtpout.secureserver.net
-          server_port: 465
-          secure: true
-          username: ${{ secrets.NOTIFY_EMAIL }}
-          password: ${{ secrets.NOTIFY_EMAIL_PASSWORD }}
-          subject: "CANCELLED: RD AI Labs workflow"
-          to: ${{ secrets.NOTIFY_EMAIL }}
-          from: ${{ secrets.NOTIFY_EMAIL }}
-          body: |
-            The RD AI Labs workflow was cancelled.
-            Production state is unchanged unless the deploy had already finished.
-
-            Workflow:
-            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          script: |
+            const ok = process.env.RESULT === 'success';
+            const body = ok
+              ? `🚀 Deployed to production: https://rd-ai-labs-website.pages.dev\n\n[Run details](${process.env.RUN_URL})`
+              : `❌ Production deployment did not complete (${process.env.RESULT}).\n\n[View logs](${process.env.RUN_URL})`;
+            await github.rest.repos.createCommitComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha,
+              body
+            });
