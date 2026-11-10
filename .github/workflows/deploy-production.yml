@@ -15,15 +15,15 @@ jobs:
   # ---------------------------------------------------------------
   build:
     name: Build website
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     steps:
       - name: Checkout website code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 20
           cache: npm
@@ -35,7 +35,7 @@ jobs:
         run: npm run build
 
       - name: Upload build output
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: website-dist
           path: dist
@@ -49,7 +49,7 @@ jobs:
   # ---------------------------------------------------------------
   notify_build:
     name: Notify build result
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     if: always() && needs.build.result != 'skipped'
     permissions:
@@ -59,6 +59,7 @@ jobs:
       - name: Email - build ready, approval required
         if: needs.build.result == 'success'
         uses: dawidd6/action-send-mail@v3
+        continue-on-error: true
         with:
           server_address: smtpout.secureserver.net
           server_port: 465
@@ -81,6 +82,7 @@ jobs:
       - name: Email - build failed
         if: needs.build.result == 'failure'
         uses: dawidd6/action-send-mail@v3
+        continue-on-error: true
         with:
           server_address: smtpout.secureserver.net
           server_port: 465
@@ -98,7 +100,7 @@ jobs:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: GitHub notification (commit comment)
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           RESULT: ${{ needs.build.result }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -120,7 +122,7 @@ jobs:
   # ---------------------------------------------------------------
   deploy:
     name: Production deployment
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     timeout-minutes: 15
     if: github.ref == 'refs/heads/main'
@@ -133,7 +135,7 @@ jobs:
 
     steps:
       - name: Download build output
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: website-dist
           path: dist
@@ -150,7 +152,7 @@ jobs:
   # ---------------------------------------------------------------
   notify_deploy:
     name: Notify deployment result
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: deploy
     if: always() && needs.deploy.result != 'skipped'
     permissions:
@@ -160,6 +162,7 @@ jobs:
       - name: Email - deployment success
         if: needs.deploy.result == 'success'
         uses: dawidd6/action-send-mail@v3
+        continue-on-error: true
         with:
           server_address: smtpout.secureserver.net
           server_port: 465
@@ -180,6 +183,7 @@ jobs:
       - name: Email - deployment failed / rejected / cancelled
         if: needs.deploy.result != 'success'
         uses: dawidd6/action-send-mail@v3
+        continue-on-error: true
         with:
           server_address: smtpout.secureserver.net
           server_port: 465
@@ -198,7 +202,7 @@ jobs:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: GitHub notification (commit comment)
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           RESULT: ${{ needs.deploy.result }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
