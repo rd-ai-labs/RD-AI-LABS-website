@@ -1,3 +1,4 @@
+
 import { motion, useReducedMotion } from 'framer-motion'
 import {
   FiArrowUpRight,
@@ -69,7 +70,9 @@ const CAPABILITIES = [
       'Backed by over two decades of enterprise engineering leadership, we design robust AWS and Azure environments, manage secure data migrations, optimize infrastructure, and build platforms that scale reliably. We also audit and optimize cloud spending to improve business efficiency.',
     icon: FiCloud,
     bg: 'from-blue-600 via-blue-800 to-slate-900',
-    image: '/images/04-cloud-architecture.jpg',
+
+    // Corrected image filename
+    image: '/images/04-cloud-architecture-systems-design.jpg',
   },
 ]
 
@@ -159,24 +162,27 @@ export default function Services() {
                 }
                 className="group relative isolate min-w-0 overflow-hidden rounded-2xl bg-slate-100 shadow-sm ring-1 ring-slate-200/80 transition-shadow duration-300 hover:shadow-xl hover:shadow-slate-900/10"
               >
-                {/* Card backdrop: gradient fallback + service image */}
+                {/* Card background gradient */}
                 <div
                   aria-hidden="true"
                   className={`absolute inset-0 -z-20 bg-gradient-to-br ${capability.bg}`}
                 />
 
+                {/* Service image */}
                 <img
                   src={capability.image}
-                  alt=""
+                  alt={capability.title}
                   loading="lazy"
-                  referrerPolicy="no-referrer"
                   onError={(e) => {
+                    console.error(
+                      `Failed to load service image: ${capability.image}`
+                    )
                     e.currentTarget.style.display = 'none'
                   }}
-                  className="absolute inset-0 -z-20 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none"
+                  className="absolute inset-0 -z-20 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none"
                 />
 
-                {/* Overlay */}
+                {/* Image overlay */}
                 <div
                   aria-hidden="true"
                   className="absolute inset-0 -z-10 bg-gradient-to-t from-slate-950/95 via-slate-950/40 to-slate-900/15 transition-colors duration-500 group-hover:from-slate-950/95 group-hover:via-slate-950/75 group-hover:to-slate-950/40"
