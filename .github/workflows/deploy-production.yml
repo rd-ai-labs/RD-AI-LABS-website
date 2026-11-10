@@ -73,8 +73,11 @@ jobs:
             RD AI Labs build completed successfully.
             Production has NOT been deployed yet.
 
-            To deploy: open the workflow link below, click
-            "Review deployments", select production, and Approve.
+            To deploy: GitHub created an issue named
+            "Deploy approval needed" and notified you.
+            Open it and comment:  approve
+            (you can also reply "approve" to the GitHub email).
+            To cancel, comment:  deny
 
             Workflow:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -108,7 +111,7 @@ jobs:
           script: |
             const ok = process.env.RESULT === 'success';
             const body = ok
-              ? `✅ Build successful. **Waiting for your approval** to deploy to production.\n\n[Review deployment](${process.env.RUN_URL})`
+              ? `✅ Build successful. **Waiting for your approval.** Comment `approve` on the new issue to deploy.\n\n[Run details](${process.env.RUN_URL})`
               : `❌ Build failed. Production was NOT deployed.\n\n[View logs](${process.env.RUN_URL})`;
             await github.rest.repos.createCommitComment({
               owner: context.repo.owner,
@@ -118,17 +121,44 @@ jobs:
             });
 
   # ---------------------------------------------------------------
+  # 2b. APPROVAL: creates a GitHub issue and WAITS for your comment
+  #     Comment "approve" -> deploy continues
+  #     Comment "deny"    -> deploy is cancelled
+  # ---------------------------------------------------------------
+  approval:
+    name: Wait for approval
+    runs-on: ubuntu-24.04
+    needs: build
+    timeout-minutes: 120   # waits up to 2 hours, then fails (no deploy)
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - name: Wait for approval comment
+        uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.token }}
+          approvers: rd-ai-labs
+          minimum-approvals: 1
+          issue-title: "Deploy approval needed: run #${{ github.run_number }}"
+          issue-body: |
+            Build succeeded. Production has NOT been deployed yet.
+
+            Comment **approve** to deploy to Cloudflare.
+            Comment **deny** to cancel.
+
+            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+  # ---------------------------------------------------------------
   # 3. DEPLOY: pauses for approval (GitHub Environment "production")
   # ---------------------------------------------------------------
   deploy:
     name: Production deployment
     runs-on: ubuntu-24.04
-    needs: build
+    needs: [build, approval]
     timeout-minutes: 15
     if: github.ref == 'refs/heads/main'
-    environment:
-      name: production
-      url: https://rd-ai-labs-website.pages.dev
     concurrency:
       group: rd-ai-labs-production
       cancel-in-progress: false
@@ -153,8 +183,8 @@ jobs:
   notify_deploy:
     name: Notify deployment result
     runs-on: ubuntu-24.04
-    needs: deploy
-    if: always() && needs.deploy.result != 'skipped'
+    needs: [approval, deploy]
+    if: always() && needs.approval.result != 'skipped'
     permissions:
       contents: write
 
@@ -190,13 +220,14 @@ jobs:
           secure: true
           username: ${{ secrets.NOTIFY_EMAIL }}
           password: ${{ secrets.NOTIFY_EMAIL_PASSWORD }}
-          subject: "FAILED: RD AI Labs production deployment (${{ needs.deploy.result }})"
+          subject: "FAILED: RD AI Labs production deployment"
           to: ${{ secrets.NOTIFY_EMAIL }}
           from: ${{ secrets.NOTIFY_EMAIL }}
           body: |
             RD AI Labs production deployment did not complete.
-            Result: ${{ needs.deploy.result }}
-            (failure = error or approval rejected, cancelled = run cancelled)
+            Approval step: ${{ needs.approval.result }}
+            Deploy step: ${{ needs.deploy.result }}
+            (approval failure = denied or timed out, nothing was deployed)
 
             Workflow:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -204,7 +235,7 @@ jobs:
       - name: GitHub notification (commit comment)
         uses: actions/github-script@v8
         env:
-          RESULT: ${{ needs.deploy.result }}
+          RESULT: ${{ needs.deploy.result == 'success' && 'success' || format('approval={0}, deploy={1}', needs.approval.result, needs.deploy.result) }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         with:
           script: |
