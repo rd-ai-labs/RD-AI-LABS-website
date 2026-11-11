@@ -84,7 +84,7 @@ jobs:
         uses: trstringer/manual-approval@v1
         with:
           secret: ${{ github.token }}
-          approvers: rd-ai-labs
+          approvers: rd-ai-labs,logalakshmidbn97-png
           minimum-approvals: 1
           issue-title: "Deploy approval needed: run #${{ github.run_number }}"
           issue-body: |
