@@ -223,16 +223,13 @@ export default function Hero({ ready = true }) {
             </span>
           </motion.div>
 
-          {/* Smaller headline */}
+          {/* Headline */}
           <motion.h1
             variants={headline}
             className="mt-6 max-w-[680px] font-display text-[clamp(1.8rem,3vw,2.8rem)] font-bold leading-[1.15] tracking-[-0.045em] text-slate-950 [text-wrap:balance] sm:mt-7"
           >
             {HEADLINE_LINES.map((line, lineIndex) => (
-              <span
-                key={lineIndex}
-                className="block"
-              >
+              <span key={lineIndex} className="block">
                 {line.map((item, itemIndex) => (
                   <motion.span
                     key={`${item.text}-${itemIndex}`}
@@ -250,16 +247,16 @@ export default function Hero({ ready = true }) {
             ))}
           </motion.h1>
 
-          {/* Shorter description with smaller text */}
+          {/* Description */}
           <motion.p
             variants={fadeUp}
             className="mt-4 max-w-[540px] text-[12px] leading-[1.75] text-slate-700 sm:mt-5 sm:text-[13px] sm:leading-[1.8]"
           >
-            We combine over two decades of enterprise engineering
-            leadership with emerging talent from small towns to build
-            dependable software and AI solutions. From local businesses
-            to global enterprises, we deliver thoughtful technology
-            with quality, agility and cost efficiency.
+            We pair 20+ years of enterprise engineering leadership with
+            untapped talent from emerging towns to build reliable software
+            and AI solutions. From growing businesses to global enterprises,
+            we deliver thoughtful technology with speed, quality, and
+            cost-efficiency.
           </motion.p>
 
           {/* Action buttons */}
@@ -301,7 +298,7 @@ export default function Hero({ ready = true }) {
           </motion.div>
         </motion.div>
 
-        {/* Right: Existing animated robot scene */}
+        {/* Right: Animated robot scene */}
         <div className="min-w-0 lg:col-span-6">
           <SceneFrame
             ready={ready}
@@ -326,9 +323,9 @@ export default function Hero({ ready = true }) {
           }}
           className="block"
         >
-          <FiChevronDown size={25} aria-hidden="true" / >
+          <FiChevronDown size={25} aria-hidden="true" />
         </motion.span>
       </button>
     </section>
   )
-}
+ }

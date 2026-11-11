@@ -420,4 +420,4 @@ export default function Navbar() {
       </AnimatePresence>
     </header>
   )
-}
+ }
