@@ -220,6 +220,7 @@ export default function Hero({ ready = true }) {
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-700" />
               </span>
               Enterprise Engineering. Startup Agility .
+              Enterprise Engineering. Startup Agility  hii .
             </span>
           </motion.div>
 
