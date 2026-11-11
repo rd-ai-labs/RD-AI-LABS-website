@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from 'react'
+
 import {
   AnimatePresence,
   motion,
@@ -7,8 +8,10 @@ import {
   useScroll,
   useSpring,
 } from 'framer-motion'
+
 import { FiArrowUpRight, FiMenu, FiX } from 'react-icons/fi'
 import { useLocation } from 'react-router-dom'
+
 import { NAV_LINKS } from '../data'
 import { useGoTo } from '../hooks'
 
@@ -65,9 +68,8 @@ export default function Navbar() {
   })
 
   // Normalize the current URL for route matching.
-  const currentPath = pathname
-    .replace(/\/+$/, '')
-    .toLowerCase() || '/'
+  const currentPath =
+    pathname.replace(/\/+$/, '').toLowerCase() || '/'
 
   // Match a non-homepage route to its navigation item.
   const getRouteActiveId = () => {
@@ -176,8 +178,18 @@ export default function Navbar() {
     }
   }, [open])
 
+  // NEW: Update the browser address bar when a navbar item is clicked.
   const handleNavigation = (id) => {
     setOpen(false)
+
+    // Update URL to /#skills, /#services, etc.
+    window.history.pushState(
+      null,
+      '',
+      `/#${id}`
+    )
+
+    // Keep existing smooth scrolling functionality.
     goTo(id)
   }
 
