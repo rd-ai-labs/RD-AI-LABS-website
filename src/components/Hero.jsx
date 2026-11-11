@@ -328,4 +328,4 @@ export default function Hero({ ready = true }) {
       </button>
     </section>
   )
-}
+ }
