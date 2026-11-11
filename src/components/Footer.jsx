@@ -25,7 +25,7 @@ const SOCIAL_LINKS = {
 const CONTACT = {
   email: 'contact@rdailabs.com',
   phone: '+91 77088 91568',
-  phoneHref: 'tel:+9177088915688',
+  phoneHref: 'tel:+917708891568',
 }
 
 export default function Footer() {
