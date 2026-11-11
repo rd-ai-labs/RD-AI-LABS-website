@@ -254,16 +254,16 @@ export default function Hero({ ready = true }) {
           <motion.p
             variants={fadeUp}
             className="mt-4 max-w-[540px] text-[12px] leading-[1.75] text-slate-700 sm:mt-5 sm:text-[13px] sm:leading-[1.8]"
-          >
-            We combine over two decades of enterprise engineering
-            leadership with emerging talent from small towns to build
-            dependable software and AI solutions. From local businesses
-            to global enterprises, we deliver thoughtful technology
-            with quality, agility and cost efficiency.
+          
+            We pair 20+ years of enterprise engineering leadership with
+            untapped talent from emerging towns to build reliable software
+            and AI solutions. From growing businesses to global enterprises,
+            we deliency.
           </motion.p>
 
           {/* Action buttons */}
-          <motion.div
+          <motion.divver thoughtful technology with speed, quality, and
+            cost-effici
             variants={fadeUp}
             className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
           >
