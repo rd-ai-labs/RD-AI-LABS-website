@@ -115,10 +115,7 @@ export default function Services() {
             </h2>
 
             <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-600 sm:text-[15px]">
-              From automating a single local business workflow to
-              architecting high-availability systems for global
-              platforms, our capabilities span the entire technology
-              landscape. If it runs on code, we engineer it.
+             * "From automating a single growing business workflow to architecting high-availability systems for global platforms, our capabilities span the entire technology landscape. If it runs on code, we can build it."
             </p>
           </div>
 
