@@ -18,7 +18,7 @@ const HIGHLIGHTS = [
     icon: FiCode,
     title: 'Real-World Engineering',
     description:
-      'Work on meaningful software challenges and build solutions that create measurable value.',
+      'Work on meaningful software challenges and build solutions that deliver measurable business impact.',
   },
   {
     icon: FiUsers,
@@ -36,7 +36,7 @@ const HIGHLIGHTS = [
     icon: FiTrendingUp,
     title: 'Continuous Growth',
     description:
-      'Turn your curiosity, problem-solving ability, and passion into professional engineering capability.',
+      'Turn your raw potential and passion into production-ready engineering mastery.',
   },
 ]
 
@@ -102,9 +102,7 @@ export default function Careers() {
                 </h3>
 
                 <p className="mt-5 text-sm leading-7 text-slate-700 sm:text-base sm:leading-8">
-                  Under the direct mentorship of our senior engineers and
-                  a strong set of quality standards, we help motivated
-                  people grow into world-class engineers.
+                  Under the direct mentorship of our senior architects and proven quality standards, we help motivated people grow into world-class engineers."
                 </p>
 
                 <p className="mt-4 text-sm font-semibold leading-7 text-slate-900 sm:text-base">
