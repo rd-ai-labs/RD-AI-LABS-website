@@ -65,9 +65,8 @@ export default function Navbar() {
   })
 
   // Normalize the current URL for route matching.
-  const currentPath = pathname
-    .replace(/\/+$/, '')
-    .toLowerCase() || '/'
+  const currentPath =
+    pathname.replace(/\/+$/, '').toLowerCase() || '/'
 
   // Match a non-homepage route to its navigation item.
   const getRouteActiveId = () => {
@@ -158,6 +157,42 @@ export default function Navbar() {
   useEffect(() => {
     setOpen(false)
   }, [pathname])
+
+  // Handle direct shared section links.
+  useEffect(() => {
+    if (currentPath !== '/') return
+
+    const id = window.location.hash.slice(1)
+
+    if (!id) return
+
+    let attempts = 0
+    let animationFrame
+
+    const scrollToSection = () => {
+      const section = document.getElementById(id)
+
+      if (section) {
+        section.scrollIntoView({
+          behavior: 'auto',
+          block: 'start',
+        })
+        return
+      }
+
+      // Retry briefly if the homepage section has not rendered yet.
+      if (attempts < 10) {
+        attempts += 1
+        animationFrame = requestAnimationFrame(scrollToSection)
+      }
+    }
+
+    animationFrame = requestAnimationFrame(scrollToSection)
+
+    return () => {
+      cancelAnimationFrame(animationFrame)
+    }
+  }, [currentPath])
 
   // Allow Escape to close the mobile menu.
   useEffect(() => {
@@ -266,10 +301,7 @@ export default function Navbar() {
             Talk to us
 
             <span className={ctaIcon}>
-              <FiArrowUpRight
-                size={15}
-                aria-hidden="true"
-              />
+              <FiArrowUpRight size={15} aria-hidden="true" />
             </span>
           </button>
 
@@ -397,10 +429,7 @@ export default function Navbar() {
               Talk to us
 
               <span className={`${ctaIcon} h-8 w-8`}>
-                <FiArrowUpRight
-                  size={16}
-                  aria-hidden="true"
-                />
+                <FiArrowUpRight size={16} aria-hidden="true" />
               </span>
             </button>
           </motion.div>
