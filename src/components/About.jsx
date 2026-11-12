@@ -114,11 +114,7 @@ export default function About() {
               variants={fadeUp}
               className="mt-5 max-w-xl text-sm leading-7 text-[#626975] sm:text-base sm:leading-8"
             >
-              We operate at the intersection of deep architectural maturity
-              and the relentless drive of a fresh software startup.
-              Combining enterprise-grade engineering discipline with
-              innovative thinking, we build technology that delivers
-              meaningful business value.
+              We operate at the intersection of deep architectural maturity and the relentless drive of a modern software startup. By pairing proven engineering discipline with thoughtful innovation, we build technology that delivers meaningful business impact.
             </motion.p>
 
             {/* Engineering philosophy */}
