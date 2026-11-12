@@ -16,7 +16,7 @@ const PHILOSOPHIES = [
   {
     number: '01',
     icon: FiMapPin,
-    title: 'Elite Software Quality, Main Street Heart',
+    title: 'Elite Software Quality, Local Heart',
     footer: 'REGIONAL HUBS',
     description:
       "We intentionally build our engineering hubs in emerging towns because tech talent isn't limited to mega-cities or crowded tech corridors. By tapping into driven minds outside traditional hubs, we bring unmatched focus, dedication, and passion to your projects.",
