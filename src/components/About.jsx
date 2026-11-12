@@ -134,7 +134,7 @@ export default function About() {
                 We don't believe in technology for the sake of technology.
                 Every architecture, every line of code, and every solution
                 should have a clear purpose: solving real problems and
-                creating measurable value.
+                creating measurable business impact.
               </p>
             </motion.div>
 
