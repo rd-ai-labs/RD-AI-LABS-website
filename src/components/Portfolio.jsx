@@ -1,4 +1,3 @@
-
 import {
   FiArrowUpRight,
   FiMapPin,
@@ -45,9 +44,11 @@ const PHILOSOPHIES = [
     title: 'Two Decades of Quality Guardrails',
     description:
       'Our engineering approach is guided by over 20 years of enterprise technology leadership. Every solution benefits from experienced technical oversight, thoughtful architecture, and quality-focused mentorship. You get the agility of emerging talent backed by mature engineering practices.',
+    // Unsplash: experienced tech lead reviewing work on a laptop with a junior teammate
     image:
-      'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=85',
-    imageAlt: 'Professional enterprise technology and engineering hardware',
+      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=85',
+    imageAlt:
+      'Senior tech lead reviewing code and architecture on a laptop with a junior developer',
     accent: 'from-violet-500 to-purple-500',
     iconBg: 'bg-violet-100 text-violet-700',
   },
@@ -207,4 +208,4 @@ export default function Portfolio() {
       </div>
     </section>
   )
- }
+}
