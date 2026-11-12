@@ -18,7 +18,7 @@ const PHILOSOPHIES = [
     icon: FiMapPin,
     title: 'Elite Software Quality, Main Street Heart',
     description:
-      'We intentionally establish our engineering hubs in small towns because we know that tech genius isn’t limited to mega-cities or major tech corridors. By tapping into brilliant minds outside the typical crowded tech spaces, we aim to bring unmatched focus, dedication, and passion to your projects.',
+      'We intentionally build our engineering hubs in emerging towns because tech talent isn't limited to mega-cities or crowded tech corridors. By tapping into driven minds outside traditional hubs, we bring unmatched focus, dedication, and passion to your projects.'
     // Unsplash: small engineering team collaborating at laptops
     image:
       'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1000&q=85',
