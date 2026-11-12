@@ -107,44 +107,62 @@ export default function Navbar() {
     }
   }, [])
 
-  // Detect the currently visible section on the homepage.
+  // Detect the active homepage section based on scroll position.
   useEffect(() => {
     if (currentPath !== '/') {
       setActive(routeActiveId || '')
       return undefined
     }
 
-    const sections = NAV_LINKS
-      .map((link) => document.getElementById(link.id))
-      .filter(Boolean)
+    const updateActiveSection = () => {
+      const sections = NAV_LINKS
+        .map((link) => ({
+          id: link.id,
+          element: document.getElementById(link.id),
+        }))
+        .filter((item) => item.element)
 
-    if (!sections.length) {
-      setActive('home')
-      return undefined
+      if (!sections.length) {
+        setActive('home')
+        return
+      }
+
+      const offset = 180
+
+      let currentSection = sections[0].id
+
+      sections.forEach(({ id, element }) => {
+        const top = element.getBoundingClientRect().top
+
+        if (top <= offset) {
+          currentSection = id
+        }
+      })
+
+      // At the bottom of the page, activate the last section.
+      const nearBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 5
+
+      if (nearBottom) {
+        currentSection = sections[sections.length - 1].id
+      }
+
+      setActive(currentSection)
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort(
-            (a, b) =>
-              b.intersectionRatio - a.intersectionRatio
-          )
+    updateActiveSection()
 
-        if (visible.length) {
-          setActive(visible[0].target.id)
-        }
-      },
-      {
-        rootMargin: '-30% 0px -55% 0px',
-        threshold: [0, 0.1, 0.25, 0.5, 0.75],
-      }
-    )
+    window.addEventListener('scroll', updateActiveSection, {
+      passive: true,
+    })
 
-    sections.forEach((section) => observer.observe(section))
+    window.addEventListener('resize', updateActiveSection)
 
-    return () => observer.disconnect()
+    return () => {
+      window.removeEventListener('scroll', updateActiveSection)
+      window.removeEventListener('resize', updateActiveSection)
+    }
   }, [currentPath, routeActiveId])
 
   // Prevent background scrolling while the mobile menu is open.
@@ -165,7 +183,9 @@ export default function Navbar() {
   useEffect(() => {
     if (currentPath !== '/') return
 
-    const id = window.location.hash.slice(1)
+    const id = decodeURIComponent(
+      window.location.hash.slice(1)
+    )
 
     if (!id) return
 
@@ -183,8 +203,8 @@ export default function Navbar() {
         return
       }
 
-      // Retry briefly if the homepage section has not rendered yet.
-      if (attempts < 10) {
+      // Retry if the homepage section has not rendered yet.
+      if (attempts < 30) {
         attempts += 1
         animationFrame = requestAnimationFrame(scrollToSection)
       }
@@ -229,8 +249,7 @@ export default function Navbar() {
     goTo(id)
   }
 
-  // On inner pages, use the current route.
-  // On the homepage, use the currently visible section.
+  // Determine the active navigation link.
   const isLinkActive = (link) => {
     if (currentPath !== '/') {
       return routeActiveId === link.id
@@ -239,8 +258,9 @@ export default function Navbar() {
     return active === link.id
   }
 
+  // Desktop navigation text increased from 13.5px to 14.5px.
   const linkClass = (isActive) =>
-    `relative isolate inline-flex items-center justify-center rounded-full px-3.5 py-2 text-[13.5px] font-medium transition-colors duration-200 xl:px-4 ${FOCUS} ${
+    `relative isolate inline-flex items-center justify-center rounded-full px-3.5 py-2 text-[14.5px] font-medium transition-colors duration-200 xl:px-4 ${FOCUS} ${
       isActive
         ? 'text-[#0E1330]'
         : 'text-[#0E1330]/60 hover:text-[#0E1330]'
@@ -417,7 +437,7 @@ export default function Navbar() {
                       type="button"
                       onClick={() => handleNavigation(link.id)}
                       aria-current={isActive ? 'page' : undefined}
-                      className={`flex w-full items-center justify-between rounded-2xl px-4 py-3.5 text-left text-[15px] font-medium transition-colors ${FOCUS} ${
+                      className={`flex w-full items-center justify-between rounded-2xl px-4 py-3.5 text-left text-[16px] font-medium transition-colors ${FOCUS} ${
                         isActive
                           ? 'bg-[#0E1330]/[0.06] text-[#0E1330]'
                           : 'text-[#0E1330]/65 hover:bg-[#0E1330]/[0.04] hover:text-[#0E1330]'
