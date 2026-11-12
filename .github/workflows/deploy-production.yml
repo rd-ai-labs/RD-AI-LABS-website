@@ -2,14 +2,14 @@
 name: RD AI Labs - Production Deployment
 
 on:
-  # Start deployment only when a Pull Request is merged into main
+  # Trigger after a Pull Request is closed and merged into main
   pull_request:
     branches:
       - main
     types:
       - closed
 
-  # Allow manual workflow execution
+  # Allow manual execution from main only
   workflow_dispatch:
 
 permissions:
@@ -17,19 +17,21 @@ permissions:
 
 jobs:
 
-  # 1. Build the website
+  # ==========================================
+  # 1. BUILD WEBSITE
+  # ==========================================
   build:
     name: Build website
     runs-on: ubuntu-24.04
     timeout-minutes: 15
 
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    if: ${{ (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.merged == true) }}
 
     steps:
-      - name: Checkout merged main branch
+      - name: Checkout merged commit
         uses: actions/checkout@v5
         with:
-          ref: main
+          ref: ${{ github.event.pull_request.merge_commit_sha || 'main' }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -47,24 +49,28 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: website-dist
-          path: dist
+          path: dist/
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 7
 
-  # 2. Notify build result
+  # ==========================================
+  # 2. BUILD RESULT NOTIFICATION
+  # ==========================================
   notify_build:
     name: Notify build result
     runs-on: ubuntu-24.04
     needs: build
+
     if: always() && needs.build.result != 'skipped'
 
     permissions:
       contents: write
 
     steps:
-      - name: Comment on commit
+      - name: Comment build result on commit
         uses: actions/github-script@v8
+
         env:
           RESULT: ${{ needs.build.result }}
           SOURCE_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
@@ -79,8 +85,10 @@ jobs:
             const target = process.env.TARGET_BRANCH;
             const run = process.env.RUN_NUMBER;
 
-            const body = process.env.RESULT === 'success'
-              ? `✅ BUILD SUCCESSFUL
+            let body;
+
+            if (process.env.RESULT === 'success') {
+              body = `✅ BUILD SUCCESSFUL
 
             Source branch: ${source}
             Target branch: ${target}
@@ -88,8 +96,10 @@ jobs:
 
             Production deployment is waiting for your approval.
 
-            Run: ${url}`
-              : `❌ BUILD FAILED
+            Workflow logs:
+            ${url}`;
+            } else {
+              body = `❌ BUILD FAILED
 
             Source branch: ${source}
             Target branch: ${target}
@@ -99,15 +109,18 @@ jobs:
 
             Check build logs:
             ${url}`;
+            }
 
             await github.rest.repos.createCommitComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               commit_sha: context.sha,
-              body
+              body: body
             });
 
-  # 3. Wait for manual approval
+  # ==========================================
+  # 3. MANUAL PRODUCTION APPROVAL
+  # ==========================================
   approval:
     name: Wait for approval
     runs-on: ubuntu-24.04
@@ -119,8 +132,9 @@ jobs:
       contents: read
 
     steps:
-      - name: Wait for deployment approval
+      - name: Request production deployment approval
         uses: trstringer/manual-approval@v1
+
         with:
           secret: ${{ github.token }}
 
@@ -130,7 +144,7 @@ jobs:
           issue-title: "Deploy approval needed: ${{ github.event.pull_request.head.ref || github.ref_name }} - run #${{ github.run_number }}"
 
           issue-body: |
-            🚀 RD AI Labs production deployment approval required.
+            🚀 RD AI Labs Production Deployment Approval Required
 
             Source branch: ${{ github.event.pull_request.head.ref || github.ref_name }}
             Target branch: ${{ github.event.pull_request.base.ref || 'main' }}
@@ -140,25 +154,35 @@ jobs:
             Commit: ${{ github.sha }}
             Triggered by: ${{ github.actor }}
 
-            Build succeeded.
+            Build status: SUCCESS
 
             Production has NOT been deployed yet.
 
-            Comment **approve** to deploy.
-            Comment **deny** to cancel.
+            To approve:
+            Comment **approve**
+
+            To reject:
+            Comment **deny**
 
             Workflow details:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-  # 4. Deploy to Cloudflare Pages
+  # ==========================================
+  # 4. CLOUDFLARE PRODUCTION DEPLOYMENT
+  # ==========================================
   deploy:
     name: Production deployment
     runs-on: ubuntu-24.04
-    needs: [build, approval]
+
+    needs:
+      - build
+      - approval
+
     timeout-minutes: 15
 
-    if: needs.approval.result == 'success' && (github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true)
+    if: ${{ needs.approval.result == 'success' && ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)) }}
 
+    # Prevent overlapping production deployments
     concurrency:
       group: rd-ai-labs-production
       cancel-in-progress: false
@@ -168,7 +192,7 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: website-dist
-          path: dist
+          path: dist/
 
       - name: Deploy to Cloudflare Pages
         env:
@@ -176,13 +200,21 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
         run: |
-          npx --yes wrangler@4 pages deploy dist --project-name=rd-ai-labs-website --branch=main
+          npx --yes wrangler@4 pages deploy dist \
+            --project-name=rd-ai-labs-website \
+            --branch=main
 
-  # 5. Notify deployment result
+  # ==========================================
+  # 5. FINAL DEPLOYMENT NOTIFICATION
+  # ==========================================
   notify_deploy:
     name: Notify deployment result
     runs-on: ubuntu-24.04
-    needs: [build, approval, deploy]
+
+    needs:
+      - build
+      - approval
+      - deploy
 
     if: always() && needs.build.result != 'skipped'
 
@@ -190,15 +222,17 @@ jobs:
       contents: write
 
     steps:
-      - name: Comment on commit
+      - name: Comment final deployment result
         uses: actions/github-script@v8
 
         env:
           BUILD: ${{ needs.build.result }}
           DEPLOY: ${{ needs.deploy.result }}
           APPROVAL: ${{ needs.approval.result }}
+
           SOURCE_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
           TARGET_BRANCH: ${{ github.event.pull_request.base.ref || 'main' }}
+
           RUN_NUMBER: ${{ github.run_number }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
@@ -212,6 +246,7 @@ jobs:
             let body;
 
             if (process.env.BUILD !== 'success') {
+
               body = `❌ PIPELINE STOPPED: BUILD FAILED
 
             Source branch: ${source}
@@ -220,9 +255,11 @@ jobs:
 
             Production was NOT deployed.
 
-            Build logs: ${url}`;
+            Build logs:
+            ${url}`;
 
             } else if (process.env.APPROVAL !== 'success') {
+
               body = `⛔ DEPLOYMENT NOT APPROVED
 
             Source branch: ${source}
@@ -233,9 +270,11 @@ jobs:
 
             Production was NOT deployed.
 
-            Run: ${url}`;
+            Workflow:
+            ${url}`;
 
             } else if (process.env.DEPLOY === 'success') {
+
               body = `🚀 PRODUCTION DEPLOYMENT SUCCESSFUL
 
             Source branch: ${source}
@@ -246,16 +285,31 @@ jobs:
 
             Cloudflare Pages deployment completed successfully.
 
-            Run: ${url}`;
+            Workflow:
+            ${url}`;
+
+            } else if (process.env.DEPLOY === 'skipped') {
+
+              body = `⚠️ PRODUCTION DEPLOYMENT SKIPPED
+
+            Source branch: ${source}
+            Target branch: ${target}
+            Run number: #${run}
+
+            Production deployment did not run.
+
+            Workflow:
+            ${url}`;
 
             } else {
+
               body = `❌ PRODUCTION DEPLOYMENT FAILED
 
             Source branch: ${source}
             Target branch: ${target}
             Run number: #${run}
 
-            Check deployment logs:
+            Check Cloudflare deployment logs:
             ${url}`;
             }
 
@@ -263,5 +317,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               commit_sha: context.sha,
-              body
+              body: body
             });
