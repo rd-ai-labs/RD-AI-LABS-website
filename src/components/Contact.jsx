@@ -1,5 +1,4 @@
 
-import { use
 import { useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import emailjs from '@emailjs/browser'
