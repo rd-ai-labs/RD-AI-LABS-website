@@ -1,3 +1,4 @@
+
 import {
   FiArrowUpRight,
   FiMapPin,
@@ -18,7 +19,6 @@ const PHILOSOPHIES = [
     title: 'Elite Software Quality, Main Street Heart',
     description:
       'We intentionally establish our engineering hubs in small towns because we know that tech genius isn’t limited to mega-cities or major tech corridors. By tapping into brilliant minds outside the typical crowded tech spaces, we aim to bring unmatched focus, dedication, and passion to your projects.',
-    // Unsplash: small engineering team collaborating at laptops
     image:
       'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1000&q=85',
     imageAlt: 'Software engineers collaborating at laptops in a small-town innovation hub',
@@ -31,7 +31,6 @@ const PHILOSOPHIES = [
     title: 'The Talent Incubator Engine',
     description:
       'We act as a unique talent incubator that aims to deliver global-quality engineering by leveraging fresh, ambitious minds. Through mentorship, hands-on experience, and continuous learning, we shape local capability into world-class development teams.',
-    // Unsplash: mentoring / hands-on learning around a laptop
     image:
       'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=85',
     imageAlt: 'Mentor guiding young developers during hands-on learning',
@@ -44,8 +43,9 @@ const PHILOSOPHIES = [
     title: 'Two Decades of Quality Guardrails',
     description:
       'Our engineering approach is guided by over 20 years of enterprise technology leadership. Every solution benefits from experienced technical oversight, thoughtful architecture, and quality-focused mentorship. You get the agility of emerging talent backed by mature engineering practices.',
-    image: '/images/quality-guardrails-3d.jpg',
-    imageAlt: 'Enterprise cybersecurity and engineering quality protection',
+    image:
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=85',
+    imageAlt: 'Professional enterprise technology and engineering hardware',
     accent: 'from-violet-500 to-purple-500',
     iconBg: 'bg-violet-100 text-violet-700',
   },
@@ -151,7 +151,7 @@ export default function Portfolio() {
           })}
         </div>
 
-        {/* Closing CTA - Futuristic Background */}
+        {/* Closing CTA */}
         <Reveal delay={0.2}>
           <div
             className="relative mt-12 overflow-hidden rounded-2xl border border-white/10 bg-slate-950 bg-cover bg-center px-6 py-9 text-white shadow-xl sm:mt-16 sm:px-10 sm:py-12"
@@ -159,13 +159,11 @@ export default function Portfolio() {
               backgroundImage: "url('/images/portfolio-vision-bg.png')",
             }}
           >
-            {/* Dark overlay for text readability */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 bg-slate-950/35"
             />
 
-            {/* CTA content */}
             <div className="relative z-10 flex flex-col gap-7 md:flex-row md:items-center md:justify-between">
               <div className="max-w-2xl">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-400">
@@ -202,4 +200,4 @@ export default function Portfolio() {
       </div>
     </section>
   )
- }
+}
