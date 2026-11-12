@@ -320,9 +320,7 @@ export default function Contact() {
               </h1>
 
               <p className="mt-5 max-w-md text-base leading-7 text-slate-800">
-                We don’t rely on empty technical pitches. Connect with us
-                directly to map out your challenges, evaluate project
-                feasibility, and establish value-based trust by default.
+                We don’t rely on empty technical pitches. Connect with us directly to map out your challenges, evaluate feasibility, and build lasting trust from day one.
               </p>
 
               {/* Contact information */}

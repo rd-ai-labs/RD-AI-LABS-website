@@ -44,7 +44,7 @@ const PILLARS = [
     accent: 'bg-orange-100 text-orange-700',
   },
   {
-    title: 'Our Journey karthick ',
+    title: 'Our Journey',
     description:
       "We believe technology talent has no geographical boundaries. By bringing 20+ years of enterprise engineering discipline together with talented minds from smaller towns, we are building a borderless engineering hub committed to exceptional standards.",
     icon: FiTrendingUp,
@@ -114,11 +114,7 @@ export default function About() {
               variants={fadeUp}
               className="mt-5 max-w-xl text-sm leading-7 text-[#626975] sm:text-base sm:leading-8"
             >
-              We operate at the intersection of deep architectural maturity
-              and the relentless drive of a fresh software startup.
-              Combining enterprise-grade engineering discipline with
-              innovative thinking, we build technology that delivers
-              meaningful business value.
+              We operate at the intersection of deep architectural maturity and the relentless drive of a modern software startup. By pairing proven engineering discipline with thoughtful innovation, we build technology that delivers meaningful business impact.
             </motion.p>
 
             {/* Engineering philosophy */}
@@ -131,10 +127,7 @@ export default function About() {
               </h3>
 
               <p className="mt-3 text-sm leading-7 text-[#626975] sm:text-[15px]">
-                We don't believe in technology for the sake of technology.
-                Every architecture, every line of code, and every solution
-                should have a clear purpose: solving real problems and
-                creating measurable business impact.
+               We don't believe in technology for the sake of technology. Every architecture, every line of code, and every solution serves a clear purpose: solving real problems and creating lasting results.
               </p>
             </motion.div>
 

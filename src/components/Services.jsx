@@ -110,7 +110,7 @@ export default function Services() {
             <h2 className="font-display text-[clamp(1.9rem,3.5vw,3.1rem)] font-semibold leading-[1.12] tracking-[-0.045em] text-slate-900">
               Anything Related to Software,{' '}
               <span className="text-slate-400">
-                We Are Here to Help.
+                  We Are Here to Help.
               </span>
             </h2>
 

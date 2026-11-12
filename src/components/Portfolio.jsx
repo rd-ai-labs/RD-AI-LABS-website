@@ -15,9 +15,10 @@ const PHILOSOPHIES = [
   {
     number: '01',
     icon: FiMapPin,
-    title: 'Elite Software Quality, Main Street Heart',
+    title: 'Elite Software Quality, Local Heart',
+    footer: 'REGIONAL HUBS',
     description:
-      'We intentionally establish our engineering hubs in small towns because we know that tech genius isn’t limited to mega-cities or major tech corridors. By tapping into brilliant minds outside the typical crowded tech spaces, we aim to bring unmatched focus, dedication, and passion to your projects.',
+      "We intentionally build our engineering hubs in emerging towns because tech talent isn't limited to mega-cities or crowded tech corridors. By tapping into driven minds outside traditional hubs, we bring unmatched focus, dedication, and passion to your projects.",
     // Unsplash: small team collaborating in a bright, friendly workspace
     image:
       'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1000&q=85',
@@ -29,8 +30,9 @@ const PHILOSOPHIES = [
     number: '02',
     icon: FiUsers,
     title: 'The Talent Incubator Engine',
+    footer: 'TALENT GROWTH',
     description:
-      'We act as a unique talent incubator that aims to deliver global-quality engineering by leveraging fresh, ambitious minds. Through mentorship, hands-on experience, and continuous learning, we shape local capability into world-class development teams.',
+      'Our talent incubator delivers world-class engineering by empowering fresh, ambitious minds. Through mentorship, hands-on experience, and continuous learning, we shape regional capability into high-performing development teams.',
     // Unsplash: young people learning together around laptops
     image:
       'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=85',
@@ -42,12 +44,11 @@ const PHILOSOPHIES = [
     number: '03',
     icon: FiShield,
     title: 'Two Decades of Quality Guardrails',
+    footer: 'PROVEN STANDARDS',
     description:
-      'Our engineering approach is guided by over 20 years of enterprise technology leadership. Every solution benefits from experienced technical oversight, thoughtful architecture, and quality-focused mentorship. You get the agility of emerging talent backed by mature engineering practices.',
-    // Unsplash: code on a monitor (code review / architecture oversight)
-    image:
-      'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1000&q=85',
-    imageAlt: 'Source code on a monitor representing code review and architectural oversight',
+      'Our engineering approach is guided by 20+ years of enterprise technology leadership. Every solution benefits from experienced technical oversight, thoughtful architecture, and disciplined mentorship—giving you the agility of emerging talent backed by mature engineering standards.',
+    image: '/images/quality-guardrails-3d.jpg',
+    imageAlt: 'Enterprise cybersecurity and engineering quality protection',
     accent: 'from-violet-500 to-purple-500',
     iconBg: 'bg-violet-100 text-violet-700',
   },
@@ -143,7 +144,7 @@ export default function Portfolio() {
                       <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${item.iconBg}`}>
                         <FiGlobe size={14} aria-hidden="true" />
                       </span>
-                      Our approach
+                      {item.footer}
                     </div>
                   </div>
 
