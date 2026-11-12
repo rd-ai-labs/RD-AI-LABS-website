@@ -834,7 +834,7 @@ export default function HeroScene({ active = true }) {
 
           <FloatCard
             icon={FiTrendingUp}
-            label="Measurable Value"
+            label="Measurable Business Impact"
             className="right-[0%] top-[52%] z-50 w-[25%]"
             delay={1.2}
             dur={5.5}
