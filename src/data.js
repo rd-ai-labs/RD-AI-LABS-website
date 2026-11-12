@@ -120,7 +120,7 @@ export const SKILL_SCENES = [
     description:
       'Automated browser tests run across Chromium, Firefox, and WebKit, so regressions are caught before your users see them.',
     points: [
-      'Critical user journeys covered end to end',
+      ' Critical user journeys verified automatically',
       'Cross-browser and mobile viewport checks',
       'AI-suggested tests for new features and edge cases',
     ],
