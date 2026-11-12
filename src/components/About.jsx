@@ -44,7 +44,7 @@ const PILLARS = [
     accent: 'bg-orange-100 text-orange-700',
   },
   {
-    title: 'Our Journey karthick ',
+    title: 'Our Journey',
     description:
       "We believe technology talent has no geographical boundaries. By bringing 20+ years of enterprise engineering discipline together with talented minds from smaller towns, we are building a borderless engineering hub committed to exceptional standards.",
     icon: FiTrendingUp,
