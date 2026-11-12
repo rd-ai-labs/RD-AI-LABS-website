@@ -282,7 +282,7 @@ export default function Hero({ ready = true }) {
               onClick={() => goTo('contact')}
               className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-slate-900/50 bg-white/20 px-7 py-3 text-[13px] font-semibold text-slate-950 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-slate-950 hover:bg-white/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-100 sm:text-sm"
             >
-              Contact Us
+              Contact Us us
             </button>
           </motion.div>
 
