@@ -816,7 +816,7 @@ export default function HeroScene({ active = true }) {
 
           <FloatCard
             icon={FiCloud}
-            label="Fluid Digital/Web Portals & Apps"
+            label=" Modern Web & Mobile Apps."
             className="left-[0%] top-[53%] z-50 w-[29%]"
             delay={0.8}
             dur={5.2}
