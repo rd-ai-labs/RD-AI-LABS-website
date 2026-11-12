@@ -236,7 +236,7 @@ export default function Hero({ ready = true }) {
                     variants={word}
                     className={`mr-[0.2em] inline-block ${
                       item.accent
-                        ? 'bg-gradient-to-r from-indigo-700 via-violet-600 to-purple-500 bg-clip-text text-transparent'
+                        ? 'bg-gradient-to-r from-orange-600 via-orange-400 to-amber-400 bg-clip-text text-transparent'
                         : ''
                     }`}
                   >
@@ -328,4 +328,4 @@ export default function Hero({ ready = true }) {
       </button>
     </section>
   )
- }
+}
