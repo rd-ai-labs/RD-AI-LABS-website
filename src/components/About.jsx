@@ -127,10 +127,7 @@ export default function About() {
               </h3>
 
               <p className="mt-3 text-sm leading-7 text-[#626975] sm:text-[15px]">
-                We don't believe in technology for the sake of technology.
-                Every architecture, every line of code, and every solution
-                should have a clear purpose: solving real problems and
-                creating measurable business impact.
+               We don't believe in technology for the sake of technology. Every architecture, every line of code, and every solution serves a clear purpose: solving real problems and creating lasting results.
               </p>
             </motion.div>
 
