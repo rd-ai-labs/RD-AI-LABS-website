@@ -22,14 +22,14 @@ import {
   FiMessageSquare,
 } from 'react-icons/fi'
 
-/* ----- 1. Company details: REPLACE the placeholders ---------------------- */
+/* ----- 1. Company details ------------------------------------------------- */
 export const COMPANY = {
   name: 'RD AI Labs',
   tagline: 'Tap the Untapped',
-  email: 'hello@yourdomain.com', // <- your email
-  phone: '+91 00000 00000', // <- your phone (shown on the page)
-  whatsapp: '910000000000', // <- digits only, with country code (used for wa.me link)
-  address: 'Your Office Address, City, State, Country', // <- also used for the Google Map
+  email: 'contact@rdailabs.com',
+  phone: '+91 77088 91568',
+  whatsapp: '917708891568', // digits only, with country code (used for wa.me link)
+  address: '366/145/S, 3rd Gandhi Rd, Attur, TN 636102, India', // also used for the Google Map
   social: {
     linkedin: 'https://www.linkedin.com/',
     instagram: 'https://www.instagram.com/',
@@ -47,9 +47,9 @@ export const COMPANY = {
 export const NAV_LINKS = [
   { id: 'home', label: 'Home', short: 'Home' },
   { id: 'services', label: 'Services', short: 'Services' },
-  { id: 'skills', label: 'Skills', short: 'Skills' }, // <- new: Skills section
+  { id: 'skills', label: 'Skills', short: 'Skills' },
   { id: 'about', label: 'About Us', short: 'About Us' },
-  { id: 'portfolio', label: 'Our Philosophy', short: 'Our Philosophy' },
+  { id: 'philosophy', label: 'Our Philosophy', short: 'Our Philosophy' }, // must match id="philosophy" in Portfolio.jsx
   { id: 'careers', label: 'Careers', short: 'Careers' },
   // { id: 'blog', label: 'Blog', short: 'Blog' },
   { id: 'contact', label: 'Contact', short: 'Contact' },
@@ -120,7 +120,7 @@ export const SKILL_SCENES = [
     description:
       'Automated browser tests run across Chromium, Firefox, and WebKit, so regressions are caught before your users see them.',
     points: [
-      ' Critical user journeys verified automatically',
+      'Critical user journeys verified automatically',
       'Cross-browser and mobile viewport checks',
       'AI-suggested tests for new features and edge cases',
     ],
