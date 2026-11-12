@@ -18,10 +18,10 @@ const PHILOSOPHIES = [
     title: 'Elite Software Quality, Main Street Heart',
     description:
       'We intentionally establish our engineering hubs in small towns because we know that tech genius isn’t limited to mega-cities or major tech corridors. By tapping into brilliant minds outside the typical crowded tech spaces, we aim to bring unmatched focus, dedication, and passion to your projects.',
-    // Unsplash: small engineering team collaborating at laptops
-    image:
-      'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1000&q=85',
-    imageAlt: 'Software engineers collaborating at laptops in a small-town innovation hub',
+    // Small-town main street + modern engineering office
+    image: '/images/small-town-hub.jpg',
+    imageAlt:
+      'Modern software engineering office on a small-town main street',
     accent: 'from-orange-500 to-rose-500',
     iconBg: 'bg-orange-100 text-orange-700',
   },
@@ -31,10 +31,10 @@ const PHILOSOPHIES = [
     title: 'The Talent Incubator Engine',
     description:
       'We act as a unique talent incubator that aims to deliver global-quality engineering by leveraging fresh, ambitious minds. Through mentorship, hands-on experience, and continuous learning, we shape local capability into world-class development teams.',
-    // Unsplash: mentoring / hands-on learning around a laptop
-    image:
-      'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=85',
-    imageAlt: 'Mentor guiding young developers during hands-on learning',
+    // Senior mentor guiding young developers
+    image: '/images/talent-incubator.jpg',
+    imageAlt:
+      'Senior engineer mentoring young developers during hands-on learning',
     accent: 'from-sky-500 to-indigo-500',
     iconBg: 'bg-sky-100 text-sky-700',
   },
@@ -97,12 +97,17 @@ export default function Portfolio() {
               <Reveal key={item.number} delay={index * 0.1}>
                 <article className="group relative flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-slate-300 hover:shadow-xl hover:shadow-slate-900/[0.08] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
 
-                  {/* Image */}
-                  <div className="relative h-56 overflow-hidden bg-slate-100 sm:h-60">
+                  {/* Image (gradient shows if the image file is missing) */}
+                  <div
+                    className={`relative h-56 overflow-hidden bg-gradient-to-br ${item.accent} sm:h-60`}
+                  >
                     <img
                       src={item.image}
                       alt={item.imageAlt}
                       loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none'
+                      }}
                       className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 motion-reduce:transition-none"
                     />
 
@@ -202,4 +207,4 @@ export default function Portfolio() {
       </div>
     </section>
   )
- }
+}
