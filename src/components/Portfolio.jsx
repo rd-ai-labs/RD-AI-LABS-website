@@ -1,3 +1,4 @@
+
 import {
   FiArrowUpRight,
   FiMapPin,
@@ -16,8 +17,9 @@ const PHILOSOPHIES = [
     number: '01',
     icon: FiMapPin,
     title: 'Elite Software Quality, Main Street Heart',
+    footer: 'REGIONAL HUBS',
     description:
-      'We intentionally build our engineering hubs in emerging towns because tech talent isn’t limited to mega-cities or crowded tech corridors. By tapping into driven minds outside traditional hubs, we bring unmatched focus, dedication, and passion to your projects.'
+      "We intentionally build our engineering hubs in emerging towns because tech talent isn't limited to mega-cities or crowded tech corridors. By tapping into driven minds outside traditional hubs, we bring unmatched focus, dedication, and passion to your projects.",
     // Unsplash: small engineering team collaborating at laptops
     image:
       'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1000&q=85',
@@ -29,9 +31,10 @@ const PHILOSOPHIES = [
     number: '02',
     icon: FiUsers,
     title: 'The Talent Incubator Engine',
+    footer: 'TALENT GROWTH',
     description:
       'Our talent incubator delivers world-class engineering by empowering fresh, ambitious minds. Through mentorship, hands-on experience, and continuous learning, we shape regional capability into high-performing development teams.',
-    // Unsplash: mentoring / hands-on learning around a laptop
+    // Unsplash: mentoring and hands-on learning around a laptop
     image:
       'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=85',
     imageAlt: 'Mentor guiding young developers during hands-on learning',
@@ -42,6 +45,7 @@ const PHILOSOPHIES = [
     number: '03',
     icon: FiShield,
     title: 'Two Decades of Quality Guardrails',
+    footer: 'PROVEN STANDARDS',
     description:
       'Our engineering approach is guided by 20+ years of enterprise technology leadership. Every solution benefits from experienced technical oversight, thoughtful architecture, and disciplined mentorship—giving you the agility of emerging talent backed by mature engineering standards.',
     image: '/images/quality-guardrails-3d.jpg',
@@ -141,7 +145,7 @@ export default function Portfolio() {
                       <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${item.iconBg}`}>
                         <FiGlobe size={14} aria-hidden="true" />
                       </span>
-                      Our approach
+                      {item.footer}
                     </div>
                   </div>
 
