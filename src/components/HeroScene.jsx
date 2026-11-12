@@ -807,7 +807,7 @@ export default function HeroScene({ active = true }) {
 
           <FloatCard
             icon={FiCode}
-            label="Value-Based Software Systems"
+            label="Scalable Software Systems"
             className="left-[0%] top-[10%] z-50 w-[28%]"
             delay={0}
             dur={4.5}
