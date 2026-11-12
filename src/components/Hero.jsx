@@ -1,4 +1,5 @@
 
+
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import {
   motion,
@@ -236,7 +237,7 @@ export default function Hero({ ready = true }) {
                     variants={word}
                     className={`mr-[0.2em] inline-block ${
                       item.accent
-                        ? 'bg-gradient-to-r from-orange-600 via-orange-400 to-amber-400 bg-clip-text text-transparent'
+                        ? 'bg-[linear-gradient(90deg,#F86C20_0%,#F65441_25%,#DD4071_50%,#AF4297_70%,#8244BD_85%,#5646E1_100%)] bg-clip-text text-transparent'
                         : ''
                     }`}
                   >
