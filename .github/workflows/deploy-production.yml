@@ -2,24 +2,34 @@
 name: RD AI Labs - Production Deployment
 
 on:
-  push:
+  # Start deployment only when a Pull Request is merged into main
+  pull_request:
     branches:
       - main
+    types:
+      - closed
+
+  # Allow manual workflow execution
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
+
   # 1. Build the website
   build:
     name: Build website
     runs-on: ubuntu-24.04
     timeout-minutes: 15
 
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+
     steps:
-      - name: Checkout website code
+      - name: Checkout merged main branch
         uses: actions/checkout@v5
+        with:
+          ref: main
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -48,6 +58,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: build
     if: always() && needs.build.result != 'skipped'
+
     permissions:
       contents: write
 
@@ -56,42 +67,44 @@ jobs:
         uses: actions/github-script@v8
         env:
           RESULT: ${{ needs.build.result }}
-          BRANCH: ${{ github.head_ref || github.ref_name }}
+          SOURCE_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          TARGET_BRANCH: ${{ github.event.pull_request.base.ref || 'main' }}
           RUN_NUMBER: ${{ github.run_number }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
         with:
           script: |
             const url = process.env.RUN_URL;
-            const branch = process.env.BRANCH;
+            const source = process.env.SOURCE_BRANCH;
+            const target = process.env.TARGET_BRANCH;
             const run = process.env.RUN_NUMBER;
 
             const body = process.env.RESULT === 'success'
               ? `✅ BUILD SUCCESSFUL
 
-            Branch: ${branch}
+            Source branch: ${source}
+            Target branch: ${target}
             Run number: #${run}
 
             Production deployment is waiting for your approval.
 
-            Find the approval issue titled:
-            "Deploy approval needed: ${branch} - run #${run}"
-
             Run: ${url}`
               : `❌ BUILD FAILED
 
-            Branch: ${branch}
+            Source branch: ${source}
+            Target branch: ${target}
             Run number: #${run}
 
             Production was NOT deployed.
 
-            Check the build logs:
+            Check build logs:
             ${url}`;
 
             await github.rest.repos.createCommitComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               commit_sha: context.sha,
-              body: body
+              body
             });
 
   # 3. Wait for manual approval
@@ -100,30 +113,36 @@ jobs:
     runs-on: ubuntu-24.04
     needs: build
     timeout-minutes: 120
+
     permissions:
       issues: write
       contents: read
 
     steps:
-      - name: Wait for approval comment
+      - name: Wait for deployment approval
         uses: trstringer/manual-approval@v1
         with:
           secret: ${{ github.token }}
+
           approvers: rd-ai-labs,logalakshmidbn97-png
           minimum-approvals: 1
 
-          issue-title: "Deploy approval needed: ${{ github.head_ref || github.ref_name }} - run #${{ github.run_number }}"
+          issue-title: "Deploy approval needed: ${{ github.event.pull_request.head.ref || github.ref_name }} - run #${{ github.run_number }}"
 
           issue-body: |
             🚀 RD AI Labs production deployment approval required.
 
-            Branch: ${{ github.head_ref || github.ref_name }}
+            Source branch: ${{ github.event.pull_request.head.ref || github.ref_name }}
+            Target branch: ${{ github.event.pull_request.base.ref || 'main' }}
+
             Repository: ${{ github.repository }}
             Run number: #${{ github.run_number }}
             Commit: ${{ github.sha }}
             Triggered by: ${{ github.actor }}
 
-            Build succeeded. Production has NOT been deployed yet.
+            Build succeeded.
+
+            Production has NOT been deployed yet.
 
             Comment **approve** to deploy.
             Comment **deny** to cancel.
@@ -138,7 +157,7 @@ jobs:
     needs: [build, approval]
     timeout-minutes: 15
 
-    if: github.ref == 'refs/heads/main'
+    if: needs.approval.result == 'success' && (github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true)
 
     concurrency:
       group: rd-ai-labs-production
@@ -155,14 +174,17 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 pages deploy dist --project-name=rd-ai-labs-website --branch=main
+
+        run: |
+          npx --yes wrangler@4 pages deploy dist --project-name=rd-ai-labs-website --branch=main
 
   # 5. Notify deployment result
   notify_deploy:
     name: Notify deployment result
     runs-on: ubuntu-24.04
     needs: [build, approval, deploy]
-    if: always()
+
+    if: always() && needs.build.result != 'skipped'
 
     permissions:
       contents: write
@@ -170,17 +192,21 @@ jobs:
     steps:
       - name: Comment on commit
         uses: actions/github-script@v8
+
         env:
           BUILD: ${{ needs.build.result }}
           DEPLOY: ${{ needs.deploy.result }}
           APPROVAL: ${{ needs.approval.result }}
-          BRANCH: ${{ github.head_ref || github.ref_name }}
+          SOURCE_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          TARGET_BRANCH: ${{ github.event.pull_request.base.ref || 'main' }}
           RUN_NUMBER: ${{ github.run_number }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
         with:
           script: |
             const url = process.env.RUN_URL;
-            const branch = process.env.BRANCH;
+            const source = process.env.SOURCE_BRANCH;
+            const target = process.env.TARGET_BRANCH;
             const run = process.env.RUN_NUMBER;
 
             let body;
@@ -188,7 +214,8 @@ jobs:
             if (process.env.BUILD !== 'success') {
               body = `❌ PIPELINE STOPPED: BUILD FAILED
 
-            Branch: ${branch}
+            Source branch: ${source}
+            Target branch: ${target}
             Run number: #${run}
 
             Production was NOT deployed.
@@ -198,10 +225,12 @@ jobs:
             } else if (process.env.APPROVAL !== 'success') {
               body = `⛔ DEPLOYMENT NOT APPROVED
 
-            Branch: ${branch}
+            Source branch: ${source}
+            Target branch: ${target}
             Run number: #${run}
 
             Approval was denied, timed out or cancelled.
+
             Production was NOT deployed.
 
             Run: ${url}`;
@@ -209,7 +238,8 @@ jobs:
             } else if (process.env.DEPLOY === 'success') {
               body = `🚀 PRODUCTION DEPLOYMENT SUCCESSFUL
 
-            Branch: ${branch}
+            Source branch: ${source}
+            Target branch: ${target}
             Run number: #${run}
 
             Website: https://www.rdailabs.com/
@@ -221,10 +251,11 @@ jobs:
             } else {
               body = `❌ PRODUCTION DEPLOYMENT FAILED
 
-            Branch: ${branch}
+            Source branch: ${source}
+            Target branch: ${target}
             Run number: #${run}
 
-            Check the deployment logs:
+            Check deployment logs:
             ${url}`;
             }
 
@@ -232,5 +263,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               commit_sha: context.sha,
-              body: body
+              body
             });
