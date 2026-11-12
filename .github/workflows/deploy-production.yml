@@ -1,24 +1,37 @@
+
 name: RD AI Labs - Production Deployment
 
 on:
-  push:
+  # Trigger after a Pull Request is closed and merged into main
+  pull_request:
     branches:
       - main
+    types:
+      - closed
+
+  # Allow manual execution from main only
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  # 1. Build the website on every push to main
+
+  # ==========================================
+  # 1. BUILD WEBSITE
+  # ==========================================
   build:
     name: Build website
     runs-on: ubuntu-24.04
     timeout-minutes: 15
 
+    if: ${{ (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.merged == true) }}
+
     steps:
-      - name: Checkout website code
+      - name: Checkout merged commit
         uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha || 'main' }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -36,32 +49,68 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: website-dist
-          path: dist
+          path: dist/
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 7
 
-  # 2. Tell you the build result (GitHub comment + GitHub email)
+  # ==========================================
+  # 2. BUILD RESULT NOTIFICATION
+  # ==========================================
   notify_build:
     name: Notify build result
     runs-on: ubuntu-24.04
     needs: build
+
     if: always() && needs.build.result != 'skipped'
+
     permissions:
       contents: write
 
     steps:
-      - name: Comment on commit
+      - name: Comment build result on commit
         uses: actions/github-script@v8
+
         env:
           RESULT: ${{ needs.build.result }}
+          SOURCE_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          TARGET_BRANCH: ${{ github.event.pull_request.base.ref || 'main' }}
+          RUN_NUMBER: ${{ github.run_number }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
         with:
           script: |
             const url = process.env.RUN_URL;
-            const body = process.env.RESULT === 'success'
-              ? '✅ Build successful. Waiting for your approval.\n\nOpen the issue "Deploy approval needed" and comment: approve\n\nRun: ' + url
-              : '❌ Build failed. Production was NOT deployed.\n\nLogs: ' + url;
+            const source = process.env.SOURCE_BRANCH;
+            const target = process.env.TARGET_BRANCH;
+            const run = process.env.RUN_NUMBER;
+
+            let body;
+
+            if (process.env.RESULT === 'success') {
+              body = `✅ BUILD SUCCESSFUL
+
+            Source branch: ${source}
+            Target branch: ${target}
+            Run number: #${run}
+
+            Production deployment is waiting for your approval.
+
+            Workflow logs:
+            ${url}`;
+            } else {
+              body = `❌ BUILD FAILED
+
+            Source branch: ${source}
+            Target branch: ${target}
+            Run number: #${run}
+
+            Production was NOT deployed.
+
+            Check build logs:
+            ${url}`;
+            }
+
             await github.rest.repos.createCommitComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -69,39 +118,71 @@ jobs:
               body: body
             });
 
-  # 3. Wait for your approval: comment "approve" or "deny" on the issue
+  # ==========================================
+  # 3. MANUAL PRODUCTION APPROVAL
+  # ==========================================
   approval:
     name: Wait for approval
     runs-on: ubuntu-24.04
     needs: build
     timeout-minutes: 120
+
     permissions:
       issues: write
       contents: read
 
     steps:
-      - name: Wait for approval comment
+      - name: Request production deployment approval
         uses: trstringer/manual-approval@v1
+
         with:
           secret: ${{ github.token }}
+
           approvers: rd-ai-labs,logalakshmidbn97-png
           minimum-approvals: 1
-          issue-title: "Deploy approval needed: run #${{ github.run_number }}"
+
+          issue-title: "Deploy approval needed: ${{ github.event.pull_request.head.ref || github.ref_name }} - run #${{ github.run_number }}"
+
           issue-body: |
-            Build succeeded. Production has NOT been deployed yet.
+            🚀 RD AI Labs Production Deployment Approval Required
 
-            Comment **approve** to deploy to Cloudflare.
-            Comment **deny** to cancel.
+            Source branch: ${{ github.event.pull_request.head.ref || github.ref_name }}
+            Target branch: ${{ github.event.pull_request.base.ref || 'main' }}
 
-            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            Repository: ${{ github.repository }}
+            Run number: #${{ github.run_number }}
+            Commit: ${{ github.sha }}
+            Triggered by: ${{ github.actor }}
 
-  # 4. Deploy to Cloudflare Pages (only after approval)
+            Build status: SUCCESS
+
+            Production has NOT been deployed yet.
+
+            To approve:
+            Comment **approve**
+
+            To reject:
+            Comment **deny**
+
+            Workflow details:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+  # ==========================================
+  # 4. CLOUDFLARE PRODUCTION DEPLOYMENT
+  # ==========================================
   deploy:
     name: Production deployment
     runs-on: ubuntu-24.04
-    needs: [build, approval]
+
+    needs:
+      - build
+      - approval
+
     timeout-minutes: 15
-    if: github.ref == 'refs/heads/main'
+
+    if: ${{ needs.approval.result == 'success' && ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)) }}
+
+    # Prevent overlapping production deployments
     concurrency:
       group: rd-ai-labs-production
       cancel-in-progress: false
@@ -111,41 +192,127 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: website-dist
-          path: dist
+          path: dist/
 
       - name: Deploy to Cloudflare Pages
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4 pages deploy dist --project-name=rd-ai-labs-website --branch=main
 
-  # 5. Tell you the deployment result (GitHub comment + GitHub email)
+        run: |
+          npx --yes wrangler@4 pages deploy dist \
+            --project-name=rd-ai-labs-website \
+            --branch=main
+
+  # ==========================================
+  # 5. FINAL DEPLOYMENT NOTIFICATION
+  # ==========================================
   notify_deploy:
     name: Notify deployment result
     runs-on: ubuntu-24.04
-    needs: [approval, deploy]
-    if: always() && needs.approval.result != 'skipped'
+
+    needs:
+      - build
+      - approval
+      - deploy
+
+    if: always() && needs.build.result != 'skipped'
+
     permissions:
       contents: write
 
     steps:
-      - name: Comment on commit
+      - name: Comment final deployment result
         uses: actions/github-script@v8
+
         env:
+          BUILD: ${{ needs.build.result }}
           DEPLOY: ${{ needs.deploy.result }}
           APPROVAL: ${{ needs.approval.result }}
+
+          SOURCE_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          TARGET_BRANCH: ${{ github.event.pull_request.base.ref || 'main' }}
+
+          RUN_NUMBER: ${{ github.run_number }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
         with:
           script: |
             const url = process.env.RUN_URL;
+            const source = process.env.SOURCE_BRANCH;
+            const target = process.env.TARGET_BRANCH;
+            const run = process.env.RUN_NUMBER;
+
             let body;
-            if (process.env.DEPLOY === 'success') {
-              body = '🚀 Deployed to production: https://rd-ai-labs-website.pages.dev\n\nRun: ' + url;
+
+            if (process.env.BUILD !== 'success') {
+
+              body = `❌ PIPELINE STOPPED: BUILD FAILED
+
+            Source branch: ${source}
+            Target branch: ${target}
+            Run number: #${run}
+
+            Production was NOT deployed.
+
+            Build logs:
+            ${url}`;
+
             } else if (process.env.APPROVAL !== 'success') {
-              body = '⛔ Not deployed: approval was denied, timed out or cancelled.\n\nRun: ' + url;
+
+              body = `⛔ DEPLOYMENT NOT APPROVED
+
+            Source branch: ${source}
+            Target branch: ${target}
+            Run number: #${run}
+
+            Approval was denied, timed out or cancelled.
+
+            Production was NOT deployed.
+
+            Workflow:
+            ${url}`;
+
+            } else if (process.env.DEPLOY === 'success') {
+
+              body = `🚀 PRODUCTION DEPLOYMENT SUCCESSFUL
+
+            Source branch: ${source}
+            Target branch: ${target}
+            Run number: #${run}
+
+            Website: https://www.rdailabs.com/
+
+            Cloudflare Pages deployment completed successfully.
+
+            Workflow:
+            ${url}`;
+
+            } else if (process.env.DEPLOY === 'skipped') {
+
+              body = `⚠️ PRODUCTION DEPLOYMENT SKIPPED
+
+            Source branch: ${source}
+            Target branch: ${target}
+            Run number: #${run}
+
+            Production deployment did not run.
+
+            Workflow:
+            ${url}`;
+
             } else {
-              body = '❌ Production deployment failed.\n\nLogs: ' + url;
+
+              body = `❌ PRODUCTION DEPLOYMENT FAILED
+
+            Source branch: ${source}
+            Target branch: ${target}
+            Run number: #${run}
+
+            Check Cloudflare deployment logs:
+            ${url}`;
             }
+
             await github.rest.repos.createCommitComment({
               owner: context.repo.owner,
               repo: context.repo.repo,

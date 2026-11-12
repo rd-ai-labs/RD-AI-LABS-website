@@ -1,9 +1,10 @@
+
 import { useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 /**
- * Returns a function that smooth-scrolls to a section on the home page.
- * If the visitor is on another route (e.g. /privacy) it first goes home.
+ * Navigate to a section on the homepage.
+ * Supports same-page scrolling and navigation from other routes.
  */
 export function useGoTo() {
   const { pathname } = useLocation()
@@ -11,11 +12,23 @@ export function useGoTo() {
 
   return useCallback(
     (id) => {
+      if (!id) return
+
       if (pathname !== '/') {
-        navigate('/', { state: { scrollTo: id } })
+        navigate(`/#${id}`)
         return
       }
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+
+      // Update the URL hash without reloading the page.
+      window.history.pushState(null, '', `/#${id}`)
+
+      // Scroll to the requested section.
+      requestAnimationFrame(() => {
+        document.getElementById(id)?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
+      })
     },
     [pathname, navigate]
   )

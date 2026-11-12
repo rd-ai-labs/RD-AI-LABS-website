@@ -97,12 +97,17 @@ export default function Portfolio() {
               <Reveal key={item.number} delay={index * 0.1}>
                 <article className="group relative flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-slate-300 hover:shadow-xl hover:shadow-slate-900/[0.08] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
 
-                  {/* Image */}
-                  <div className="relative h-56 overflow-hidden bg-slate-100 sm:h-60">
+                  {/* Image (gradient shows if the image file is missing) */}
+                  <div
+                    className={`relative h-56 overflow-hidden bg-gradient-to-br ${item.accent} sm:h-60`}
+                  >
                     <img
                       src={item.image}
                       alt={item.imageAlt}
                       loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none'
+                      }}
                       className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 motion-reduce:transition-none"
                     />
 
@@ -151,7 +156,7 @@ export default function Portfolio() {
           })}
         </div>
 
-        {/* Closing CTA - Futuristic Background */}
+        {/* Closing CTA */}
         <Reveal delay={0.2}>
           <div
             className="relative mt-12 overflow-hidden rounded-2xl border border-white/10 bg-slate-950 bg-cover bg-center px-6 py-9 text-white shadow-xl sm:mt-16 sm:px-10 sm:py-12"
@@ -159,13 +164,11 @@ export default function Portfolio() {
               backgroundImage: "url('/images/portfolio-vision-bg.png')",
             }}
           >
-            {/* Dark overlay for text readability */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 bg-slate-950/35"
             />
 
-            {/* CTA content */}
             <div className="relative z-10 flex flex-col gap-7 md:flex-row md:items-center md:justify-between">
               <div className="max-w-2xl">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-400">
@@ -202,4 +205,4 @@ export default function Portfolio() {
       </div>
     </section>
   )
- }
+}
