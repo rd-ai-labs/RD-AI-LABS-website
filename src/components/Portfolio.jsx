@@ -17,7 +17,7 @@ const PHILOSOPHIES = [
     icon: FiMapPin,
     title: 'Elite Software Quality, Main Street Heart',
     description:
-      'We intentionally build our engineering hubs in emerging towns because tech talent isn't limited to mega-cities or crowded tech corridors. By tapping into driven minds outside traditional hubs, we bring unmatched focus, dedication, and passion to your projects.'
+      'We intentionally build our engineering hubs in emerging towns because tech talent isn’t limited to mega-cities or crowded tech corridors. By tapping into driven minds outside traditional hubs, we bring unmatched focus, dedication, and passion to your projects.'
     // Unsplash: small engineering team collaborating at laptops
     image:
       'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1000&q=85',
@@ -30,7 +30,7 @@ const PHILOSOPHIES = [
     icon: FiUsers,
     title: 'The Talent Incubator Engine',
     description:
-      'We act as a unique talent incubator that aims to deliver global-quality engineering by leveraging fresh, ambitious minds. Through mentorship, hands-on experience, and continuous learning, we shape local capability into world-class development teams.',
+      'Our talent incubator delivers world-class engineering by empowering fresh, ambitious minds. Through mentorship, hands-on experience, and continuous learning, we shape regional capability into high-performing development teams.',
     // Unsplash: mentoring / hands-on learning around a laptop
     image:
       'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=85',
@@ -43,12 +43,9 @@ const PHILOSOPHIES = [
     icon: FiShield,
     title: 'Two Decades of Quality Guardrails',
     description:
-      'Our engineering approach is guided by over 20 years of enterprise technology leadership. Every solution benefits from experienced technical oversight, thoughtful architecture, and quality-focused mentorship. You get the agility of emerging talent backed by mature engineering practices.',
-    // Unsplash: experienced tech lead reviewing work on a laptop with a junior teammate
-    image:
-      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=85',
-    imageAlt:
-      'Senior tech lead reviewing code and architecture on a laptop with a junior developer',
+      'Our engineering approach is guided by 20+ years of enterprise technology leadership. Every solution benefits from experienced technical oversight, thoughtful architecture, and disciplined mentorship—giving you the agility of emerging talent backed by mature engineering standards.',
+    image: '/images/quality-guardrails-3d.jpg',
+    imageAlt: 'Enterprise cybersecurity and engineering quality protection',
     accent: 'from-violet-500 to-purple-500',
     iconBg: 'bg-violet-100 text-violet-700',
   },
