@@ -18,10 +18,10 @@ const PHILOSOPHIES = [
     title: 'Elite Software Quality, Main Street Heart',
     description:
       'We intentionally establish our engineering hubs in small towns because we know that tech genius isn’t limited to mega-cities or major tech corridors. By tapping into brilliant minds outside the typical crowded tech spaces, we aim to bring unmatched focus, dedication, and passion to your projects.',
-    // Unsplash: small engineering team collaborating at laptops
+    // Unsplash: small team collaborating in a bright, friendly workspace
     image:
-      'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1000&q=85',
-    imageAlt: 'Software engineers collaborating at laptops in a small-town innovation hub',
+      'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1000&q=85',
+    imageAlt: 'Small team of engineers collaborating in a bright, welcoming workspace',
     accent: 'from-orange-500 to-rose-500',
     iconBg: 'bg-orange-100 text-orange-700',
   },
@@ -31,10 +31,10 @@ const PHILOSOPHIES = [
     title: 'The Talent Incubator Engine',
     description:
       'We act as a unique talent incubator that aims to deliver global-quality engineering by leveraging fresh, ambitious minds. Through mentorship, hands-on experience, and continuous learning, we shape local capability into world-class development teams.',
-    // Unsplash: mentoring / hands-on learning around a laptop
+    // Unsplash: young people learning together around laptops
     image:
-      'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=85',
-    imageAlt: 'Mentor guiding young developers during hands-on learning',
+      'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=85',
+    imageAlt: 'Young developers learning together around laptops through hands-on mentorship',
     accent: 'from-sky-500 to-indigo-500',
     iconBg: 'bg-sky-100 text-sky-700',
   },
@@ -44,11 +44,10 @@ const PHILOSOPHIES = [
     title: 'Two Decades of Quality Guardrails',
     description:
       'Our engineering approach is guided by over 20 years of enterprise technology leadership. Every solution benefits from experienced technical oversight, thoughtful architecture, and quality-focused mentorship. You get the agility of emerging talent backed by mature engineering practices.',
-    // Unsplash: experienced tech lead reviewing work on a laptop with a junior teammate
+    // Unsplash: code on a monitor (code review / architecture oversight)
     image:
-      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=85',
-    imageAlt:
-      'Senior tech lead reviewing code and architecture on a laptop with a junior developer',
+      'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1000&q=85',
+    imageAlt: 'Source code on a monitor representing code review and architectural oversight',
     accent: 'from-violet-500 to-purple-500',
     iconBg: 'bg-violet-100 text-violet-700',
   },
