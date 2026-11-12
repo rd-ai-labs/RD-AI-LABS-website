@@ -1,4 +1,3 @@
-
 import {
   FiArrowUpRight,
   FiMapPin,
@@ -20,10 +19,10 @@ const PHILOSOPHIES = [
     footer: 'REGIONAL HUBS',
     description:
       "We intentionally build our engineering hubs in emerging towns because tech talent isn't limited to mega-cities or crowded tech corridors. By tapping into driven minds outside traditional hubs, we bring unmatched focus, dedication, and passion to your projects.",
-    // Unsplash: small engineering team collaborating at laptops
+    // Unsplash: small team collaborating in a bright, friendly workspace
     image:
-      'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1000&q=85',
-    imageAlt: 'Software engineers collaborating at laptops in a small-town innovation hub',
+      'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1000&q=85',
+    imageAlt: 'Small team of engineers collaborating in a bright, welcoming workspace',
     accent: 'from-orange-500 to-rose-500',
     iconBg: 'bg-orange-100 text-orange-700',
   },
@@ -34,10 +33,10 @@ const PHILOSOPHIES = [
     footer: 'TALENT GROWTH',
     description:
       'Our talent incubator delivers world-class engineering by empowering fresh, ambitious minds. Through mentorship, hands-on experience, and continuous learning, we shape regional capability into high-performing development teams.',
-    // Unsplash: mentoring and hands-on learning around a laptop
+    // Unsplash: young people learning together around laptops
     image:
-      'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=85',
-    imageAlt: 'Mentor guiding young developers during hands-on learning',
+      'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=85',
+    imageAlt: 'Young developers learning together around laptops through hands-on mentorship',
     accent: 'from-sky-500 to-indigo-500',
     iconBg: 'bg-sky-100 text-sky-700',
   },
