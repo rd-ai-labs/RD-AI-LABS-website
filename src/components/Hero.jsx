@@ -1,4 +1,3 @@
-
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import {
   motion,
@@ -214,12 +213,8 @@ export default function Hero({ ready = true }) {
         >
           {/* Positioning label */}
           <motion.div variants={fadeUp}>
-            <span className="inline-flex items-center gap-2.5 rounded-full border border-white/60 bg-white/40 px-4 py-2.5 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-800 shadow-sm shadow-slate-900/[0.03] backdrop-blur-md sm:text-[11px]">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-600 opacity-30" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-700" />
-              </span>
-              Enterprise Engineering. Startup Agility  .
+            <span className="inline-flex items-center rounded-full border border-white/60 bg-white/40 px-4 py-2.5 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-800 shadow-sm shadow-slate-900/[0.03] backdrop-blur-md sm:text-[11px]">
+              Enterprise Engineering. Startup Agility
             </span>
           </motion.div>
 
@@ -282,7 +277,7 @@ export default function Hero({ ready = true }) {
               onClick={() => goTo('contact')}
               className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-slate-900/50 bg-white/20 px-7 py-3 text-[13px] font-semibold text-slate-950 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-slate-950 hover:bg-white/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-100 sm:text-sm"
             >
-              Contact Us us
+              Contact Us
             </button>
           </motion.div>
 
@@ -328,4 +323,4 @@ export default function Hero({ ready = true }) {
       </button>
     </section>
   )
- }
+}
