@@ -57,7 +57,7 @@ const CAPABILITIES = [
     image: '/images/02-applied-ai-automation.jpg',
   },
   {
-    title: 'Web & Mobile Platforms',
+    title: 'Modern Web & Mobile Apps',
     description:
       'We engineer high-performance digital experiences, including scalable portals, responsive corporate web applications, and seamless mobile apps designed for usability, performance, and real-world adoption.',
     icon: FiMonitor,
