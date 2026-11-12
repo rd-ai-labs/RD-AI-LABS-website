@@ -102,7 +102,7 @@ export default function Careers() {
                 </h3>
 
                 <p className="mt-5 text-sm leading-7 text-slate-700 sm:text-base sm:leading-8">
-                  Under the direct mentorship of our senior architects and proven quality standards, we help motivated people grow into world-class engineers."
+                  Under the direct mentorship of our senior architects and proven quality standards, we help motivated people grow into world-class engineers.
                 </p>
 
                 <p className="mt-4 text-sm font-semibold leading-7 text-slate-900 sm:text-base">
