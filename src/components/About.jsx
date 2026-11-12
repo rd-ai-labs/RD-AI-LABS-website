@@ -1,4 +1,5 @@
 
+
 import { motion, useReducedMotion } from 'framer-motion'
 import {
   FiArrowRight,
@@ -105,7 +106,7 @@ export default function About() {
               className="mt-5 max-w-xl font-display text-[clamp(2.25rem,4.5vw,3.75rem)] font-semibold leading-[1.08] tracking-[-0.05em] text-[#202A35] [text-wrap:balance]"
             >
               The Engineering Creed behind{' '}
-              <span className="bg-gradient-to-r from-[#4A82B7] via-[#7777C9] to-[#D98263] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-indigo-700 via-violet-600 to-purple-500 bg-clip-text text-transparent">
                 RD AI Labs.
               </span>
             </motion.h2>
@@ -127,7 +128,7 @@ export default function About() {
               </h3>
 
               <p className="mt-3 text-sm leading-7 text-[#626975] sm:text-[15px]">
-               We don't believe in technology for the sake of technology. Every architecture, every line of code, and every solution serves a clear purpose: solving real problems and creating lasting results.
+                We don't believe in technology for the sake of technology. Every architecture, every line of code, and every solution serves a clear purpose: solving real problems and creating lasting results.
               </p>
             </motion.div>
 
