@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { FiArrowRight, FiCode, FiUsers, FiGlobe, FiTrendingUp } from 'react-icons/fi'
+import { FiArrowRight, FiCode, FiUsers, FiTrendingUp } from 'react-icons/fi'
+// import { FiGlobe } from 'react-icons/fi' // used only by the commented-out "Global Opportunities" card
 import { COMPANY } from '../data'
 import Reveal from './Reveal'
 
@@ -26,12 +27,12 @@ const HIGHLIGHTS = [
     description:
       'Learn from experienced technology leaders through practical guidance and engineering standards.',
   },
-  {
-    icon: FiGlobe,
-    title: 'Global Opportunities',
-    description:
-      'Develop your skills and contribute to technology solutions designed for businesses everywhere.',
-  },
+  // {
+  //   icon: FiGlobe,
+  //   title: 'Global Opportunities',
+  //   description:
+  //     'Develop your skills and contribute to technology solutions designed for businesses everywhere.',
+  // },
   {
     icon: FiTrendingUp,
     title: 'Continuous Growth',
@@ -57,23 +58,23 @@ export default function Careers() {
     >
       <div className="container-x relative">
 
-        {/* Main heading */}
+        {/* Main heading (Hero style) */}
         <Reveal>
           <div className="mb-12 max-w-4xl lg:mb-16">
 
-            <p className="mb-5 flex items-center gap-2.5 text-[10px] font-bold uppercase tracking-[0.24em] text-indigo-700 sm:text-xs">
-              <span className="h-px w-8 bg-indigo-600" />
+            <p className="mb-4 flex items-center gap-2.5 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-800 sm:text-[11px]">
+              <span aria-hidden="true" className="h-px w-8 bg-violet-700/70" />
               Careers at RD AI Labs
             </p>
 
-            <h2 className="font-display text-[clamp(2.2rem,5vw,4.5rem)] font-extrabold leading-[1.08] tracking-[-0.05em] text-slate-950">
+            <h2 className="font-display text-[clamp(1.8rem,3vw,2.8rem)] font-bold leading-[1.3] tracking-[-0.045em] text-slate-950 [text-wrap:balance]">
               Skill is Universal.
-              <span className="block bg-gradient-to-r from-indigo-700 via-violet-600 to-purple-500 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-[#ff6a2b] via-[#ec4899] to-[#a43fe0] bg-clip-text text-transparent">
                 We Provide the Horizon.
               </span>
             </h2>
 
-            <p className="mt-7 max-w-3xl text-sm leading-7 text-slate-700 sm:text-base sm:leading-8">
+            <p className="mt-6 max-w-[540px] text-[12px] leading-[1.75] text-slate-700 sm:text-[13px] sm:leading-[1.8]">
               We hire for problem-solving ability, curiosity, and drive,
               not just years of experience. We may not have an open role
               today, but we are always building our talent pipeline.
@@ -94,25 +95,25 @@ export default function Careers() {
               />
 
               <div className="relative">
-                <h3 className="font-display text-2xl font-bold leading-tight tracking-tight text-slate-950 sm:text-3xl">
+                <h3 className="font-display text-[clamp(1.5rem,2.4vw,2.2rem)] font-bold leading-[1.25] tracking-[-0.045em] text-slate-950">
                   We don’t just hire talent.
-                  <span className="block text-indigo-700">
+                  <span className="block bg-gradient-to-r from-[#ff6a2b] via-[#ec4899] to-[#a43fe0] bg-clip-text text-transparent">
                     We help build it.
                   </span>
                 </h3>
 
-                <p className="mt-5 text-sm leading-7 text-slate-700 sm:text-base sm:leading-8">
+                <p className="mt-5 text-[12px] leading-[1.75] text-slate-700 sm:text-[13px] sm:leading-[1.8]">
                   Under the direct mentorship of our senior architects and proven quality standards, we help motivated people grow into world-class engineers.
                 </p>
 
-                <p className="mt-4 text-sm font-semibold leading-7 text-slate-900 sm:text-base">
+                <p className="mt-4 text-[12px] font-semibold leading-[1.75] text-slate-950 sm:text-[13px] sm:leading-[1.8]">
                   Don’t wait for a job posting. If you have the drive,
                   send us your profile and start the conversation.
                 </p>
 
                 <a
                   href={profileEmail}
-                  className={`group mt-8 inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-slate-950 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-slate-950/15 transition duration-300 hover:-translate-y-1 hover:bg-indigo-800 hover:shadow-xl ${FOCUS} motion-reduce:transition-none`}
+                  className={`group mt-8 inline-flex min-h-[48px] items-center justify-center gap-3 rounded-full bg-slate-950 px-7 py-3 text-[13px] font-semibold text-white shadow-lg shadow-slate-950/15 transition duration-300 hover:-translate-y-1 hover:bg-slate-800 hover:shadow-xl sm:text-sm ${FOCUS} motion-reduce:transition-none`}
                 >
                   Share your profile
 
@@ -123,7 +124,7 @@ export default function Careers() {
                   />
                 </a>
 
-                <p className="mt-4 text-xs leading-relaxed text-slate-500">
+                <p className="mt-4 text-[11px] leading-relaxed text-slate-700 sm:text-xs">
                   Include your resume, portfolio, or LinkedIn link.
                 </p>
               </div>
@@ -152,11 +153,11 @@ export default function Careers() {
                       </span>
 
                       <div>
-                        <h3 className="font-display text-base font-bold tracking-tight text-slate-950 sm:text-lg">
+                        <h3 className="font-display text-lg font-bold leading-snug tracking-[-0.03em] text-slate-950 sm:text-xl">
                           {item.title}
                         </h3>
 
-                        <p className="mt-2 text-sm leading-6 text-slate-600">
+                        <p className="mt-2 text-[12px] leading-[1.75] text-slate-700 sm:text-[13px] sm:leading-[1.8]">
                           {item.description}
                         </p>
                       </div>
@@ -170,7 +171,7 @@ export default function Careers() {
 
         {/* Contact email */}
         <Reveal>
-          <p className="mt-12 text-center text-sm text-slate-700 sm:mt-16">
+          <p className="mt-12 text-center text-[12px] text-slate-700 sm:mt-16 sm:text-[13px]">
             Have a question? Reach us at{' '}
             <a
               href={`mailto:${COMPANY.email}`}
