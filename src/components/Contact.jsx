@@ -303,7 +303,7 @@ export default function Contact() {
     <>
       <section
         id="contact"
-        className="relative overflow-hidden px-4 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-28"
+        className="relative overflow-hidden px-4 pt-10 pb-20 sm:px-8 sm:pt-12 sm:pb-24 lg:px-10 lg:pt-8 lg:pb-28"
         style={SECTION_BG}
       >
         <div className="container-x relative mx-auto max-w-6xl">
@@ -315,9 +315,20 @@ export default function Contact() {
                 Contact us
               </p>
 
-              <h1 className="mt-4 font-display text-[clamp(2rem,3.6vw,3rem)] font-bold leading-[1.1] tracking-tight bg-gradient-to-r from-indigo-700 via-violet-600 to-purple-500 bg-clip-text text-transparent">
-                Let’s architect the solution together.
-              </h1>
+              
+<h1 className="mt-4 font-display text-[clamp(2rem,3.6vw,3rem)] font-bold leading-[1.1] tracking-tight text-slate-950">
+  Let’s architect the{' '}
+  <span
+    style={{
+      background: 'linear-gradient(90deg, #FE6832 0%, #F0448E 52%, #B441D0 100%)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+    }}
+  >
+    solution together.
+  </span>
+</h1>
+
 
               <p className="mt-5 max-w-md text-base leading-7 text-slate-800">
                 We don’t rely on empty technical pitches. Connect with us directly to map out your challenges, evaluate feasibility, and build lasting trust from day one.
