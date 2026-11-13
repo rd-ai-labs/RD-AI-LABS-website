@@ -22,7 +22,7 @@ const SECTION_BG = {
 const FOCUS =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2'
 
-// Common styling for every form field
+// Common form field styling
 const FIELD_CLASS =
   'w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-950 placeholder:font-normal placeholder:text-slate-400 caret-slate-950 outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100'
 
@@ -56,12 +56,32 @@ export default function Careers() {
   const [showForm, setShowForm] = useState(false)
   const [fileError, setFileError] = useState('')
 
-  const handleSubmit = (event) => {
-    const file = event.currentTarget.elements.attachment.files[0]
+  const closeForm = () => {
+    setShowForm(false)
+    setFileError('')
+  }
 
-    if (file && file.size > 10 * 1024 * 1024) {
+  const handleSubmit = (event) => {
+    const form = event.currentTarget
+    const file = form.elements.attachment.files[0]
+
+    if (!file) {
+      event.preventDefault()
+      setFileError('Please upload your resume.')
+      return
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
       event.preventDefault()
       setFileError('Resume must be smaller than 10 MB.')
+      return
+    }
+
+    const allowedExtensions = /\.(pdf|doc|docx)$/i
+
+    if (!allowedExtensions.test(file.name)) {
+      event.preventDefault()
+      setFileError('Please upload a PDF, DOC or DOCX file.')
       return
     }
 
@@ -79,6 +99,7 @@ export default function Careers() {
         {/* Main heading */}
         <Reveal>
           <div className="mb-12 max-w-4xl lg:mb-16">
+
             <p className="mb-4 flex items-center gap-2.5 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-800 sm:text-[11px]">
               <span
                 aria-hidden="true"
@@ -115,6 +136,7 @@ export default function Careers() {
               />
 
               <div className="relative">
+
                 <h3 className="font-display text-[clamp(1.5rem,2.4vw,2.2rem)] font-bold leading-[1.25] tracking-[-0.045em] text-slate-950">
                   We don’t just hire talent.
                   <span className="block bg-gradient-to-r from-[#ff6a2b] via-[#ec4899] to-[#a43fe0] bg-clip-text text-transparent">
@@ -150,12 +172,14 @@ export default function Careers() {
                 <p className="mt-4 text-[11px] leading-relaxed text-slate-700 sm:text-xs">
                   Include your resume, portfolio, or LinkedIn link.
                 </p>
+
               </div>
             </div>
           </Reveal>
 
           {/* Right highlights */}
           <div className="grid gap-4 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1">
+
             {HIGHLIGHTS.map((item, index) => {
               const Icon = item.icon
 
@@ -167,6 +191,7 @@ export default function Careers() {
                     className="group relative h-full overflow-hidden rounded-2xl border border-white/70 bg-white/50 p-5 shadow-[0_8px_30px_-20px_rgba(80,70,100,.35)] backdrop-blur-xl transition duration-300 hover:bg-white/75 hover:shadow-lg sm:p-6 motion-reduce:transition-none"
                   >
                     <div className="flex items-start gap-4">
+
                       <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-950 text-white transition duration-300 group-hover:-translate-y-1 group-hover:bg-indigo-700 motion-reduce:transition-none">
                         <Icon size={21} aria-hidden="true" />
                       </span>
@@ -180,11 +205,13 @@ export default function Careers() {
                           {item.description}
                         </p>
                       </div>
+
                     </div>
                   </motion.div>
                 </Reveal>
               )
             })}
+
           </div>
         </div>
 
@@ -200,6 +227,7 @@ export default function Careers() {
             </a>
           </p>
         </Reveal>
+
       </div>
 
       {/* Career Application Modal */}
@@ -210,13 +238,15 @@ export default function Careers() {
           aria-modal="true"
           aria-labelledby="career-form-title"
         >
+
           <div className="relative my-auto w-full max-w-2xl overflow-hidden rounded-3xl border border-white/60 bg-white shadow-2xl">
 
             {/* Modal header */}
             <div className="relative bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 px-6 py-7 text-white sm:px-9">
+
               <button
                 type="button"
-                onClick={() => setShowForm(false)}
+                onClick={closeForm}
                 aria-label="Close application form"
                 className="absolute right-5 top-5 rounded-full p-2 text-white/80 transition hover:bg-white/15 hover:text-white"
               >
@@ -238,16 +268,19 @@ export default function Careers() {
                 Tell us about yourself. Our team would love to learn
                 about your skills and interests.
               </p>
+
             </div>
 
             {/* Application form */}
             <form
-              action={`https://formsubmit.co/${COMPANY.email}`}
+              action="https://formsubmit.co/contact@rdailabs.com"
               method="POST"
               encType="multipart/form-data"
               onSubmit={handleSubmit}
               className="space-y-5 p-6 sm:p-9"
             >
+
+              {/* FormSubmit settings */}
               <input
                 type="hidden"
                 name="_subject"
@@ -262,6 +295,7 @@ export default function Careers() {
 
               {/* Name and email */}
               <div className="grid gap-5 sm:grid-cols-2">
+
                 <div>
                   <label className="mb-2 block text-xs font-bold text-slate-900">
                     Full Name *
@@ -295,10 +329,12 @@ export default function Careers() {
                     style={FIELD_STYLE}
                   />
                 </div>
+
               </div>
 
               {/* Phone and skills */}
               <div className="grid gap-5 sm:grid-cols-2">
+
                 <div>
                   <label className="mb-2 block text-xs font-bold text-slate-900">
                     Phone Number *
@@ -331,6 +367,7 @@ export default function Careers() {
                     style={FIELD_STYLE}
                   />
                 </div>
+
               </div>
 
               {/* Experience */}
@@ -373,6 +410,7 @@ export default function Careers() {
                 </label>
 
                 <label className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-indigo-200 bg-indigo-50/50 px-5 py-7 text-center transition hover:border-indigo-400 hover:bg-indigo-50">
+
                   <FiUploadCloud
                     size={30}
                     className="mb-3 text-indigo-600"
@@ -393,6 +431,7 @@ export default function Careers() {
                     required
                     className="mt-4 block w-full max-w-xs text-xs font-medium text-slate-900 file:mr-3 file:cursor-pointer file:rounded-full file:border-0 file:bg-indigo-100 file:px-4 file:py-2 file:text-xs file:font-bold file:text-indigo-800 hover:file:bg-indigo-200"
                   />
+
                 </label>
 
                 {fileError && (
@@ -403,9 +442,10 @@ export default function Careers() {
                     {fileError}
                   </p>
                 )}
+
               </div>
 
-              {/* Submit */}
+              {/* Submit button */}
               <button
                 type="submit"
                 className={`group flex min-h-[50px] w-full items-center justify-center gap-3 rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-xl ${FOCUS}`}
@@ -422,10 +462,12 @@ export default function Careers() {
                 By submitting, you agree to share your information
                 with RD AI Labs for recruitment purposes.
               </p>
+
             </form>
           </div>
         </div>
       )}
+
     </section>
   )
 }
