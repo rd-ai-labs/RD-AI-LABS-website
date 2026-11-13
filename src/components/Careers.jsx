@@ -22,6 +22,14 @@ const SECTION_BG = {
 const FOCUS =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2'
 
+// Common styling for every form field
+const FIELD_CLASS =
+  'w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-950 placeholder:font-normal placeholder:text-slate-400 caret-slate-950 outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100'
+
+const FIELD_STYLE = {
+  WebkitTextFillColor: '#0f172a',
+}
+
 const HIGHLIGHTS = [
   {
     icon: FiCode,
@@ -255,9 +263,10 @@ export default function Careers() {
               {/* Name and email */}
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label className="mb-2 block text-xs font-semibold text-slate-800">
+                  <label className="mb-2 block text-xs font-bold text-slate-900">
                     Full Name *
                   </label>
+
                   <input
                     type="text"
                     name="fullName"
@@ -265,14 +274,16 @@ export default function Careers() {
                     required
                     maxLength={100}
                     autoComplete="name"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
+                    className={FIELD_CLASS}
+                    style={FIELD_STYLE}
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-xs font-semibold text-slate-800">
+                  <label className="mb-2 block text-xs font-bold text-slate-900">
                     Email Address *
                   </label>
+
                   <input
                     type="email"
                     name="email"
@@ -280,7 +291,8 @@ export default function Careers() {
                     required
                     maxLength={254}
                     autoComplete="email"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
+                    className={FIELD_CLASS}
+                    style={FIELD_STYLE}
                   />
                 </div>
               </div>
@@ -288,9 +300,10 @@ export default function Careers() {
               {/* Phone and skills */}
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label className="mb-2 block text-xs font-semibold text-slate-800">
+                  <label className="mb-2 block text-xs font-bold text-slate-900">
                     Phone Number *
                   </label>
+
                   <input
                     type="tel"
                     name="phone"
@@ -298,57 +311,64 @@ export default function Careers() {
                     required
                     maxLength={20}
                     autoComplete="tel"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
+                    className={FIELD_CLASS}
+                    style={FIELD_STYLE}
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-xs font-semibold text-slate-800">
+                  <label className="mb-2 block text-xs font-bold text-slate-900">
                     Technical Skills *
                   </label>
+
                   <input
                     type="text"
                     name="skills"
                     placeholder="React, Node.js, Python..."
                     required
                     maxLength={300}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
+                    className={FIELD_CLASS}
+                    style={FIELD_STYLE}
                   />
                 </div>
               </div>
 
               {/* Experience */}
               <div>
-                <label className="mb-2 block text-xs font-semibold text-slate-800">
+                <label className="mb-2 block text-xs font-bold text-slate-900">
                   Experience / Education *
                 </label>
+
                 <textarea
                   name="experience"
                   rows={3}
                   required
                   maxLength={2000}
                   placeholder="Tell us about your experience, education, projects or interests..."
-                  className="w-full resize-y rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
+                  className={`${FIELD_CLASS} resize-y`}
+                  style={FIELD_STYLE}
                 />
               </div>
 
               {/* Portfolio */}
               <div>
-                <label className="mb-2 block text-xs font-semibold text-slate-800">
+                <label className="mb-2 block text-xs font-bold text-slate-900">
                   LinkedIn / Portfolio URL
                 </label>
+
                 <input
                   type="url"
                   name="portfolio"
                   placeholder="https://linkedin.com/in/yourprofile"
                   maxLength={500}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
+                  className={FIELD_CLASS}
+                  style={FIELD_STYLE}
                 />
               </div>
 
               {/* Resume upload */}
               <div>
-                <label className="mb-2 block text-xs font-semibold text-slate-800">
+                <label className="mb-2 block text-xs font-bold text-slate-900">
                   Upload Resume *
                 </label>
 
@@ -358,11 +378,11 @@ export default function Careers() {
                     className="mb-3 text-indigo-600"
                   />
 
-                  <span className="text-sm font-semibold text-slate-800">
+                  <span className="text-sm font-bold text-slate-900">
                     Choose your resume
                   </span>
 
-                  <span className="mt-1 text-[11px] text-slate-500">
+                  <span className="mt-1 text-[11px] text-slate-600">
                     PDF, DOC or DOCX · Maximum 10 MB
                   </span>
 
@@ -371,12 +391,15 @@ export default function Careers() {
                     name="attachment"
                     accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                     required
-                    className="mt-4 block w-full max-w-xs text-xs text-slate-600 file:mr-3 file:rounded-full file:border-0 file:bg-indigo-100 file:px-4 file:py-2 file:text-xs file:font-semibold file:text-indigo-700 hover:file:bg-indigo-200"
+                    className="mt-4 block w-full max-w-xs text-xs font-medium text-slate-900 file:mr-3 file:cursor-pointer file:rounded-full file:border-0 file:bg-indigo-100 file:px-4 file:py-2 file:text-xs file:font-bold file:text-indigo-800 hover:file:bg-indigo-200"
                   />
                 </label>
 
                 {fileError && (
-                  <p className="mt-2 text-xs font-medium text-red-600" role="alert">
+                  <p
+                    className="mt-2 text-xs font-semibold text-red-600"
+                    role="alert"
+                  >
                     {fileError}
                   </p>
                 )}
@@ -388,6 +411,7 @@ export default function Careers() {
                 className={`group flex min-h-[50px] w-full items-center justify-center gap-3 rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-xl ${FOCUS}`}
               >
                 Submit Application
+
                 <FiArrowRight
                   size={18}
                   className="transition-transform duration-300 group-hover:translate-x-1"
