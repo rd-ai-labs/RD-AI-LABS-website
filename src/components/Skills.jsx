@@ -40,11 +40,10 @@ const SCENE_ICONS = {
 /* -------------------------------------------------------------------------- */
 /*  Shared window chrome for the preview UIs                                   */
 /* -------------------------------------------------------------------------- */
-
 function Window({ title, children }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-900/10 bg-slate-950/90 shadow-2xl shadow-slate-900/25 backdrop-blur-xl">
-      <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
+    <div className="flex h-[329px] w-full flex-col overflow-hidden rounded-2xl border border-slate-900/10 bg-slate-950/90 shadow-2xl shadow-slate-900/25 backdrop-blur-xl">
+      <div className="flex shrink-0 items-center gap-2 border-b border-white/10 px-4 py-3">
         <span className="h-2.5 w-2.5 rounded-full bg-rose-400/80" />
         <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
         <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
@@ -52,10 +51,14 @@ function Window({ title, children }) {
           {title}
         </span>
       </div>
-      {children}
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        {children}
+      </div>
     </div>
   )
 }
+  
+
 
 function AiBadge() {
   return (
