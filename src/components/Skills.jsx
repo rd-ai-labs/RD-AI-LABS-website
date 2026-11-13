@@ -344,7 +344,7 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      className="relative overflow-hidden px-5 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24"
+     className="relative overflow-hidden px-5 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-10 lg:pb-24 lg:pt-11"
       style={SECTION_BG}
     >
       <div className="container-x relative mx-auto max-w-7xl">

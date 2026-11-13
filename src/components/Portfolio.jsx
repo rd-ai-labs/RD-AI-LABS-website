@@ -19,10 +19,9 @@ const PHILOSOPHIES = [
     footer: 'REGIONAL HUBS',
     description:
       "We intentionally build our engineering hubs in emerging towns because tech talent isn't limited to mega-cities or crowded tech corridors. By tapping into driven minds outside traditional hubs, we bring unmatched focus, dedication, and passion to your projects.",
-    // Unsplash: small team collaborating in a bright, friendly workspace
     image:
-      'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1000&q=85',
-    imageAlt: 'Small team of engineers collaborating in a bright, welcoming workspace',
+      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=85',
+    imageAlt: 'Small team of engineers collaborating around laptops in a bright, welcoming workspace',
     accent: 'from-orange-500 to-rose-500',
     iconBg: 'bg-orange-100 text-orange-700',
   },
@@ -33,10 +32,9 @@ const PHILOSOPHIES = [
     footer: 'TALENT GROWTH',
     description:
       'Our talent incubator delivers world-class engineering by empowering fresh, ambitious minds. Through mentorship, hands-on experience, and continuous learning, we shape regional capability into high-performing development teams.',
-    // Unsplash: young people learning together around laptops
     image:
-      'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=85',
-    imageAlt: 'Young developers learning together around laptops through hands-on mentorship',
+      'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=85',
+    imageAlt: 'Young learners studying together through hands-on mentorship',
     accent: 'from-sky-500 to-indigo-500',
     iconBg: 'bg-sky-100 text-sky-700',
   },
@@ -47,8 +45,9 @@ const PHILOSOPHIES = [
     footer: 'PROVEN STANDARDS',
     description:
       'Our engineering approach is guided by 20+ years of enterprise technology leadership. Every solution benefits from experienced technical oversight, thoughtful architecture, and disciplined mentorship—giving you the agility of emerging talent backed by mature engineering standards.',
-    image: '/images/quality-guardrails-3d.jpg',
-    imageAlt: 'Enterprise cybersecurity and engineering quality protection',
+    image:
+      'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1000&q=85',
+    imageAlt: 'Digital padlock on a circuit board representing enterprise security and engineering quality',
     accent: 'from-violet-500 to-purple-500',
     iconBg: 'bg-violet-100 text-violet-700',
   },
@@ -59,30 +58,27 @@ export default function Portfolio() {
 
   return (
     <section
-     id="philosophy"
-      className="relative overflow-hidden bg-white px-5 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-28"
+      id="philosophy"
+      className="relative overflow-hidden bg-white px-5 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-11"
     >
       <div className="container-x relative mx-auto max-w-7xl">
 
-        {/* Section heading */}
+        {/* Section heading (Hero style) */}
         <Reveal>
           <div className="mb-12 max-w-4xl sm:mb-16">
-            <p className="mb-4 flex items-center gap-2.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-sky-700 sm:text-[11px]">
-              <span
-                aria-hidden="true"
-                className="h-px w-8 bg-sky-600"
-              />
+            <p className="mb-4 flex items-center gap-2.5 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-800 sm:text-[11px]">
+              <span aria-hidden="true" className="h-px w-8 bg-violet-700/70" />
               Our Growth Philosophy
             </p>
 
-            <h2 className="font-display text-[clamp(2.2rem,4.5vw,3.8rem)] font-semibold leading-[1.1] tracking-[-0.045em] text-slate-950">
+            <h2 className="font-display text-[clamp(1.8rem,3vw,2.8rem)] font-bold leading-[1.3] tracking-[-0.045em] text-slate-950 [text-wrap:balance]">
               Growing Across the{' '}
-              <span className="bg-gradient-to-r from-orange-500 via-rose-500 to-indigo-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#ff6a2b] via-[#ec4899] to-[#a43fe0] bg-clip-text text-transparent">
                 Horizon.
               </span>
             </h2>
 
-            <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
+            <p className="mt-6 max-w-[540px] text-[12px] leading-[1.75] text-slate-700 sm:text-[13px] sm:leading-[1.8]">
               We don’t believe in staying restricted within geographic
               boundaries. Our goal is to connect untapped opportunities
               with incredible talent, scaling our impact horizontally
@@ -100,7 +96,6 @@ export default function Portfolio() {
               <Reveal key={item.number} delay={index * 0.1}>
                 <article className="group relative flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-slate-300 hover:shadow-xl hover:shadow-slate-900/[0.08] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
 
-                  {/* Image (gradient shows if the image file is missing) */}
                   <div
                     className={`relative h-56 overflow-hidden bg-gradient-to-br ${item.accent} sm:h-60`}
                   >
@@ -128,19 +123,18 @@ export default function Portfolio() {
                     </span>
                   </div>
 
-                  {/* Card content */}
                   <div className="flex flex-1 flex-col p-6 sm:p-7">
                     <div className={`mb-4 h-1 w-12 rounded-full bg-gradient-to-r ${item.accent}`} />
 
-                    <h3 className="font-display text-xl font-bold leading-snug tracking-tight text-slate-950">
+                    <h3 className="font-display text-lg font-bold leading-snug tracking-[-0.03em] text-slate-950 sm:text-xl">
                       {item.title}
                     </h3>
 
-                    <p className="mt-4 flex-1 text-sm leading-7 text-slate-600">
+                    <p className="mt-4 flex-1 text-[12px] leading-[1.75] text-slate-700 sm:text-[13px] sm:leading-[1.8]">
                       {item.description}
                     </p>
 
-                    <div className="mt-6 flex items-center gap-2 border-t border-slate-100 pt-5 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    <div className="mt-6 flex items-center gap-2 border-t border-slate-100 pt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-800 sm:text-[11px]">
                       <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${item.iconBg}`}>
                         <FiGlobe size={14} aria-hidden="true" />
                       </span>
@@ -148,7 +142,6 @@ export default function Portfolio() {
                     </div>
                   </div>
 
-                  {/* Bottom accent */}
                   <div
                     aria-hidden="true"
                     className={`absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-gradient-to-r ${item.accent} transition-transform duration-500 group-hover:scale-x-100 motion-reduce:transition-none`}
@@ -174,15 +167,15 @@ export default function Portfolio() {
 
             <div className="relative z-10 flex flex-col gap-7 md:flex-row md:items-center md:justify-between">
               <div className="max-w-2xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-400">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-orange-400 sm:text-[11px]">
                   Our vision. Your opportunity.
                 </p>
 
-                <h3 className="mt-3 font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                <h3 className="mt-3 font-display text-[clamp(1.5rem,2.4vw,2.2rem)] font-bold leading-[1.25] tracking-[-0.045em] text-white">
                   Great talent. Thoughtful engineering. Global possibilities.
                 </h3>
 
-                <p className="mt-3 text-sm leading-7 text-slate-200">
+                <p className="mt-3 text-[12px] leading-[1.75] text-slate-200 sm:text-[13px] sm:leading-[1.8]">
                   Have a challenge worth solving? Let’s explore how we can
                   turn your ideas into meaningful technology solutions.
                 </p>
@@ -191,7 +184,7 @@ export default function Portfolio() {
               <button
                 type="button"
                 onClick={() => goTo('contact')}
-                className={`group inline-flex min-h-12 shrink-0 items-center justify-center gap-3 rounded-full bg-white px-6 py-3 text-sm font-bold text-slate-950 transition duration-300 hover:-translate-y-1 hover:bg-slate-100 hover:shadow-lg ${FOCUS}`}
+                className={`group inline-flex min-h-[48px] shrink-0 items-center justify-center gap-3 rounded-full bg-white px-7 py-3 text-[13px] font-semibold text-slate-950 transition duration-300 hover:-translate-y-1 hover:bg-slate-100 hover:shadow-lg sm:text-sm ${FOCUS}`}
               >
                 Let’s connect
 
