@@ -53,7 +53,7 @@ export default function Careers() {
   return (
    <section
   id="careers"
-  className="relative overflow-hidden px-5 pb-20 pt-24 sm:px-8 sm:pb-24 sm:pt-28 lg:px-10 lg:pb-24 lg:pt-15"
+  className="relative overflow-hidden px-5 pb-20 pt-10 sm:px-8 sm:pb-24 sm:pt-12 lg:px-10 lg:pb-24 lg:pt-8"
   style={SECTION_BG}
 >
       <div className="container-x relative">
