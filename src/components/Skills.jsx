@@ -16,7 +16,7 @@ import { SKILL_SCENES } from '../data'
 import Reveal from './Reveal'
 
 const EASE = [0.22, 1, 0.36, 1]
-const AUTO_MS = 2000
+const AUTO_MS = 3000
 
 const FOCUS =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fbf1ea]'
@@ -51,7 +51,7 @@ function Window({ title, children }) {
           {title}
         </span>
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div class3Name="min-h-0 flex-1 overflow-y-auto">
         {children}
       </div>
     </div>
