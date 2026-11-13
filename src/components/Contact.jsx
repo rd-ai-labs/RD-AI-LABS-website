@@ -303,7 +303,7 @@ export default function Contact() {
     <>
       <section
         id="contact"
-        className="relative overflow-hidden px-4 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-28"
+        className="relative overflow-hidden px-4 pt-10 pb-20 sm:px-8 sm:pt-12 sm:pb-24 lg:px-10 lg:pt-8 lg:pb-28"
         style={SECTION_BG}
       >
         <div className="container-x relative mx-auto max-w-6xl">
