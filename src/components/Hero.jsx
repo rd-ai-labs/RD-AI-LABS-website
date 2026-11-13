@@ -133,16 +133,16 @@ const HEADLINE_LINES = [
   [
     { text: 'Any', accent: false },
     { text: 'Software', accent: false },
-    { text: 'Challenge.', accent: true },
+    { text: 'Challenge', accent: true },
   ],
   [
     { text: 'Any', accent: false },
-    { text: 'Scale.', accent: true },
+    { text: 'Scale', accent: true },
   ],
   [
     { text: 'Solved', accent: false },
     { text: 'from the', accent: false },
-    { text: 'Ground Up.', accent: true },
+    { text: 'Ground Up', accent: true },
   ],
 ]
 
@@ -185,7 +185,7 @@ export default function Hero({ ready = true }) {
       id="home"
       ref={sectionRef}
       style={HERO_BG}
-      className="relative isolate flex min-h-[100svh] items-center overflow-hidden px-5 pb-16 pt-28 sm:px-8 sm:pt-32 lg:px-8 lg:pb-20 lg:pt-28"
+      className="relative isolate flex min-h-[100svh] items-center overflow-hidden px-5 pb-20 pt-28 sm:px-8 sm:pb-24 sm:pt-32 lg:px-8 lg:pb-24 lg:pt-32"
     >
       {/* Background atmosphere */}
       <div
@@ -214,14 +214,14 @@ export default function Hero({ ready = true }) {
           {/* Positioning label */}
           <motion.div variants={fadeUp}>
             <span className="inline-flex items-center rounded-full border border-white/60 bg-white/40 px-4 py-2.5 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-800 shadow-sm shadow-slate-900/[0.03] backdrop-blur-md sm:text-[11px]">
-              Enterprise Engineering. Startup Agility
+              Enterprise Engineering, Startup Agility
             </span>
           </motion.div>
 
           {/* Headline */}
           <motion.h1
             variants={headline}
-            className="mt-6 max-w-[680px] font-display text-[clamp(1.8rem,3vw,2.8rem)] font-bold leading-[1.15] tracking-[-0.045em] text-slate-950 [text-wrap:balance] sm:mt-7"
+            className="mt-6 max-w-[680px] font-display text-[clamp(1.8rem,3vw,2.8rem)] font-bold leading-[1.3] tracking-[-0.045em] text-slate-950 [text-wrap:balance] sm:mt-7"
           >
             {HEADLINE_LINES.map((line, lineIndex) => (
               <span key={lineIndex} className="block">
@@ -231,7 +231,7 @@ export default function Hero({ ready = true }) {
                     variants={word}
                     className={`mr-[0.2em] inline-block ${
                       item.accent
-                        ? 'bg-gradient-to-r from-indigo-700 via-violet-600 to-purple-500 bg-clip-text text-transparent'
+                        ? 'bg-gradient-to-r from-[#ff6a2b] via-[#ec4899] to-[#a43fe0] bg-clip-text text-transparent'
                         : ''
                     }`}
                   >
@@ -245,7 +245,7 @@ export default function Hero({ ready = true }) {
           {/* Description */}
           <motion.p
             variants={fadeUp}
-            className="mt-4 max-w-[540px] text-[12px] leading-[1.75] text-slate-700 sm:mt-5 sm:text-[13px] sm:leading-[1.8]"
+            className="mt-6 max-w-[540px] text-[12px] leading-[1.75] text-slate-700 sm:mt-7 sm:text-[13px] sm:leading-[1.8]"
           >
             We pair 20+ years of enterprise engineering leadership with
             untapped talent from emerging towns to build reliable software
@@ -257,7 +257,7 @@ export default function Hero({ ready = true }) {
           {/* Action buttons */}
           <motion.div
             variants={fadeUp}
-            className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
+            className="mt-9 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
           >
             <button
               type="button"
@@ -284,11 +284,11 @@ export default function Hero({ ready = true }) {
           {/* Supporting statement */}
           <motion.div
             variants={fadeUp}
-            className="mt-6 flex flex-wrap items-center gap-3 sm:mt-7"
+            className="mt-8 flex flex-wrap items-center gap-3 sm:mt-9"
           >
             <span className="h-px w-8 bg-violet-700/70" />
             <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-700 sm:text-xs">
-              Local Roots. Global Standards. Limitless Possibilities.
+              Local Roots, Global Standards, Limitless Possibilities
             </p>
           </motion.div>
         </motion.div>

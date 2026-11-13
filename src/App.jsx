@@ -7,9 +7,9 @@ import Loader from './components/Loader'
 // import CursorGlow from './components/CursorGlow'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import About from './components/About'
 import Services from './components/Services'
 import Skills from './components/Skills'
-import About from './components/About'
 import Portfolio from './components/Portfolio'
 import Careers from './components/Careers'
 // import Blog from './components/Blog'
@@ -33,13 +33,14 @@ function Home({ ready }) {
     return () => clearTimeout(t)
   }, [state])
 
+  // Keep this order the same as NAV_LINKS in src/data.js
   return (
     <main>
       <Hero ready={ready} />
+      <About />
       <Services />
       <Skills />
-      <About />
-      <Portfolio />
+      <Portfolio /> {/* Our Philosophy section (id="philosophy") */}
       <Careers />
       {/* <Blog /> */}
       <Contact />
