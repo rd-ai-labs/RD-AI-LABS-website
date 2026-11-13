@@ -139,7 +139,7 @@ export default function Footer() {
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/20 pt-6 text-sm text-white sm:flex-row">
 
           <p>
-            © {new Date().getFullYear()} © 2026 RD AI LABS (OPC) PRIVATE LIMITED. All Rights Reserved.
+          © 2026 RD AI LABS (OPC) PRIVATE LIMITED. All Rights Reserved.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
