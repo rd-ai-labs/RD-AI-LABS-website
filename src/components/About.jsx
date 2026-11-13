@@ -1,5 +1,3 @@
-
-
 import { motion, useReducedMotion } from 'framer-motion'
 import {
   FiArrowRight,
@@ -59,7 +57,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative isolate overflow-hidden bg-[#F7F3EF] px-5 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24"
+      className="relative isolate overflow-hidden bg-[#F7F3EF] px-5 pb-16 pt-8 sm:px-8 sm:pb-20 sm:pt-10 lg:px-10 lg:pb-24 lg:pt-12"
     >
       {/* Background */}
       <div
@@ -89,31 +87,34 @@ export default function About() {
           initial={reduceMotion ? false : 'hidden'}
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}
-          className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16"
+          className="grid items-start gap-10 lg:grid-cols-2 lg:gap-14"
         >
           {/* LEFT CONTENT */}
           <div className="min-w-0">
 
+            {/* Label */}
             <motion.div variants={fadeUp}>
-              <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#D96D48]">
-                <span className="h-px w-8 bg-[#D96D48]" />
+              <span className="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-sky-700 sm:text-[12px]">
+                <span className="h-px w-7 bg-sky-600" />
                 About RD AI Labs
               </span>
             </motion.div>
 
+            {/* Heading */}
             <motion.h2
               variants={fadeUp}
-              className="mt-5 max-w-xl font-display text-[clamp(2.25rem,4.5vw,3.75rem)] font-semibold leading-[1.08] tracking-[-0.05em] text-[#202A35] [text-wrap:balance]"
+              className="mt-4 max-w-xl font-display text-[clamp(1.8rem,3vw,2.8rem)] font-semibold leading-[1.15] tracking-[-0.045em] text-slate-950 [text-wrap:balance]"
             >
               The Engineering Creed behind{' '}
-              <span className="bg-gradient-to-r from-indigo-700 via-violet-600 to-purple-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 bg-clip-text text-transparent">
                 RD AI Labs.
               </span>
             </motion.h2>
 
+            {/* Intro paragraph */}
             <motion.p
               variants={fadeUp}
-              className="mt-5 max-w-xl text-sm leading-7 text-[#626975] sm:text-base sm:leading-8"
+              className="mt-4 max-w-[540px] text-[13px] leading-[1.75] text-slate-700 sm:mt-5 sm:text-[14px] sm:leading-[1.8]"
             >
               We operate at the intersection of deep architectural maturity and the relentless drive of a modern software startup. By pairing proven engineering discipline with thoughtful innovation, we build technology that delivers meaningful business impact.
             </motion.p>
@@ -121,22 +122,22 @@ export default function About() {
             {/* Engineering philosophy */}
             <motion.div
               variants={fadeUp}
-              className="mt-8 border-l-2 border-[#8BB8D8] pl-5"
+              className="mt-6 max-w-[540px] border-l-2 border-sky-300 pl-4 sm:mt-7"
             >
-              <h3 className="font-display text-lg font-semibold tracking-tight text-[#202A35]">
+              <h3 className="font-display text-[15px] font-semibold tracking-tight text-slate-950 sm:text-[17px]">
                 Built on Engineering Excellence
               </h3>
 
-              <p className="mt-3 text-sm leading-7 text-[#626975] sm:text-[15px]">
+              <p className="mt-2 text-[13px] leading-[1.75] text-slate-700 sm:text-[14px] sm:leading-[1.8]">
                 We don't believe in technology for the sake of technology. Every architecture, every line of code, and every solution serves a clear purpose: solving real problems and creating lasting results.
               </p>
             </motion.div>
 
             {/* CTA */}
-            <motion.div variants={fadeUp} className="mt-8">
+            <motion.div variants={fadeUp} className="mt-6 sm:mt-7">
               <a
                 href="#contact"
-                className="group inline-flex min-h-11 items-center gap-3 rounded-full bg-[#202A35] py-2 pl-6 pr-2 text-sm font-semibold text-white shadow-[0_8px_24px_-12px_rgba(32,42,53,0.55)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#344A5E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+                className="group inline-flex min-h-11 items-center gap-3 rounded-full bg-slate-950 py-2 pl-6 pr-2 text-[14px] font-semibold text-white shadow-[0_8px_24px_-12px_rgba(15,23,42,0.55)] transition duration-300 hover:-translate-y-0.5 hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
               >
                 Let's work together
 
@@ -154,7 +155,7 @@ export default function About() {
           >
             {/* Technology image */}
             <div className="group relative overflow-hidden rounded-[26px] border border-white/80 bg-white/60 p-2 shadow-[0_24px_65px_-32px_rgba(36,48,62,0.35)]">
-              <div className="relative aspect-[5/4] overflow-hidden rounded-[20px] bg-[#E6EAF0]">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] bg-[#E6EAF0]">
 
                 <img
                   src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85"
@@ -163,22 +164,22 @@ export default function About() {
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.035]"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-[#182635]/80 via-transparent to-white/5" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
 
-                <div className="absolute inset-x-5 bottom-5 sm:inset-x-7 sm:bottom-7">
+                <div className="absolute inset-x-5 bottom-5 sm:inset-x-6 sm:bottom-6">
 
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sky-200">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-200 sm:text-[12px]">
                     Our philosophy
                   </span>
 
-                  <h3 className="mt-2 max-w-sm font-display text-2xl font-semibold leading-tight tracking-[-0.035em] text-white sm:text-3xl">
-                    Enterprise discipline.
+                  <h3 className="mt-2 max-w-sm font-display text-xl font-semibold leading-[1.15] tracking-[-0.035em] text-white sm:text-2xl">
+                    Enterprise discipline
                     <span className="block text-orange-300">
-                      Startup innovation.
+                      Startup innovation
                     </span>
                   </h3>
 
-                  <p className="mt-2 max-w-sm text-sm leading-6 text-white/80">
+                  <p className="mt-2 max-w-sm text-[13px] leading-[1.75] text-white/85 sm:text-[14px] sm:leading-[1.8]">
                     Experience that builds confidence. Innovation that
                     moves businesses forward.
                   </p>
@@ -187,16 +188,16 @@ export default function About() {
             </div>
 
             {/* Experience highlight */}
-            <div className="mt-4 flex items-center gap-4 rounded-[20px] border border-white/90 bg-white/75 p-5 shadow-[0_8px_28px_-18px_rgba(36,48,62,0.24)] backdrop-blur-xl">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-100">
-                <FiTrendingUp className="text-orange-700" size={25} />
+            <div className="mt-4 flex items-center gap-4 rounded-[20px] border border-white/90 bg-white/75 p-4 shadow-[0_8px_28px_-18px_rgba(36,48,62,0.24)] backdrop-blur-xl sm:p-5">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-orange-100">
+                <FiTrendingUp className="text-orange-700" size={22} />
               </div>
 
               <div>
-                <p className="font-display text-2xl font-extrabold tracking-tight text-[#202A35]">
+                <p className="font-display text-xl font-bold tracking-tight text-slate-950 sm:text-2xl">
                   20+ Years
                 </p>
-                <p className="mt-1 text-xs leading-5 text-[#626975]">
+                <p className="mt-1 text-[13px] leading-[1.75] text-slate-700 sm:text-[14px]">
                   Enterprise core systems architecture experience
                 </p>
               </div>
@@ -210,7 +211,7 @@ export default function About() {
           initial={reduceMotion ? false : 'hidden'}
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}
-          className="mt-16 grid gap-5 md:grid-cols-3 lg:mt-20"
+          className="mt-12 grid gap-5 md:grid-cols-3 lg:mt-14"
         >
           {PILLARS.map((item) => {
             const Icon = item.icon
@@ -220,19 +221,19 @@ export default function About() {
                 key={item.title}
                 variants={fadeUp}
                 whileHover={reduceMotion ? undefined : { y: -5 }}
-                className="rounded-[22px] border border-white/90 bg-white/75 p-6 shadow-[0_8px_28px_-18px_rgba(36,48,62,0.24)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_18px_40px_-20px_rgba(36,48,62,0.25)] sm:p-7"
+                className="rounded-[22px] border border-white/90 bg-white/75 p-5 shadow-[0_8px_28px_-18px_rgba(36,48,62,0.24)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_18px_40px_-20px_rgba(36,48,62,0.25)] sm:p-6"
               >
                 <div
-                  className={`flex h-12 w-12 items-center justify-center rounded-xl ${item.accent}`}
+                  className={`flex h-11 w-11 items-center justify-center rounded-xl ${item.accent}`}
                 >
-                  <Icon size={22} aria-hidden="true" />
+                  <Icon size={20} aria-hidden="true" />
                 </div>
 
-                <h3 className="mt-5 font-display text-xl font-bold tracking-tight text-[#202A35]">
+                <h3 className="mt-4 font-display text-[17px] font-semibold tracking-tight text-slate-950 sm:text-[19px]">
                   {item.title}
                 </h3>
 
-                <p className="mt-3 text-sm leading-7 text-[#626975]">
+                <p className="mt-2 text-[13px] leading-[1.75] text-slate-700 sm:text-[14px] sm:leading-[1.8]">
                   {item.description}
                 </p>
               </motion.article>

@@ -1,4 +1,3 @@
-
 import { motion, useReducedMotion } from 'framer-motion'
 import {
   FiArrowUpRight,
@@ -70,8 +69,6 @@ const CAPABILITIES = [
       'Backed by over two decades of enterprise engineering leadership, we design robust AWS and Azure environments, manage secure data migrations, optimize infrastructure, and build platforms that scale reliably. We also audit and optimize cloud spending to improve business efficiency.',
     icon: FiCloud,
     bg: 'from-blue-600 via-blue-800 to-slate-900',
-
-    // Corrected image filename
     image: '/images/04-cloud-architecture-systems-design.jpg',
   },
 ]
@@ -83,7 +80,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative overflow-hidden bg-white px-5 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24"
+      className="relative overflow-hidden bg-white px-5 pb-16 pt-8 sm:px-8 sm:pb-20 sm:pt-10 lg:px-10 lg:pb-24 lg:pt-12"
     >
       <div className="container-x relative mx-auto max-w-7xl">
 
@@ -107,15 +104,17 @@ export default function Services() {
               Capabilities & Expertise
             </p>
 
-            <h2 className="font-display text-[clamp(1.9rem,3.5vw,3.1rem)] font-semibold leading-[1.12] tracking-[-0.045em] text-slate-900">
+            {/* Heading size matches the Hero headline */}
+            <h2 className="font-display text-[clamp(1.8rem,3vw,2.8rem)] font-bold leading-[1.15] tracking-[-0.045em] text-slate-950 [text-wrap:balance]">
               Anything Related to Software,{' '}
-              <span className="text-slate-400">
-                  We Are Here to Help.
+              <span className="bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 bg-clip-text text-transparent">
+                We Are Here to Help.
               </span>
             </h2>
 
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-600 sm:text-[15px]">
-              "From automating a single growing business workflow to architecting high-availability systems for global platforms, our capabilities span the entire technology landscape. If it runs on code, we can build it."
+            {/* Paragraph size matches the Hero description */}
+            <p className="mt-4 max-w-[540px] text-[12px] leading-[1.75] text-slate-700 sm:mt-5 sm:text-[13px] sm:leading-[1.8]">
+              From automating a single growing business workflow to architecting high-availability systems for global platforms, our capabilities span the entire technology landscape. If it runs on code, we can build it.
             </p>
           </div>
 
@@ -254,4 +253,4 @@ export default function Services() {
       </div>
     </section>
   )
-   }
+}

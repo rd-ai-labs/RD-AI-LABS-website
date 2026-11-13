@@ -46,9 +46,9 @@ export const COMPANY = {
 /* ----- 2. Navigation ------------------------------------------------------ */
 export const NAV_LINKS = [
   { id: 'home', label: 'Home', short: 'Home' },
+  { id: 'about', label: 'About Us', short: 'About Us' },
   { id: 'services', label: 'Services', short: 'Services' },
   { id: 'skills', label: 'Skills', short: 'Skills' },
-  { id: 'about', label: 'About Us', short: 'About Us' },
   { id: 'philosophy', label: 'Our Philosophy', short: 'Our Philosophy' }, // must match id="philosophy" in Portfolio.jsx
   { id: 'careers', label: 'Careers', short: 'Careers' },
   // { id: 'blog', label: 'Blog', short: 'Blog' },
