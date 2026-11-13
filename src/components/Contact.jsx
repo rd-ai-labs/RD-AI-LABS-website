@@ -315,9 +315,20 @@ export default function Contact() {
                 Contact us
               </p>
 
-              <h1 className="mt-4 font-display text-[clamp(2rem,3.6vw,3rem)] font-bold leading-[1.1] tracking-tight bg-gradient-to-r from-indigo-700 via-violet-600 to-purple-500 bg-clip-text text-transparent">
-                Let’s architect the solution together.
-              </h1>
+              
+<h1 className="mt-4 font-display text-[clamp(2rem,3.6vw,3rem)] font-bold leading-[1.1] tracking-tight text-slate-950">
+  Let’s architect the{' '}
+  <span
+    style={{
+      background: 'linear-gradient(90deg, #FE6832 0%, #F0448E 52%, #B441D0 100%)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+    }}
+  >
+    solution together.
+  </span>
+</h1>
+
 
               <p className="mt-5 max-w-md text-base leading-7 text-slate-800">
                 We don’t rely on empty technical pitches. Connect with us directly to map out your challenges, evaluate feasibility, and build lasting trust from day one.
