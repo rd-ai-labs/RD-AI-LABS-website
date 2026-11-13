@@ -51,11 +51,11 @@ export default function Careers() {
   )}`
 
   return (
-    <section
-      id="careers"
-      className="section relative overflow-hidden"
-      style={SECTION_BG}
-    >
+   <section
+  id="careers"
+  className="relative overflow-hidden px-5 pb-20 pt-24 sm:px-8 sm:pb-24 sm:pt-28 lg:px-10 lg:pb-24 lg:pt-28"
+  style={SECTION_BG}
+>
       <div className="container-x relative">
 
         {/* Main heading (Hero style) */}
