@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/main
 import { motion, useReducedMotion } from 'framer-motion'
 import {
   FiArrowRight,
@@ -106,7 +111,11 @@ export default function About() {
               className="mt-4 max-w-xl font-display text-[clamp(1.8rem,3vw,2.8rem)] font-semibold leading-[1.15] tracking-[-0.045em] text-slate-950 [text-wrap:balance]"
             >
               The Engineering Creed behind{' '}
+<<<<<<< HEAD
               <span className="bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 bg-clip-text text-transparent">
+=======
+              <span className="bg-gradient-to-r from-indigo-700 via-violet-600 to-purple-500 bg-clip-text text-transparent">
+>>>>>>> origin/main
                 RD AI Labs.
               </span>
             </motion.h2>
@@ -128,7 +137,11 @@ export default function About() {
                 Built on Engineering Excellence
               </h3>
 
+<<<<<<< HEAD
               <p className="mt-2 text-[13px] leading-[1.75] text-slate-700 sm:text-[14px] sm:leading-[1.8]">
+=======
+              <p className="mt-3 text-sm leading-7 text-[#626975] sm:text-[15px]">
+>>>>>>> origin/main
                 We don't believe in technology for the sake of technology. Every architecture, every line of code, and every solution serves a clear purpose: solving real problems and creating lasting results.
               </p>
             </motion.div>

@@ -112,9 +112,14 @@ export default function Services() {
               </span>
             </h2>
 
+<<<<<<< HEAD
             {/* Paragraph size matches the Hero description */}
             <p className="mt-4 max-w-[540px] text-[12px] leading-[1.75] text-slate-700 sm:mt-5 sm:text-[13px] sm:leading-[1.8]">
               From automating a single growing business workflow to architecting high-availability systems for global platforms, our capabilities span the entire technology landscape. If it runs on code, we can build it.
+=======
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-600 sm:text-[15px]">
+              "From automating a single growing business workflow to architecting high-availability systems for global platforms, our capabilities span the entire technology landscape. If it runs on code, we can build it."
+>>>>>>> origin/main
             </p>
           </div>
 
