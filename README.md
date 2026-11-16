@@ -11,7 +11,7 @@ npm run build      # production build in /dist
 npm run preview    # test the production build locally
 ```
 
-Requires Node.js 18 or newer.
+Requires Node.js 18 or newer
 
 ## Folder structure
 
