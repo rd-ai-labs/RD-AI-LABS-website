@@ -151,14 +151,17 @@ export default function Careers() {
     }
   }
 
-  return (
+  space-change
+  
     <section
       id="careers"
-      className="relative overflow-hidden px-5 pb-20 pt-24 sm:px-8 sm:pb-24 sm:pt-28 lg:px-10 lg:pb-24 lg:pt-15"
+      className="relative overflow-hidden px-5 pb-20 pt-10 sm:px-8 sm:pb-24 sm:pt-12 lg:px-10 lg:pb-24 lg:pt-11"
       style={SECTION_BG}
     >
       <div className="container-x relative">
 
+main
+      <div className="container-x relative">
         {/* Main heading */}
         <Reveal>
           <div className="mb-12 max-w-4xl lg:mb-16">
