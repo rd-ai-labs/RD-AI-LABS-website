@@ -1,3 +1,4 @@
+
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import {
   motion,
@@ -262,6 +263,7 @@ export default function Hero({ ready = true }) {
             <button
               type="button"
               onClick={() => goTo('services')}
+              aria-label="Explore Our Services"
               className="group inline-flex min-h-[48px] items-center justify-center gap-3 rounded-full bg-slate-950 px-7 py-3 text-[13px] font-semibold text-white shadow-lg shadow-slate-950/15 transition duration-300 hover:-translate-y-1 hover:bg-slate-800 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-100 sm:text-sm"
             >
               Explore Our Services
@@ -305,8 +307,8 @@ export default function Hero({ ready = true }) {
       {/* Scroll indicator */}
       <button
         type="button"
-        onClick={() => goTo('services')}
-        aria-label="Scroll to services"
+        onClick={() => goTo('about')}
+        aria-label="Scroll to About Us"
         className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 rounded-full p-2 text-slate-700 transition hover:bg-white/30 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 lg:block"
       >
         <motion.span
@@ -324,3 +326,4 @@ export default function Hero({ ready = true }) {
     </section>
   )
 }
+
