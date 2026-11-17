@@ -1,3 +1,4 @@
+
 import { motion, useReducedMotion } from 'framer-motion'
 import {
   FiArrowRight,
@@ -80,7 +81,6 @@ export default function About() {
       </div>
 
       <div className="container-x relative mx-auto max-w-7xl">
-
         {/* Heading */}
         <motion.div
           variants={stagger}
@@ -91,7 +91,6 @@ export default function About() {
         >
           {/* LEFT CONTENT */}
           <div className="min-w-0">
-
             {/* Label */}
             <motion.div variants={fadeUp}>
               <span className="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-sky-700 sm:text-[12px]">
@@ -156,9 +155,8 @@ export default function About() {
             {/* Technology image */}
             <div className="group relative overflow-hidden rounded-[26px] border border-white/80 bg-white/60 p-2 shadow-[0_24px_65px_-32px_rgba(36,48,62,0.35)]">
               <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] bg-[#E6EAF0]">
-
                 <img
-                  src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85"
+                  src="/about-us-new.jpg.jpeg"
                   alt="Modern collaborative technology workspace"
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.035]"
@@ -167,7 +165,6 @@ export default function About() {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
 
                 <div className="absolute inset-x-5 bottom-5 sm:inset-x-6 sm:bottom-6">
-
                   <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-200 sm:text-[12px]">
                     Our philosophy
                   </span>
@@ -240,7 +237,6 @@ export default function About() {
             )
           })}
         </motion.div>
-
       </div>
     </section>
   )
