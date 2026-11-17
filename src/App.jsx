@@ -1,10 +1,10 @@
+
 import rdLogo from './assets/rd-ai-labs-logo.png'
 import { useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import Loader from './components/Loader'
-// import CursorGlow from './components/CursorGlow'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -12,7 +12,6 @@ import Services from './components/Services'
 import Skills from './components/Skills'
 import Portfolio from './components/Portfolio'
 import Careers from './components/Careers'
-// import Blog from './components/Blog'
 import Contact from './components/Contact'
 
 import Footer from './components/Footer'
@@ -26,10 +25,14 @@ function Home({ ready }) {
   // Coming from /privacy or /terms with a target section? Scroll to it.
   useEffect(() => {
     if (!state?.scrollTo) return
-    const t = setTimeout(
-      () => document.getElementById(state.scrollTo)?.scrollIntoView({ behavior: 'smooth' }),
-      120
-    )
+
+    const t = setTimeout(() => {
+      document.getElementById(state.scrollTo)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }, 120)
+
     return () => clearTimeout(t)
   }, [state])
 
@@ -40,19 +43,25 @@ function Home({ ready }) {
       <About />
       <Services />
       <Skills />
-      <Portfolio /> {/* Our Philosophy section (id="philosophy") */}
+      <Portfolio />
       <Careers />
-      {/* <Blog /> */}
       <Contact />
     </main>
   )
 }
 
+/** Scroll to the top whenever the route changes. */
 function ScrollToTop() {
   const { pathname } = useLocation()
+
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'auto',
+    })
   }, [pathname])
+
   return null
 }
 
@@ -62,22 +71,41 @@ export default function App() {
   // Page-load animation: show the loader briefly, then reveal the site.
   useEffect(() => {
     const t = setTimeout(() => setLoading(false), 1900)
+
     return () => clearTimeout(t)
   }, [])
 
   return (
     <>
-      <AnimatePresence>{loading && <Loader key="loader" />}</AnimatePresence>
-      {/* <CursorGlow /> */}
+      <AnimatePresence>
+        {loading && <Loader key="loader" />}
+      </AnimatePresence>
+
       <ScrollToTop />
+
       <Navbar />
+
       <Routes>
         <Route path="/" element={<Home ready={!loading} />} />
-        <Route path="/privacy" element={<LegalPage kind="privacy" />} />
-        <Route path="/terms" element={<LegalPage kind="terms" />} />
-        <Route path="*" element={<LegalPage kind="404" />} />
+
+        <Route
+          path="/privacy"
+          element={<LegalPage kind="privacy" />}
+        />
+
+        <Route
+          path="/terms"
+          element={<LegalPage kind="terms" />}
+        />
+
+        <Route
+          path="*"
+          element={<LegalPage kind="404" />}
+        />
       </Routes>
+
       <Footer />
+
       <WhatsAppButton />
     </>
   )

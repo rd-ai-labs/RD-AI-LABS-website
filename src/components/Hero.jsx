@@ -32,6 +32,12 @@ function isLowEndDevice() {
   )
 }
 
+function isMobileDevice() {
+  if (typeof window === 'undefined') return false
+
+  return window.matchMedia('(max-width: 767px)').matches
+}
+
 function SceneFrame({ ready, active }) {
   const frameRef = useRef(null)
   const [frameWidth, setFrameWidth] = useState(0)
@@ -153,6 +159,7 @@ export default function Hero({ ready = true }) {
 
   const [inView, setInView] = useState(true)
   const [lowEnd, setLowEnd] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   const reduceMotion = useReducedMotion()
   const { scrollY } = useScroll()
@@ -160,10 +167,29 @@ export default function Hero({ ready = true }) {
   const textY = useTransform(scrollY, [0, 450], [0, -25])
   const textOpacity = useTransform(scrollY, [0, 450], [1, 0.9])
 
+  // Detect mobile devices and avoid expensive Hero animations there.
   useEffect(() => {
-    setLowEnd(isLowEndDevice())
+    const mediaQuery = window.matchMedia('(max-width: 767px)')
+
+    const updateDevice = () => {
+      const mobile = mediaQuery.matches
+
+      setIsMobile(mobile)
+      setLowEnd(mobile || isLowEndDevice())
+    }
+
+    updateDevice()
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', updateDevice)
+      return () => mediaQuery.removeEventListener('change', updateDevice)
+    }
+
+    mediaQuery.addListener(updateDevice)
+    return () => mediaQuery.removeListener(updateDevice)
   }, [])
 
+  // Observe whether the Hero section is visible.
   useEffect(() => {
     const element = sectionRef.current
 
@@ -181,6 +207,9 @@ export default function Hero({ ready = true }) {
     return () => observer.disconnect()
   }, [])
 
+  const enableSceneAnimation =
+    inView && !lowEnd && !reduceMotion && !isMobile
+
   return (
     <section
       id="home"
@@ -194,7 +223,9 @@ export default function Hero({ ready = true }) {
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
       >
         <div className="absolute left-[35%] top-[35%] h-72 w-72 rounded-full bg-white/20 blur-[100px] sm:h-96 sm:w-96" />
+
         <div className="absolute right-[15%] top-[15%] h-48 w-48 rounded-full bg-white/20 blur-[90px]" />
+
         <div className="absolute bottom-0 left-0 h-px w-full bg-white/30" />
       </div>
 
@@ -207,9 +238,9 @@ export default function Hero({ ready = true }) {
           animate={ready ? 'show' : 'hidden'}
           className="min-w-0 lg:col-span-6"
           style={
-            reduceMotion
-              ? undefined
-              : { y: textY, opacity: textOpacity }
+            !isMobile && !reduceMotion
+              ? { y: textY, opacity: textOpacity }
+              : undefined
           }
         >
           {/* Positioning label */}
@@ -289,6 +320,7 @@ export default function Hero({ ready = true }) {
             className="mt-8 flex flex-wrap items-center gap-3 sm:mt-9"
           >
             <span className="h-px w-8 bg-violet-700/70" />
+
             <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-700 sm:text-xs">
               Local Roots, Global Standards, Limitless Possibilities
             </p>
@@ -299,7 +331,7 @@ export default function Hero({ ready = true }) {
         <div className="min-w-0 lg:col-span-6">
           <SceneFrame
             ready={ready}
-            active={inView && !lowEnd && !reduceMotion}
+            active={enableSceneAnimation}
           />
         </div>
       </div>
@@ -326,4 +358,3 @@ export default function Hero({ ready = true }) {
     </section>
   )
 }
-

@@ -717,7 +717,7 @@ export default function HeroScene({ active = true }) {
             </div>
           </div>
 
-          {/* Orbit Rings */}
+          {/* Orbit Rings - Updated to stop when inactive */}
 
           <div
             style={{
@@ -730,11 +730,19 @@ export default function HeroScene({ active = true }) {
               transformStyle: 'preserve-3d',
             }}
           >
-            <div className="spin-slow absolute inset-0 rounded-full border border-cyan-500/60 motion-reduce:animate-none">
+            <div
+              className={`absolute inset-0 rounded-full border border-cyan-500/60 ${
+                animated ? 'spin-slow' : ''
+              }`}
+            >
               <span className="absolute -top-1.5 left-1/2 h-3 w-3 rounded-full bg-cyan-400 shadow-[0_0_14px_4px_rgba(34,211,238,.7)]" />
             </div>
 
-            <div className="spin-rev absolute inset-[9%] rounded-full border border-violet-400/55 motion-reduce:animate-none">
+            <div
+              className={`absolute inset-[9%] rounded-full border border-violet-400/55 ${
+                animated ? 'spin-rev' : ''
+              }`}
+            >
               <span className="absolute -bottom-1.5 left-1/2 h-3 w-3 rounded-full bg-violet-400 shadow-[0_0_14px_4px_rgba(167,139,250,.7)]" />
             </div>
           </div>
