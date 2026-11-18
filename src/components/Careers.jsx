@@ -221,9 +221,9 @@ export default function Careers() {
                   />
                 </button>
 
-                <p className="mt-4 text-[11px] leading-relaxed text-slate-700 sm:text-xs">
-                  Include your resume, portfolio, or LinkedIn link.
-                </p>
+                <p className="mt-10 text-[11px] leading-relaxed text-slate-700 sm:text-xs">
+                    Include your resume, portfolio, or LinkedIn link.
+          </p>
               </div>
             </div>
           </Reveal>
@@ -264,16 +264,16 @@ export default function Careers() {
 
         {/* Contact email */}
         <Reveal>
-          <p className="mt-12 text-center text-[12px] text-slate-700 sm:mt-16 sm:text-[13px]">
-            Have a question? Reach us at{' '}
-            <a
-              href={`mailto:${COMPANY.email}`}
-              className="font-semibold text-indigo-700 underline-offset-4 hover:underline"
-            >
-              {COMPANY.email}
-            </a>
-          </p>
-        </Reveal>
+  <p className="mt-16 text-center text-[12px] text-slate-700 sm:mt-20 sm:text-[13px]">
+    Have a question? Reach us at{' '}
+    <a
+      href={`mailto:${COMPANY.email}`}
+      className="font-semibold text-indigo-700 underline-offset-4 hover:underline"
+    >
+      {COMPANY.email}
+    </a>
+  </p>
+</Reveal>
       </div>
 
       {/* Career application modal */}
