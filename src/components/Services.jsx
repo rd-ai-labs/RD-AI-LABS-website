@@ -1,3 +1,4 @@
+
 import { motion, useReducedMotion } from 'framer-motion'
 import {
   FiArrowUpRight,
@@ -104,7 +105,6 @@ export default function Services() {
               Capabilities & Expertise
             </p>
 
-            {/* Heading size matches the Hero headline */}
             <h2 className="font-display text-[clamp(1.8rem,3vw,2.8rem)] font-bold leading-[1.15] tracking-[-0.045em] text-slate-950 [text-wrap:balance]">
               Anything Related to Software,{' '}
               <span className="bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 bg-clip-text text-transparent">
@@ -112,7 +112,6 @@ export default function Services() {
               </span>
             </h2>
 
-            {/* Paragraph size matches the Hero description */}
             <p className="mt-4 max-w-[540px] text-[12px] leading-[1.75] text-slate-700 sm:mt-5 sm:text-[13px] sm:leading-[1.8]">
               From automating a single growing business workflow to architecting high-availability systems for global platforms, our capabilities span the entire technology landscape. If it runs on code, we can build it.
             </p>
@@ -187,18 +186,11 @@ export default function Services() {
                 {/* Card content */}
                 <div className="flex min-h-[310px] flex-col justify-end p-4 sm:min-h-[340px] sm:p-5 lg:min-h-[365px]">
 
-                  {/* Icon and arrow */}
-                  <div className="mb-auto flex items-start justify-between">
+                  {/* Service icon (top-right arrow removed) */}
+                  <div className="mb-auto flex items-start">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/30 bg-white/15 text-white backdrop-blur-md transition-colors duration-300 group-hover:bg-white/25">
                       <Icon size={20} aria-hidden="true" />
                     </div>
-
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-white/15 text-white backdrop-blur-md transition-all duration-300 group-hover:rotate-45 group-hover:bg-white group-hover:text-slate-900">
-                      <FiArrowUpRight
-                        size={17}
-                        aria-hidden="true"
-                      />
-                    </span>
                   </div>
 
                   {/* Capability title */}
