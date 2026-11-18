@@ -67,7 +67,7 @@ const CAPABILITIES = [
   {
     title: 'Cloud Architecture & Systems Design',
     description:
-      'Backed by over two decades of enterprise engineering leadership, we design robust AWS and Azure environments, manage secure data migrations, optimize infrastructure, and build platforms that scale reliably. We also audit and optimize cloud spending to improve business efficiency.',
+  'With over two decades of engineering expertise, we design scalable AWS and Azure environments, manage secure data migrations, optimize infrastructure, and reduce cloud spending.',
     icon: FiCloud,
     bg: 'from-blue-600 via-blue-800 to-slate-900',
     image: '/images/04-cloud-architecture-systems-design.jpg',
