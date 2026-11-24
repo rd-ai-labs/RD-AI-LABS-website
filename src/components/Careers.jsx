@@ -11,7 +11,13 @@ import {
   FiCheckCircle,
   FiAlertCircle,
   FiLoader,
+  FiChevronDown,
+  FiStar,
+  FiClock,
+  FiGlobe,
+  FiBookOpen,
 } from 'react-icons/fi'
+import { FaGraduationCap } from 'react-icons/fa'
 import { COMPANY } from '../data'
 import Reveal from './Reveal'
 
@@ -54,15 +60,138 @@ const HIGHLIGHTS = [
   },
 ]
 
+/*
+ * The descriptions below are taken from the supplied
+ * "AI & Prompt Engineering Internship Program" PDF.
+ * Keep this copy aligned with the approved PDF.
+ */
+const LEARNING_ITEMS = [
+  {
+    title: 'Structured Prompt Engineering',
+    description:
+      'Master zero-shot, few-shot, Chain-of-Thought, and role-based prompting across leading LLMs (ChatGPT, Claude, Gemini).',
+  },
+  {
+    title: 'Data Extraction & Formatting',
+    description:
+      'Design prompts that convert messy, unstructured text into clean JSON, Markdown, and business reports.',
+  },
+  {
+    title: 'Hallucination Control & QA Testing',
+    description:
+      'Stress-test AI systems against edge cases and build reliable, document-grounded workflows.',
+  },
+  {
+    title: 'Capstone Project',
+    description:
+      'Build and document a reusable AI workflow or prompt library tailored to a real business or domain use case.',
+  },
+]
+
+const BENEFIT_ITEMS = [
+  {
+    title: 'Official Offer Letter',
+    description:
+      'Issued on RD AI Labs OPC Pvt Ltd letterhead upon selection.',
+  },
+  {
+    title: 'Verifiable Completion Certificate',
+    description:
+      'Includes a unique Certificate ID verifiable on our website for college credits and LinkedIn.',
+  },
+  {
+    title: 'Letter of Recommendation (LoR)',
+    description:
+      'Awarded to top-performing interns based on capstone project quality.',
+  },
+  {
+    title: 'Pre-Placement Opportunity',
+    description:
+      'High-performing interns may be considered for part-time or full-time roles as we grow.',
+  },
+]
+
 const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
 const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+
+function ExpandableList({ title, items, openItem, onToggle, idPrefix }) {
+  return (
+    <div className="rounded-2xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_8px_30px_-22px_rgba(80,70,100,.35)] sm:p-7">
+      <h4 className="font-display text-xl font-bold tracking-[-0.03em] text-slate-950 sm:text-2xl">
+        {title}
+      </h4>
+
+      <div className="mt-5 space-y-3">
+        {items.map((item, index) => {
+          const isOpen = openItem === index
+          const panelId = `${idPrefix}-panel-${index}`
+          const buttonId = `${idPrefix}-button-${index}`
+
+          return (
+            <div
+              key={item.title}
+              className={`overflow-hidden rounded-xl border transition-colors ${
+                isOpen
+                  ? 'border-indigo-200 bg-indigo-50/70'
+                  : 'border-slate-200 bg-white hover:border-indigo-200'
+              }`}
+            >
+              <button
+                id={buttonId}
+                type="button"
+                aria-expanded={isOpen}
+                aria-controls={panelId}
+                onClick={() => onToggle(isOpen ? null : index)}
+                className={`flex min-h-[60px] w-full items-center justify-between gap-4 px-4 py-4 text-left sm:px-5 ${FOCUS}`}
+              >
+                <span className="flex min-w-0 items-center gap-3">
+                  <FiStar
+                    aria-hidden="true"
+                    className="shrink-0 fill-amber-400 text-amber-500"
+                    size={18}
+                  />
+                  <span className="font-semibold leading-snug text-slate-900">
+                    {item.title}
+                  </span>
+                </span>
+
+                <FiChevronDown
+                  aria-hidden="true"
+                  className={`shrink-0 text-indigo-700 transition-transform duration-200 ${
+                    isOpen ? 'rotate-180' : ''
+                  }`}
+                  size={19}
+                />
+              </button>
+
+              {isOpen && (
+                <div
+                  id={panelId}
+                  role="region"
+                  aria-labelledby={buttonId}
+                  className="border-t border-indigo-100 px-4 pb-5 pt-4 sm:px-5"
+                >
+                  <p className="text-[13px] leading-[1.8] text-slate-700 sm:text-sm">
+                    {item.description}
+                  </p>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
 
 export default function Careers() {
   const reduce = useReducedMotion()
   const [showForm, setShowForm] = useState(false)
   const [sending, setSending] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
+  const [openLearningItem, setOpenLearningItem] = useState(null)
+  const [openBenefitItem, setOpenBenefitItem] = useState(null)
 
   const closeForm = () => {
     if (sending) return
@@ -146,6 +275,9 @@ export default function Careers() {
     }
   }
 
+  const internshipEmail =
+    `mailto:${COMPANY.email}?subject=${encodeURIComponent('Internship')}`
+
   return (
     <section
       id="careers"
@@ -222,8 +354,8 @@ export default function Careers() {
                 </button>
 
                 <p className="mt-10 text-[11px] leading-relaxed text-slate-700 sm:text-xs">
-                    Include your resume, portfolio, or LinkedIn link.
-          </p>
+                  Include your resume, portfolio, or LinkedIn link.
+                </p>
               </div>
             </div>
           </Reveal>
@@ -262,21 +394,196 @@ export default function Careers() {
           </div>
         </div>
 
+        {/* AI & Prompt Engineering Internship */}
+        <Reveal>
+          <section
+            aria-labelledby="internship-title"
+            className="mt-16 overflow-hidden rounded-[28px] border border-white/80 bg-white/75 shadow-[0_18px_55px_-30px_rgba(70,60,100,.35)] backdrop-blur-xl sm:mt-20"
+          >
+            {/* Internship banner */}
+            <div className="relative isolate overflow-hidden bg-gradient-to-r from-[#fff0e6] via-[#fce8f3] to-[#eeeaff] px-6 py-8 sm:px-9 sm:py-10 lg:px-10 lg:py-12">
+              <div
+                aria-hidden="true"
+                className="absolute -right-10 -top-20 -z-10 h-64 w-64 rounded-full bg-violet-300/40 blur-3xl"
+              />
+
+              <div
+                aria-hidden="true"
+                className="absolute -bottom-24 left-1/3 -z-10 h-64 w-64 rounded-full bg-orange-300/40 blur-3xl"
+              />
+
+              <div className="grid items-center gap-5 md:grid-cols-[1.15fr_.85fr] lg:gap-8">
+                {/* Internship heading */}
+                <div className="relative z-10">
+                  <p className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/75 px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-indigo-800 shadow-sm sm:text-xs">
+                    <FaGraduationCap
+                      size={20}
+                      aria-hidden="true"
+                    />
+                    Internship Opportunity
+                  </p>
+
+                  <h3
+                    id="internship-title"
+                    className="mt-5 max-w-2xl font-display text-[clamp(2rem,3.4vw,3rem)] font-extrabold leading-[1.08] tracking-[-0.05em] text-slate-950"
+                  >
+                    AI & Prompt Engineering
+                    <span className="block bg-gradient-to-r from-[#ff642d] via-[#ec4899] to-[#a20bd8] bg-clip-text text-transparent">
+                      Internship Program
+                    </span>
+                  </h3>
+
+                  <p className="mt-4 max-w-2xl text-[14px] font-medium leading-[1.65] text-slate-700 sm:text-base">
+                    Build real-world AI workflows, master structured prompting,
+                    and gain hands-on industry experience at RD AI Labs.
+                  </p>
+                </div>
+
+                {/* AI laptop illustration */}
+                <div className="relative mx-auto flex w-full max-w-[560px] items-center justify-center">
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-8 rounded-full bg-white/60 blur-3xl"
+                  />
+
+                  <img
+                    src="/internship-ai-laptop.png"
+                    alt="AI laptop with artificial intelligence and analytics illustrations"
+                    className="relative z-10 h-auto w-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Internship information */}
+            <div className="p-5 sm:p-8 lg:p-10">
+              <p className="max-w-4xl text-[13px] leading-[1.8] text-slate-700 sm:text-sm">
+                Our 4-to-6-week internship program bridges the gap between
+                academic learning and practical Generative AI deployment.
+                Designed for curious students from academic backgrounds
+                (Engineering and Arts & Science), this program focuses on applied AI problem-solving
+                rather than heavy coding.
+              </p>
+
+              {/* Program highlights */}
+              <div className="mt-7 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                {[
+                  {
+                    icon: FiClock,
+                    label: 'Duration',
+                    value: '4 Weeks or 6 Weeks',
+                    detail: 'Flexible for college academic credit requirements',
+                  },
+                  {
+                    icon: FiGlobe,
+                    label: 'Mode',
+                    value: 'Remote / Hybrid',
+                    detail: 'Choose the available working mode',
+                  },
+                  {
+                    icon: FiBookOpen,
+                    label: 'Prerequisites',
+                    value: 'No prior coding required',
+                    detail:
+                      'Strong English communication, logical thinking, and curiosity about AI',
+                  },
+                  {
+                    icon: FiUsers,
+                    label: 'Batch Intake',
+                    value: 'Rolling monthly cohorts',
+                    detail: 'New cohorts start on a rolling monthly basis',
+                  },
+                ].map((item) => {
+                  const Icon = item.icon
+
+                  return (
+                    <div
+                      key={item.label}
+                      className="rounded-2xl border border-slate-200/80 bg-white/80 p-4"
+                    >
+                      <div className="flex items-center gap-2 text-indigo-700">
+                        <Icon size={17} aria-hidden="true" />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.14em]">
+                          {item.label}
+                        </span>
+                      </div>
+
+                      <p className="mt-3 text-sm font-bold leading-snug text-slate-950">
+                        {item.value}
+                      </p>
+
+                      <p className="mt-1.5 text-[11px] leading-[1.65] text-slate-600">
+                        {item.detail}
+                      </p>
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Expandable sections */}
+              <div className="mt-9 grid gap-5 lg:grid-cols-2">
+                <ExpandableList
+                  title="What You Will Learn & Build"
+                  items={LEARNING_ITEMS}
+                  openItem={openLearningItem}
+                  onToggle={setOpenLearningItem}
+                  idPrefix="internship-learning"
+                />
+
+                <ExpandableList
+                  title="What You Receive"
+                  items={BENEFIT_ITEMS}
+                  openItem={openBenefitItem}
+                  onToggle={setOpenBenefitItem}
+                  idPrefix="internship-benefits"
+                />
+              </div>
+
+              {/* Internship application CTA */}
+              <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-2xl bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 p-5 text-white sm:flex-row sm:items-center sm:px-7 sm:py-6">
+                <div>
+                  <h4 className="font-display text-lg font-bold sm:text-xl">
+                    Ready to begin your AI journey?
+                  </h4>
+
+                  <p className="mt-1 text-xs leading-relaxed text-slate-300 sm:text-sm">
+                    Send your internship application to RD AI Labs.
+                  </p>
+                </div>
+
+                <a
+                  href={internshipEmail}
+                  className={`group inline-flex min-h-[48px] shrink-0 items-center justify-center gap-3 rounded-full bg-white px-7 py-3 text-sm font-bold text-slate-950 shadow-lg transition duration-300 hover:-translate-y-0.5 hover:bg-orange-100 ${FOCUS}`}
+                >
+                  Apply Now
+
+                  <FiArrowRight
+                    size={18}
+                    aria-hidden="true"
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </a>
+              </div>
+            </div>
+          </section>
+        </Reveal>
+
         {/* Contact email */}
         <Reveal>
-  <p className="mt-16 text-center text-[12px] text-slate-700 sm:mt-20 sm:text-[13px]">
-    Have a question? Reach us at{' '}
-    <a
-      href={`mailto:${COMPANY.email}`}
-      className="font-semibold text-indigo-700 underline-offset-4 hover:underline"
-    >
-      {COMPANY.email}
-    </a>
-  </p>
-</Reveal>
+          <p className="mt-16 text-center text-[12px] text-slate-700 sm:mt-20 sm:text-[13px]">
+            Have a question? Reach us at{' '}
+            <a
+              href={`mailto:${COMPANY.email}`}
+              className="font-semibold text-indigo-700 underline-offset-4 hover:underline"
+            >
+              {COMPANY.email}
+            </a>
+          </p>
+        </Reveal>
       </div>
 
-      {/* Career application modal */}
+      {/* Existing career application modal */}
       {showForm && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-slate-950/70 px-4 py-8 backdrop-blur-sm"
@@ -314,12 +621,8 @@ export default function Careers() {
               </p>
             </div>
 
-            {/* Application form */}
-            <form
-              onSubmit={handleSubmit}
-              className="space-y-5 p-6 sm:p-9"
-            >
-              {/* Full name and email */}
+            {/* Existing general career application form */}
+            <form onSubmit={handleSubmit} className="space-y-5 p-6 sm:p-9">
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label
@@ -366,7 +669,6 @@ export default function Careers() {
                 </div>
               </div>
 
-              {/* Phone and skills */}
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label
@@ -412,7 +714,6 @@ export default function Careers() {
                 </div>
               </div>
 
-              {/* Experience */}
               <div>
                 <label
                   htmlFor="career-experience"
@@ -434,7 +735,6 @@ export default function Careers() {
                 />
               </div>
 
-              {/* Portfolio */}
               <div>
                 <label
                   htmlFor="career-portfolio"
@@ -455,7 +755,6 @@ export default function Careers() {
                 />
               </div>
 
-              {/* Resume Link */}
               <div>
                 <label
                   htmlFor="career-resume-link"
@@ -478,11 +777,10 @@ export default function Careers() {
 
                 <p className="mt-2 text-[11px] leading-relaxed text-slate-600">
                   Paste a Google Drive or OneDrive link to your resume.
-                  Please give contact@rdailabs.com permission to view it.
+                  Please give {COMPANY.email} permission to view it.
                 </p>
               </div>
 
-              {/* Success or error message */}
               {submitStatus && (
                 <div
                   role="status"
@@ -503,7 +801,6 @@ export default function Careers() {
                 </div>
               )}
 
-              {/* Submit button */}
               <button
                 type="submit"
                 disabled={sending}
@@ -551,4 +848,6 @@ export default function Careers() {
     </section>
   )
 }
+
+
 
