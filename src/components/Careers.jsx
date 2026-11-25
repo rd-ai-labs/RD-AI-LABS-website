@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import emailjs from '@emailjs/browser'
 import { motion, useReducedMotion } from 'framer-motion'
 import {
@@ -192,6 +192,57 @@ export default function Careers() {
   const [submitStatus, setSubmitStatus] = useState(null)
   const [openLearningItem, setOpenLearningItem] = useState(null)
   const [openBenefitItem, setOpenBenefitItem] = useState(null)
+
+  // Update the URL while visitors move between the Careers content and
+  // the internship card. The internship remains part of the Careers page.
+  useEffect(() => {
+    const careersSection = document.getElementById('careers')
+    const internshipSection = document.getElementById('internship')
+
+    if (!careersSection || !internshipSection) return undefined
+
+    const updateHash = (hash) => {
+      if (window.location.hash === hash) return
+
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${window.location.pathname}${window.location.search}${hash}`
+      )
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          updateHash('#internship')
+          return
+        }
+
+        const internshipTop = internshipSection.getBoundingClientRect().top
+        const careersRect = careersSection.getBoundingClientRect()
+        const careersIsVisible =
+          careersRect.bottom > 0 && careersRect.top < window.innerHeight
+
+        // The internship is below the viewport: the visitor is back in
+        // the upper Careers content. If it has moved above the viewport,
+        // keep #internship until the visitor scrolls back above it.
+        if (
+          internshipTop > window.innerHeight * 0.3 &&
+          careersIsVisible
+        ) {
+          updateHash('#careers')
+        }
+      },
+      {
+        threshold: 0.01,
+        rootMargin: '-15% 0px -70% 0px',
+      }
+    )
+
+    observer.observe(internshipSection)
+
+    return () => observer.disconnect()
+  }, [])
 
   const closeForm = () => {
     if (sending) return
@@ -397,6 +448,7 @@ export default function Careers() {
         {/* AI & Prompt Engineering Internship */}
         <Reveal>
           <section
+            id="internship"
             aria-labelledby="internship-title"
             className="mt-16 overflow-hidden rounded-[28px] border border-white/80 bg-white/75 shadow-[0_18px_55px_-30px_rgba(70,60,100,.35)] backdrop-blur-xl sm:mt-20"
           >
