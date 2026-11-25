@@ -188,6 +188,7 @@ function ExpandableList({ title, items, openItem, onToggle, idPrefix }) {
 export default function Careers() {
   const reduce = useReducedMotion()
   const [showForm, setShowForm] = useState(false)
+  const [showInternshipForm, setShowInternshipForm] = useState(false)
   const [sending, setSending] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
   const [openLearningItem, setOpenLearningItem] = useState(null)
@@ -326,8 +327,72 @@ export default function Careers() {
     }
   }
 
-  const internshipEmail =
-    `mailto:${COMPANY.email}?subject=${encodeURIComponent('Internship')}`
+  const closeInternshipForm = () => {
+    if (sending) return
+    setShowInternshipForm(false)
+    setSubmitStatus(null)
+  }
+
+  const openInternshipForm = () => {
+    setShowInternshipForm(true)
+    setSubmitStatus(null)
+  }
+
+  const handleInternshipSubmit = async (event) => {
+    event.preventDefault()
+    const form = event.currentTarget
+    const formData = new FormData(form)
+    setSubmitStatus(null)
+
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+      setSubmitStatus({
+        type: 'error',
+        message: 'Email service is not configured. Please contact the website administrator.',
+      })
+      return
+    }
+
+    try {
+      setSending(true)
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          to_email: 'contact@rdailabs.com',
+          name: formData.get('fullName'),
+          email: formData.get('email'),
+          phone: formData.get('phone'),
+          message: `
+            AI & PROMPT ENGINEERING INTERNSHIP APPLICATION
+
+            Full Name: ${formData.get('fullName')}
+            Email Address: ${formData.get('email')}
+            Phone Number: ${formData.get('phone')}
+            College / Institution: ${formData.get('college')}
+            Technical Skills: ${formData.get('skills') || 'Not provided'}
+            Area of AI Interest: ${formData.get('aiInterest') || 'Not selected'}
+            Additional Information:
+            ${formData.get('additionalInfo') || 'Not provided'}
+          `,
+        },
+        { publicKey: EMAILJS_PUBLIC_KEY }
+      )
+      form.reset()
+      setSubmitStatus({
+        type: 'success',
+        message: 'Your internship application has been submitted successfully! Thank you for your interest in RD AI Labs.',
+      })
+    } catch (error) {
+      console.error('Internship EmailJS submission failed:', error)
+      setSubmitStatus({
+        type: 'error',
+        message: 'We could not submit your application. Please try again or email contact@rdailabs.com.',
+      })
+    } finally {
+      setSending(false)
+    }
+  }
+
 
   return (
     <section
@@ -598,28 +663,23 @@ export default function Careers() {
                   <h4 className="font-display text-lg font-bold sm:text-xl">
                     Ready to begin your AI journey?
                   </h4>
-
                   <p className="mt-1 text-xs leading-relaxed text-slate-300 sm:text-sm">
-                    Send your internship application to RD AI Labs.
+                    Apply for the AI internship at RD AI Labs.
                   </p>
                 </div>
-
-                
-                    {/*
-<a
-  href={internshipEmail}
-  className={`group inline-flex min-h-[48px] shrink-0 items-center justify-center gap-3 rounded-full bg-white px-7 py-3 text-sm font-bold text-slate-950 shadow-lg transition duration-300 hover:-translate-y-0.5 hover:bg-orange-100 ${FOCUS}`}
->
-  Apply Now
-
-  <FiArrowRight
-    aria-hidden="true"
-    className="transition-transform duration-300 group-hover:translate-x-1"
-  />
-</a>
-*/}
+                <button
+                  type="button"
+                  onClick={openInternshipForm}
+                  className={`group inline-flex min-h-[48px] shrink-0 items-center justify-center gap-3 rounded-full bg-white px-7 py-3 text-sm font-bold text-slate-950 shadow-lg transition duration-300 hover:-translate-y-0.5 hover:bg-indigo-100 ${FOCUS}`}
+                >
+                  Apply Now
+                  <FiArrowRight
+                    aria-hidden="true"
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </button>
               </div>
-            </div>
+              </div>
           </section>
         </Reveal>
 
@@ -899,9 +959,97 @@ export default function Careers() {
           </div>
         </div>
       )}
+
+      {/* AI internship application modal */}
+      {showInternshipForm && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center overflow-y-auto bg-slate-950/70 px-3 py-5 backdrop-blur-sm sm:px-5 sm:py-7" role="dialog" aria-modal="true" aria-labelledby="internship-form-title">
+          <div className="relative my-auto max-h-[94vh] w-full max-w-5xl overflow-y-auto rounded-[28px] border border-white/70 bg-white shadow-2xl">
+            <div
+              className="relative min-h-[250px] overflow-hidden bg-cover bg-center px-6 py-8 text-white sm:min-h-[280px] sm:px-10 sm:py-10"
+              style={{ backgroundImage: "linear-gradient(90deg, rgba(3, 9, 38, 0.96) 0%, rgba(3, 9, 38, 0.82) 43%, rgba(3, 9, 38, 0.12) 100%), url('/internship-form-header.png')" }}
+            >
+              <button type="button" onClick={closeInternshipForm} disabled={sending} aria-label="Close internship application form" className="absolute right-4 top-4 z-10 rounded-full p-2 text-white/90 transition hover:bg-white/15 disabled:opacity-40 sm:right-6 sm:top-6">
+                <FiX size={25} />
+              </button>
+              <div className="relative z-10 max-w-[560px]">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-indigo-300 sm:text-xs">Internship Program at RD AI Labs</p>
+                <h2 id="internship-form-title" className="mt-4 max-w-lg font-display text-[clamp(2rem,4vw,3.2rem)] font-extrabold leading-[1.08] tracking-[-0.045em] text-white">
+                  Let’s start your<span className="block">AI journey.</span>
+                </h2>
+                <p className="mt-5 max-w-md text-sm font-medium leading-relaxed text-slate-200 sm:text-base">Tell us about yourself. We’re excited to learn about your interests!</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleInternshipSubmit} className="space-y-7 px-5 py-7 sm:px-10 sm:py-9">
+              <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="internship-full-name" className="mb-2 block text-sm font-bold text-slate-900">Full Name *</label>
+                  <input id="internship-full-name" type="text" name="fullName" placeholder="Your full name" required maxLength={100} autoComplete="name" disabled={sending} className={`${FIELD_CLASS} rounded-2xl bg-slate-100/90 px-5 py-4 text-base`} style={FIELD_STYLE} />
+                </div>
+                <div>
+                  <label htmlFor="internship-email" className="mb-2 block text-sm font-bold text-slate-900">Email Address *</label>
+                  <input id="internship-email" type="email" name="email" placeholder="you@example.com" required maxLength={254} autoComplete="email" disabled={sending} className={`${FIELD_CLASS} rounded-2xl bg-slate-100/90 px-5 py-4 text-base`} style={FIELD_STYLE} />
+                </div>
+                <div>
+                  <label htmlFor="internship-phone" className="mb-2 block text-sm font-bold text-slate-900">Phone Number *</label>
+                  <input id="internship-phone" type="tel" name="phone" placeholder="+91 XXXXX XXXXX" required maxLength={20} autoComplete="tel" disabled={sending} className={`${FIELD_CLASS} rounded-2xl bg-slate-100/90 px-5 py-4 text-base`} style={FIELD_STYLE} />
+                </div>
+                <div>
+                  <label htmlFor="internship-college" className="mb-2 block text-sm font-bold text-slate-900">College / Institution *</label>
+                  <input id="internship-college" type="text" name="college" placeholder="Your college name" required maxLength={180} autoComplete="organization" disabled={sending} className={`${FIELD_CLASS} rounded-2xl bg-slate-100/90 px-5 py-4 text-base`} style={FIELD_STYLE} />
+                </div>
+              </div>
+
+              <div className="border-t border-slate-200 pt-7">
+                <h3 className="font-display text-2xl font-bold tracking-[-0.035em] text-slate-950 sm:text-[28px]">AI Learning Interests</h3>
+                <div className="mt-5 space-y-6">
+                  <div>
+                    <label htmlFor="internship-skills" className="mb-2 block text-sm font-bold text-slate-900">Technical Skills <span className="font-medium">(Optional)</span></label>
+                    <input id="internship-skills" type="text" name="skills" placeholder="e.g. Python, Machine Learning, Data Science..." maxLength={500} disabled={sending} className={`${FIELD_CLASS} rounded-2xl bg-slate-100/90 px-5 py-4 text-base`} style={FIELD_STYLE} />
+                  </div>
+                  <div>
+                    <label htmlFor="internship-ai-interest" className="mb-2 block text-sm font-bold text-slate-900">Area of AI Interest <span className="font-medium">(Optional)</span></label>
+                    <div className="relative">
+                      <select id="internship-ai-interest" name="aiInterest" defaultValue="" disabled={sending} className={`${FIELD_CLASS} appearance-none rounded-2xl bg-slate-100/90 px-5 py-4 pr-12 text-base`} style={FIELD_STYLE}>
+                        <option value="">Select your area of interest</option>
+                        <option value="Artificial Intelligence">Artificial Intelligence</option>
+                        <option value="Machine Learning">Machine Learning</option>
+                        <option value="Generative AI">Generative AI</option>
+                        <option value="Deep Learning">Deep Learning</option>
+                        <option value="Natural Language Processing (NLP)">Natural Language Processing (NLP)</option>
+                        <option value="Computer Vision">Computer Vision</option>
+                        <option value="Prompt Engineering">Prompt Engineering</option>
+                        <option value="Other AI area">Other AI area</option>
+                      </select>
+                      <FiChevronDown aria-hidden="true" className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-slate-800" size={20} />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="internship-additional-info" className="mb-2 block text-sm font-bold text-slate-900">Additional Information <span className="font-medium">(Optional)</span></label>
+                    <textarea id="internship-additional-info" name="additionalInfo" rows={3} maxLength={2000} placeholder="Share any questions, expectations, learning goals, or other information you'd like us to know..." disabled={sending} className={`${FIELD_CLASS} resize-y rounded-2xl bg-slate-100/90 px-5 py-4 text-base`} style={FIELD_STYLE} />
+                  </div>
+                </div>
+              </div>
+
+              {submitStatus && (
+                <div role="status" aria-live="polite" className={`flex items-start gap-3 rounded-xl border p-4 text-sm ${submitStatus.type === 'success' ? 'border-green-200 bg-green-50 text-green-800' : 'border-red-200 bg-red-50 text-red-800'}`}>
+                  {submitStatus.type === 'success' ? <FiCheckCircle className="mt-0.5 shrink-0" size={19} /> : <FiAlertCircle className="mt-0.5 shrink-0" size={19} />}
+                  <p>{submitStatus.message}</p>
+                </div>
+              )}
+
+              <button type="submit" disabled={sending || submitStatus?.type === 'success'} className={`group flex min-h-[58px] w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 px-6 py-4 text-base font-bold text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60 ${FOCUS}`}>
+                {sending ? <><FiLoader className="animate-spin" size={19} />Sending Application...</> : submitStatus?.type === 'success' ? <>Application Submitted<FiCheckCircle size={19} /></> : <>Submit Application<FiArrowRight size={20} className="transition-transform duration-300 group-hover:translate-x-1" /></>}
+              </button>
+              <p className="text-center text-[11px] leading-relaxed text-slate-500">Your information will be shared with RD AI Labs for internship application purposes.</p>
+              {submitStatus?.type === 'success' && (
+                <button type="button" onClick={closeInternshipForm} className="w-full rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100">Close</button>
+              )}
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
-
-
 
