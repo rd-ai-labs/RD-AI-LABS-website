@@ -1,3 +1,4 @@
+
 import {
   FiArrowUpRight,
   FiMapPin,
@@ -19,8 +20,7 @@ const PHILOSOPHIES = [
     footer: 'REGIONAL HUBS',
     description:
       "We intentionally build our engineering hubs in emerging towns because tech talent isn't limited to mega-cities or crowded tech corridors. By tapping into driven minds outside traditional hubs, we bring unmatched focus, dedication, and passion to your projects.",
-    image:
-      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=85',
+    image: '/philosophy-1.jpg',
     imageAlt: 'Small team of engineers collaborating around laptops in a bright, welcoming workspace',
     accent: 'from-orange-500 to-rose-500',
     iconBg: 'bg-orange-100 text-orange-700',
@@ -32,8 +32,7 @@ const PHILOSOPHIES = [
     footer: 'TALENT GROWTH',
     description:
       'Our talent incubator delivers world-class engineering by empowering fresh, ambitious minds. Through mentorship, hands-on experience, and continuous learning, we shape regional capability into high-performing development teams.',
-    image:
-      'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=85',
+    image: '/philosophy-2.jpg',
     imageAlt: 'Young learners studying together through hands-on mentorship',
     accent: 'from-sky-500 to-indigo-500',
     iconBg: 'bg-sky-100 text-sky-700',
@@ -45,8 +44,7 @@ const PHILOSOPHIES = [
     footer: 'PROVEN STANDARDS',
     description:
       'Our engineering approach is guided by 20+ years of enterprise technology leadership. Every solution benefits from experienced technical oversight, thoughtful architecture, and disciplined mentorship—giving you the agility of emerging talent backed by mature engineering standards.',
-    image:
-      'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1000&q=85',
+    image: '/philosophy-3.jpg',
     imageAlt: 'Digital padlock on a circuit board representing enterprise security and engineering quality',
     accent: 'from-violet-500 to-purple-500',
     iconBg: 'bg-violet-100 text-violet-700',
