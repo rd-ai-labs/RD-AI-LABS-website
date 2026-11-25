@@ -604,18 +604,20 @@ export default function Careers() {
                   </p>
                 </div>
 
-                <a
-                  href={internshipEmail}
-                  className={`group inline-flex min-h-[48px] shrink-0 items-center justify-center gap-3 rounded-full bg-white px-7 py-3 text-sm font-bold text-slate-950 shadow-lg transition duration-300 hover:-translate-y-0.5 hover:bg-orange-100 ${FOCUS}`}
-                >
-                  Apply Now
+                
+                    {/*
+<a
+  href={internshipEmail}
+  className={`group inline-flex min-h-[48px] shrink-0 items-center justify-center gap-3 rounded-full bg-white px-7 py-3 text-sm font-bold text-slate-950 shadow-lg transition duration-300 hover:-translate-y-0.5 hover:bg-orange-100 ${FOCUS}`}
+>
+  Apply Now
 
-                  <FiArrowRight
-                    size={18}
-                    aria-hidden="true"
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                </a>
+  <FiArrowRight
+    aria-hidden="true"
+    className="transition-transform duration-300 group-hover:translate-x-1"
+  />
+</a>
+*/}
               </div>
             </div>
           </section>
