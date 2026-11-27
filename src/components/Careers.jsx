@@ -114,6 +114,8 @@ const BENEFIT_ITEMS = [
 const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
 const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+const EMAILJS_INTERNSHIP_ACK_TEMPLATE_ID =
+  import.meta.env.VITE_EMAILJS_INTERNSHIP_ACK_TEMPLATE_ID
 
 function ExpandableList({ title, items, openItem, onToggle, idPrefix }) {
   return (
@@ -354,6 +356,9 @@ export default function Careers() {
 
     try {
       setSending(true)
+
+      // First, send the internship application to the RD AI Labs team.
+      // The acknowledgement is attempted only after this succeeds.
       await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
@@ -377,10 +382,43 @@ export default function Careers() {
         },
         { publicKey: EMAILJS_PUBLIC_KEY }
       )
+
+      // The company has received the application. Try the applicant
+      // acknowledgement separately so its failure cannot cause a duplicate
+      // company notification if the applicant retries the form.
+      let acknowledgementSent = false
+
+      if (EMAILJS_INTERNSHIP_ACK_TEMPLATE_ID) {
+        try {
+          await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_INTERNSHIP_ACK_TEMPLATE_ID,
+            {
+              to_email: formData.get('email'),
+              name: formData.get('fullName'),
+              email: formData.get('email'),
+            },
+            { publicKey: EMAILJS_PUBLIC_KEY }
+          )
+          acknowledgementSent = true
+        } catch (acknowledgementError) {
+          console.error(
+            'Internship acknowledgement email failed:',
+            acknowledgementError
+          )
+        }
+      } else {
+        console.error(
+          'Internship acknowledgement template is not configured. Set VITE_EMAILJS_INTERNSHIP_ACK_TEMPLATE_ID.'
+        )
+      }
+
       form.reset()
       setSubmitStatus({
         type: 'success',
-        message: 'Your internship application has been submitted successfully! Thank you for your interest in RD AI Labs.',
+        message: acknowledgementSent
+          ? 'Your internship application has been submitted successfully! A confirmation email has been sent to your email address.'
+          : 'Your internship application has been received by RD AI Labs, but we could not send the automatic confirmation email. Please do not submit the application again. If needed, contact contact@rdailabs.com.',
       })
     } catch (error) {
       console.error('Internship EmailJS submission failed:', error)
